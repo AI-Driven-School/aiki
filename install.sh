@@ -3,14 +3,14 @@
 # Claude Code + Codex 自動連携インストーラー
 # ============================================
 # 使用方法:
-#   curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/claude-codex-collab/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/yu010101/claude-codex-collab/main/install.sh | bash
 #   curl -fsSL ... | bash -s -- /path/to/project
 # ============================================
 
 set -e
 
 VERSION="1.0.0"
-REPO_URL="https://raw.githubusercontent.com/YOUR_USERNAME/claude-codex-collab/main"
+REPO_URL="https://raw.githubusercontent.com/yu010101/claude-codex-collab/main"
 
 # カラー定義
 RED='\033[0;31m'
@@ -470,5 +470,5 @@ echo ""
 echo "  4. タスク状態確認:"
 echo -e "     ${BLUE}./scripts/check-codex-task.sh${NC}"
 echo ""
-echo "📚 詳細: https://github.com/YOUR_USERNAME/claude-codex-collab"
+echo "📚 詳細: https://github.com/yu010101/claude-codex-collab"
 echo ""

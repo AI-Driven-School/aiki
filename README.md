@@ -14,14 +14,14 @@ Claude Code（Anthropic）とCodex CLI（OpenAI）を自動連携させ、効率
 ### ワンラインインストール
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/claude-codex-collab/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/yu010101/claude-codex-collab/main/install.sh | bash
 ```
 
 ### 既存プロジェクトに導入
 
 ```bash
 cd your-project
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/claude-codex-collab/main/install.sh | bash -s -- .
+curl -fsSL https://raw.githubusercontent.com/yu010101/claude-codex-collab/main/install.sh | bash -s -- .
 ```
 
 ## 必要条件

@@ -383,3 +383,57 @@ Geminiでリファクタリング提案。
 | `AI_SKIP_TESTS` | テスト生成をスキップ | `false` |
 | `AI_DEPLOY_TARGET` | デプロイ先 | `vercel` |
 | `GOOGLE_GENAI_USE_GCA` | Gemini認証 | `true` |
+
+---
+
+## CLIスクリプト
+
+### scripts/delegate.sh
+
+CodexとGeminiにタスクを直接委譲するスクリプト。
+
+```bash
+# Codex
+./scripts/delegate.sh codex implement auth --full-auto
+./scripts/delegate.sh codex test auth
+./scripts/delegate.sh codex refactor src/
+./scripts/delegate.sh codex review main
+
+# Gemini
+./scripts/delegate.sh gemini analyze src/
+./scripts/delegate.sh gemini research "JWT vs Session認証"
+
+# カスタム
+./scripts/delegate.sh codex exec "READMEを更新して" --full-auto
+```
+
+#### オプション
+
+| オプション | 説明 |
+|-----------|------|
+| `--full-auto` | Codex: 承認なしで自動実行 |
+| `--yolo` | Gemini: 承認なしで自動実行 |
+| `--background` | バックグラウンドで実行 |
+| `--output <file>` | 出力ファイルを指定 |
+
+---
+
+### scripts/project-workflow.sh
+
+6フェーズのワークフローを直接実行。
+
+```bash
+./scripts/project-workflow.sh "ユーザー認証"
+./scripts/project-workflow.sh "商品検索" --from=3
+./scripts/project-workflow.sh "ダッシュボード" --auto
+./scripts/project-workflow.sh "メール通知" --dry-run
+```
+
+#### オプション
+
+| オプション | 説明 |
+|-----------|------|
+| `--from=N` | N番目のフェーズから開始 |
+| `--skip=N,M` | 指定フェーズをスキップ |
+| `--auto` | 全承認を自動でY |
+| `--dry-run` | 実行せずにプレビュー |

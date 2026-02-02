@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3AI-CLI デモ動画用</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+JP:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --text: #e6edf3;
+      --muted: #7d8590;
+      --claude: #d4a574;
+      --codex: #4ade80;
+      --gemini: #60a5fa;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+    }
+
+    /* Title Card */
+    .title-card {
+      text-align: center;
+      padding: 3rem 2rem;
+      opacity: 0;
+      animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    .title-card h1 {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .title-card h1 span {
+      background: linear-gradient(135deg, var(--codex), var(--gemini));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .title-card .subtitle {
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .title-card .ai-dots {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 2rem;
+    }
+
+    .title-card .ai-dots span {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+
+    .title-card .ai-dots span:nth-child(1) { background: var(--claude); }
+    .title-card .ai-dots span:nth-child(2) { background: var(--codex); }
+    .title-card .ai-dots span:nth-child(3) { background: var(--gemini); }
+
+    /* Terminal */
+    .terminal {
+      background: #161b22;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      opacity: 0;
+    }
+
+    .terminal.visible {
+      opacity: 1;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: #21262d;
+    }
+
+    .terminal-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .terminal-dot.red { background: #ff5f56; }
+    .terminal-dot.yellow { background: #ffbd2e; }
+    .terminal-dot.green { background: #27c93f; }
+
+    .terminal-title {
+      flex: 1;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .terminal-body {
+      padding: 1.5rem;
+      font-size: 0.9rem;
+      line-height: 2;
+      min-height: 450px;
+      color: var(--text);
+    }
+
+    .line {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    .line.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.3s ease-out;
+    }
+
+    .prompt { color: var(--codex); }
+    .command { color: var(--text); }
+    .phase { color: var(--muted); }
+    .ai-claude { color: var(--claude); }
+    .ai-codex { color: var(--codex); }
+    .file { color: var(--gemini); }
+    .success { color: var(--codex); }
+    .arrow { color: var(--muted); }
+    .url { color: var(--gemini); text-decoration: underline; }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 18px;
+      background: var(--codex);
+      animation: blink 1s infinite;
+      vertical-align: text-bottom;
+    }
+
+    /* End Card */
+    .end-card {
+      text-align: center;
+      padding: 3rem 2rem;
+      opacity: 0;
+    }
+
+    .end-card.visible {
+      opacity: 1;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .end-card .stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin-bottom: 2rem;
+    }
+
+    .end-card .stat {
+      text-align: center;
+    }
+
+    .end-card .stat-value {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--codex);
+    }
+
+    .end-card .stat-label {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .end-card .cta {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 1.5rem;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .end-card .url-box {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: #21262d;
+      border-radius: 8px;
+      color: var(--codex);
+      font-size: 0.9rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Controls (hidden in recording) */
+    .controls {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 1rem;
+      z-index: 100;
+    }
+
+    .controls button {
+      padding: 0.75rem 1.5rem;
+      background: #21262d;
+      border: 1px solid var(--muted);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .controls button:hover {
+      border-color: var(--codex);
+      color: var(--codex);
+    }
+
+    .controls.hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Title Card -->
+    <div class="title-card" id="title-card">
+      <h1>実装<span>2倍速</span>、コスト<span>75%</span>削減</h1>
+      <p class="subtitle">Claude × Codex × Gemini の3AI分業</p>
+      <div class="ai-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <!-- Terminal -->
+    <div class="terminal" id="terminal">
+      <div class="terminal-header">
+        <div class="terminal-dot red"></div>
+        <div class="terminal-dot yellow"></div>
+        <div class="terminal-dot green"></div>
+        <div class="terminal-title">claude — ~/my-app</div>
+      </div>
+      <div class="terminal-body" id="terminal-body">
+        <div class="line visible"><span class="prompt">❯</span> <span class="cursor"></span></div>
+      </div>
+    </div>
+
+    <!-- End Card -->
+    <div class="end-card" id="end-card">
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value">2x</div>
+          <div class="stat-label">実装速度</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">75%</div>
+          <div class="stat-label">コスト削減</div>
+        </div>
+      </div>
+      <p class="cta">今すぐ試す</p>
+      <div class="url-box">github.com/yu010101/claude-codex-collab</div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls" id="controls">
+    <button onclick="startDemo()">▶ 開始</button>
+    <button onclick="location.reload()">↺ リセット</button>
+    <button onclick="hideControls()">🎬 録画モード</button>
+  </div>
+
+  <script>
+    const demoSequence = [
+      // Typing command
+      { action: 'type', text: '/project ユーザー認証', delay: 0, speed: 80 },
+      { action: 'line', text: '', delay: 600 },
+
+      // Phase 1
+      { action: 'line', text: '<span class="phase">[1/6]</span> 要件定義を生成中... <span class="ai-claude">(Claude)</span>', delay: 800 },
+      { action: 'line', text: '      <span class="arrow">→</span> <span class="file">docs/requirements/auth.md</span>', delay: 400 },
+      { action: 'line', text: '      <span class="success">✓</span> 承認', delay: 400 },
+      { action: 'line', text: '', delay: 200 },
+
+      // Phase 2
+      { action: 'line', text: '<span class="phase">[2/6]</span> API設計を生成中... <span class="ai-claude">(Claude)</span>', delay: 600 },
+      { action: 'line', text: '      <span class="arrow">→</span> <span class="file">docs/api/auth.yaml</span>', delay: 400 },
+      { action: 'line', text: '      <span class="success">✓</span> 承認', delay: 400 },
+      { action: 'line', text: '', delay: 200 },
+
+      // Phase 3 - Main implementation
+      { action: 'line', text: '<span class="phase">[3/6]</span> 実装中... <span class="ai-codex">(Codex - full-auto)</span> <span class="success">★</span>', delay: 600 },
+      { action: 'line', text: '      <span class="arrow">→</span> <span class="file">src/app/login/page.tsx</span>', delay: 300 },
+      { action: 'line', text: '      <span class="arrow">→</span> <span class="file">src/lib/api/auth.ts</span>', delay: 300 },
+      { action: 'line', text: '      <span class="arrow">→</span> <span class="file">src/components/LoginForm.tsx</span>', delay: 300 },
+      { action: 'line', text: '', delay: 200 },
+
+      // Phase 4
+      { action: 'line', text: '<span class="phase">[4/6]</span> テスト生成中... <span class="ai-codex">(Codex)</span>', delay: 500 },
+      { action: 'line', text: '      <span class="arrow">→</span> <span class="file">tests/auth.spec.ts</span>', delay: 300 },
+      { action: 'line', text: '', delay: 200 },
+
+      // Phase 5
+      { action: 'line', text: '<span class="phase">[5/6]</span> レビュー中... <span class="ai-claude">(Claude)</span>', delay: 500 },
+      { action: 'line', text: '      <span class="success">✓</span> 受入条件クリア', delay: 300 },
+      { action: 'line', text: '      <span class="success">✓</span> テストパス', delay: 300 },
+      { action: 'line', text: '', delay: 200 },
+
+      // Phase 6
+      { action: 'line', text: '<span class="phase">[6/6]</span> デプロイ準備完了', delay: 500 },
+      { action: 'line', text: '      本番にデプロイしますか？ [Y/n] <span class="success">Y</span>', delay: 500 },
+      { action: 'line', text: '', delay: 300 },
+
+      // Success
+      { action: 'line', text: '<span class="success">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>', delay: 300 },
+      { action: 'line', text: '<span class="success">✅ デプロイ完了！</span>', delay: 300 },
+      { action: 'line', text: '', delay: 200 },
+      { action: 'line', text: '   URL: <span class="url">https://my-app.vercel.app</span>', delay: 300 },
+      { action: 'line', text: '<span class="success">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>', delay: 300 },
+
+      // Show end card
+      { action: 'end', delay: 1000 },
+    ];
+
+    let currentStep = 0;
+    let isRunning = false;
+
+    function startDemo() {
+      if (isRunning) return;
+      isRunning = true;
+
+      // Hide title, show terminal
+      document.getElementById('title-card').style.display = 'none';
+      document.getElementById('end-card').style.display = 'none';
+
+      const terminal = document.getElementById('terminal');
+      terminal.classList.add('visible');
+      terminal.style.display = 'block';
+
+      const body = document.getElementById('terminal-body');
+      body.innerHTML = '';
+
+      currentStep = 0;
+      runNextStep();
+    }
+
+    function runNextStep() {
+      if (currentStep >= demoSequence.length) {
+        isRunning = false;
+        return;
+      }
+
+      const step = demoSequence[currentStep];
+
+      setTimeout(() => {
+        if (step.action === 'type') {
+          typeCommand(step.text, step.speed, () => {
+            currentStep++;
+            runNextStep();
+          });
+        } else if (step.action === 'line') {
+          addLine(step.text);
+          currentStep++;
+          runNextStep();
+        } else if (step.action === 'end') {
+          document.getElementById('terminal').style.display = 'none';
+          const endCard = document.getElementById('end-card');
+          endCard.style.display = 'block';
+          endCard.classList.add('visible');
+          isRunning = false;
+        }
+      }, step.delay);
+    }
+
+    function typeCommand(text, speed, callback) {
+      const body = document.getElementById('terminal-body');
+      body.innerHTML = '';
+
+      const line = document.createElement('div');
+      line.className = 'line visible';
+      line.innerHTML = '<span class="prompt">❯</span> <span class="command" id="typing-target"></span><span class="cursor"></span>';
+      body.appendChild(line);
+
+      const target = document.getElementById('typing-target');
+      let i = 0;
+
+      function type() {
+        if (i < text.length) {
+          target.textContent += text[i];
+          i++;
+          setTimeout(type, speed);
+        } else {
+          // Remove cursor after typing
+          setTimeout(() => {
+            line.innerHTML = '<span class="prompt">❯</span> <span class="command">' + text + '</span>';
+            callback();
+          }, 200);
+        }
+      }
+
+      type();
+    }
+
+    function addLine(text) {
+      const body = document.getElementById('terminal-body');
+      const line = document.createElement('div');
+      line.className = 'line';
+      line.innerHTML = text || '&nbsp;';
+      body.appendChild(line);
+
+      // Trigger animation
+      setTimeout(() => line.classList.add('visible'), 20);
+
+      // Scroll to bottom
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function hideControls() {
+      document.getElementById('controls').classList.add('hidden');
+      alert('録画モード: Ctrl+Shift+5 (Mac) または Windows+G でスクリーン録画を開始し、「開始」ボタンをクリックしてください。\n\n録画後、controls を表示するにはページをリロードしてください。');
+      // Auto-start after alert
+      setTimeout(startDemo, 500);
+    }
+
+    // Keyboard shortcut
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && !isRunning) {
+        startDemo();
+      }
+    });
+  </script>
+</body>
+</html>

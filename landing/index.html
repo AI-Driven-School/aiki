@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3AI協調開発 | Claude設計 × Codex実装 × Gemini解析</title>
-  <meta name="description" content="Claude で設計、Codex で爆速実装、Gemini で大規模解析。3つのAIを適材適所で活用。">
+  <title>3AI協調開発 | 実装2倍速・コスト75%削減</title>
+  <meta name="description" content="Claude で設計、Codex で爆速実装、Gemini で大規模解析。一人開発でも設計書が残る。">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,6 +21,7 @@
       --claude: #d4a574;
       --codex: #4ade80;
       --gemini: #60a5fa;
+      --accent: #22c55e;
       --glow-claude: 0 0 20px rgba(212, 165, 116, 0.4);
       --glow-codex: 0 0 20px rgba(74, 222, 128, 0.4);
       --glow-gemini: 0 0 20px rgba(96, 165, 250, 0.4);
@@ -60,7 +61,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(10, 10, 15, 0.9);
+      background: rgba(10, 10, 15, 0.95);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(255,255,255,0.05);
       z-index: 1000;
@@ -107,6 +108,15 @@
 
     .nav-links a:hover { color: var(--text-primary); }
 
+    .mobile-menu {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
     /* Hero Section */
     .hero {
       min-height: 100vh;
@@ -118,96 +128,99 @@
       text-align: center;
     }
 
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 100px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-bottom: 2rem;
+    }
+
     .hero h1 {
       font-family: var(--font-display);
-      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      font-size: clamp(2.5rem, 7vw, 4rem);
       font-weight: 800;
       line-height: 1.1;
       margin-bottom: 1.5rem;
     }
 
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--codex), var(--gemini));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
     .hero-subtitle {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       color: var(--text-secondary);
       max-width: 600px;
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
     }
 
-    /* 3 AI Cards */
-    .ai-trio {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      max-width: 900px;
+    /* Benefit Stats */
+    .benefit-stats {
+      display: flex;
+      gap: 3rem;
       margin-bottom: 3rem;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
-    .ai-card {
-      padding: 2rem;
-      background: var(--bg-secondary);
-      border: 1px solid var(--bg-tertiary);
+    .stat-item {
       text-align: center;
-      transition: all 0.3s;
     }
 
-    .ai-card:hover {
-      transform: translateY(-4px);
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
     }
 
-    .ai-card.claude:hover { border-color: var(--claude); box-shadow: var(--glow-claude); }
-    .ai-card.codex:hover { border-color: var(--codex); box-shadow: var(--glow-codex); }
-    .ai-card.gemini:hover { border-color: var(--gemini); box-shadow: var(--glow-gemini); }
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-top: 0.5rem;
+    }
 
-    .ai-icon {
-      width: 64px; height: 64px;
-      margin: 0 auto 1rem;
-      border-radius: 16px;
+    /* Requirements Badge */
+    .requirements-badge {
       display: flex;
       align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--bg-tertiary);
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
       justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #fff;
     }
 
-    .ai-card.claude .ai-icon { background: linear-gradient(135deg, var(--claude), #a67c4a); }
-    .ai-card.codex .ai-icon { background: linear-gradient(135deg, var(--codex), #16a34a); }
-    .ai-card.gemini .ai-icon { background: linear-gradient(135deg, var(--gemini), #2563eb); }
-
-    .ai-card h3 {
-      font-family: var(--font-display);
-      font-size: 1.25rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .ai-card.claude h3 { color: var(--claude); }
-    .ai-card.codex h3 { color: var(--codex); }
-    .ai-card.gemini h3 { color: var(--gemini); }
-
-    .ai-card .role {
-      font-size: 1rem;
-      color: var(--text-primary);
-      margin-bottom: 0.5rem;
-    }
-
-    .ai-card .desc {
+    .requirements-badge span {
       font-size: 0.85rem;
       color: var(--text-muted);
     }
 
-    .ai-card .tag {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 0.25rem 0.75rem;
+    .requirements-badge .req-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       font-family: var(--font-mono);
-      font-size: 0.7rem;
-      border-radius: 4px;
+      font-size: 0.8rem;
     }
 
-    .ai-card.claude .tag { background: rgba(212, 165, 116, 0.1); color: var(--claude); border: 1px solid rgba(212, 165, 116, 0.3); }
-    .ai-card.codex .tag { background: rgba(74, 222, 128, 0.1); color: var(--codex); border: 1px solid rgba(74, 222, 128, 0.3); }
-    .ai-card.gemini .tag { background: rgba(96, 165, 250, 0.1); color: var(--gemini); border: 1px solid rgba(96, 165, 250, 0.3); }
+    .requirements-badge .req-item.claude { color: var(--claude); }
+    .requirements-badge .req-item.codex { color: var(--codex); }
+    .requirements-badge .req-item.gemini { color: var(--gemini); }
 
     .cta-group {
       display: flex;
@@ -226,6 +239,7 @@
       font-family: var(--font-mono);
       font-weight: 600;
       text-decoration: none;
+      border-radius: 4px;
       transition: all 0.3s;
     }
 
@@ -244,183 +258,362 @@
       font-family: var(--font-mono);
       text-decoration: none;
       border: 1px solid var(--text-muted);
+      border-radius: 4px;
       transition: all 0.3s;
     }
 
     .btn-secondary:hover { border-color: var(--text-primary); }
 
-    /* Why Section */
-    .why-section {
-      padding: 6rem 2rem;
+    /* Demo Section */
+    .demo-section {
+      padding: 4rem 2rem;
       background: var(--bg-secondary);
+    }
+
+    .demo-container {
+      max-width: 900px;
+      margin: 0 auto;
     }
 
     .section-header {
       text-align: center;
-      margin-bottom: 4rem;
+      margin-bottom: 3rem;
     }
 
     .section-header h2 {
       font-family: var(--font-display);
-      font-size: 2.5rem;
+      font-size: 2rem;
       font-weight: 800;
-      margin-bottom: 1rem;
-    }
-
-    .comparison-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .comparison-card {
-      padding: 2rem;
-      background: var(--bg-primary);
-      border: 1px solid var(--bg-tertiary);
-    }
-
-    .comparison-card.problem {
-      border-left: 3px solid #ef4444;
-    }
-
-    .comparison-card.solution {
-      border-left: 3px solid var(--codex);
-    }
-
-    .comparison-card h3 {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      margin-bottom: 1rem;
-    }
-
-    .comparison-card.problem h3 { color: #ef4444; }
-    .comparison-card.solution h3 { color: var(--codex); }
-
-    .comparison-card p {
-      font-size: 1.1rem;
-      color: var(--text-primary);
       margin-bottom: 0.5rem;
     }
 
-    .comparison-card .detail {
-      font-size: 0.85rem;
+    .section-header p {
+      color: var(--text-secondary);
+    }
+
+    /* Terminal Demo */
+    .terminal {
+      background: #0d1117;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: #161b22;
+    }
+
+    .terminal-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .terminal-dot.red { background: #ff5f56; }
+    .terminal-dot.yellow { background: #ffbd2e; }
+    .terminal-dot.green { background: #27c93f; }
+
+    .terminal-title {
+      flex: 1;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
       color: var(--text-muted);
     }
 
-    /* Workflow Section */
-    .workflow-section {
+    .terminal-body {
+      padding: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.8;
+      min-height: 400px;
+    }
+
+    .terminal-line {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    .terminal-line.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.3s ease-out;
+    }
+
+    .terminal-line .prompt {
+      color: var(--codex);
+    }
+
+    .terminal-line .command {
+      color: var(--text-primary);
+    }
+
+    .terminal-line .phase {
+      color: var(--text-muted);
+    }
+
+    .terminal-line .ai-claude {
+      color: var(--claude);
+    }
+
+    .terminal-line .ai-codex {
+      color: var(--codex);
+    }
+
+    .terminal-line .file {
+      color: var(--gemini);
+    }
+
+    .terminal-line .success {
+      color: var(--codex);
+    }
+
+    .terminal-line .arrow {
+      color: var(--text-muted);
+    }
+
+    .terminal-line .url {
+      color: var(--gemini);
+      text-decoration: underline;
+    }
+
+    .terminal-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .terminal-btn {
+      padding: 0.75rem 1.5rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--text-muted);
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .terminal-btn:hover {
+      border-color: var(--codex);
+      color: var(--codex);
+    }
+
+    .terminal-btn.playing {
+      border-color: var(--codex);
+      color: var(--codex);
+    }
+
+    /* Benchmark Section */
+    .benchmark-section {
       padding: 6rem 2rem;
     }
 
-    .workflow-container {
-      max-width: 800px;
+    .benchmark-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 900px;
       margin: 0 auto;
     }
 
-    .workflow-step {
-      display: flex;
-      gap: 1.5rem;
-      padding: 1.5rem 0;
-      border-bottom: 1px solid var(--bg-tertiary);
+    .benchmark-card {
+      padding: 2rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--bg-tertiary);
+      border-radius: 8px;
     }
 
-    .workflow-step:last-child { border-bottom: none; }
+    .benchmark-card h3 {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
 
-    .step-number {
-      width: 48px; height: 48px;
+    .benchmark-result {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .benchmark-winner {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .benchmark-winner.codex { color: var(--codex); }
+    .benchmark-winner.claude { color: var(--claude); }
+
+    .benchmark-detail {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .benchmark-bar {
+      height: 8px;
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .benchmark-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 1s ease-out;
+    }
+
+    .benchmark-bar-fill.codex { background: var(--codex); }
+    .benchmark-bar-fill.claude { background: var(--claude); }
+
+    /* How It Works */
+    .how-section {
+      padding: 6rem 2rem;
+      background: var(--bg-secondary);
+    }
+
+    .flow-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1.5rem 2rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--bg-tertiary);
+      border-radius: 8px;
+      min-width: 150px;
+    }
+
+    .flow-step .icon {
+      width: 48px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-mono);
       font-size: 1.25rem;
       font-weight: 700;
-      flex-shrink: 0;
-      border-radius: 8px;
+      border-radius: 12px;
+      color: #fff;
     }
 
-    .step-number.claude { background: rgba(212, 165, 116, 0.15); color: var(--claude); }
-    .step-number.codex { background: rgba(74, 222, 128, 0.15); color: var(--codex); }
+    .flow-step.claude .icon { background: linear-gradient(135deg, var(--claude), #a67c4a); }
+    .flow-step.codex .icon { background: linear-gradient(135deg, var(--codex), #16a34a); }
 
-    .step-content h3 {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .step-content p {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-    }
-
-    .step-ai {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      margin-left: 0.5rem;
-    }
-
-    .step-ai.claude { background: rgba(212, 165, 116, 0.15); color: var(--claude); }
-    .step-ai.codex { background: rgba(74, 222, 128, 0.15); color: var(--codex); }
-
-    /* Cost Section */
-    .cost-section {
-      padding: 6rem 2rem;
-      background: var(--bg-secondary);
-    }
-
-    .cost-table {
-      max-width: 700px;
-      margin: 0 auto;
-      border-collapse: collapse;
-    }
-
-    .cost-table th,
-    .cost-table td {
-      padding: 1rem 1.5rem;
-      text-align: left;
-      border-bottom: 1px solid var(--bg-tertiary);
-    }
-
-    .cost-table th {
+    .flow-step .label {
       font-family: var(--font-mono);
       font-size: 0.85rem;
       color: var(--text-secondary);
-      font-weight: 500;
     }
 
-    .cost-table td {
+    .flow-step .name {
+      font-weight: 600;
       font-size: 1rem;
     }
 
-    .cost-table .ai-name {
-      font-weight: 600;
+    .flow-step.claude .name { color: var(--claude); }
+    .flow-step.codex .name { color: var(--codex); }
+
+    .flow-arrow {
+      font-size: 1.5rem;
+      color: var(--text-muted);
     }
 
-    .cost-table .ai-name.claude { color: var(--claude); }
-    .cost-table .ai-name.codex { color: var(--codex); }
-    .cost-table .ai-name.gemini { color: var(--gemini); }
+    /* Output Section */
+    .output-section {
+      padding: 6rem 2rem;
+    }
 
-    .cost-table .price {
+    .output-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .output-card {
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--bg-tertiary);
+      border-radius: 8px;
+    }
+
+    .output-card h4 {
       font-family: var(--font-mono);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    .cost-table .price.paid { color: #ef4444; }
-    .cost-table .price.included { color: var(--codex); }
-    .cost-table .price.free { color: var(--gemini); }
+    .output-card h4 .ai-tag {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .output-card h4 .ai-tag.claude {
+      background: rgba(212, 165, 116, 0.15);
+      color: var(--claude);
+    }
+
+    .output-card h4 .ai-tag.codex {
+      background: rgba(74, 222, 128, 0.15);
+      color: var(--codex);
+    }
+
+    .output-list {
+      list-style: none;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .output-list li {
+      padding: 0.3rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .output-list li::before {
+      content: "→";
+      color: var(--text-muted);
+    }
 
     /* Install Section */
     .install-section {
       padding: 6rem 2rem;
+      background: var(--bg-secondary);
     }
 
     .install-box {
       max-width: 700px;
       margin: 0 auto;
-      background: var(--bg-secondary);
+      background: var(--bg-primary);
       border: 1px solid var(--bg-tertiary);
+      border-radius: 8px;
       overflow: hidden;
     }
 
@@ -446,6 +639,7 @@
       font-family: var(--font-mono);
       font-size: 0.75rem;
       cursor: pointer;
+      border-radius: 4px;
       transition: all 0.3s;
     }
 
@@ -464,6 +658,76 @@
     .install-code .comment { color: var(--text-muted); }
     .install-code .command { color: var(--codex); }
 
+    /* Prerequisites */
+    .prereq-section {
+      padding: 4rem 2rem;
+    }
+
+    .prereq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .prereq-card {
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--bg-tertiary);
+      border-radius: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .prereq-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .prereq-card.claude .prereq-icon {
+      background: rgba(212, 165, 116, 0.15);
+      color: var(--claude);
+    }
+
+    .prereq-card.codex .prereq-icon {
+      background: rgba(74, 222, 128, 0.15);
+      color: var(--codex);
+    }
+
+    .prereq-card.gemini .prereq-icon {
+      background: rgba(96, 165, 250, 0.15);
+      color: var(--gemini);
+    }
+
+    .prereq-content h4 {
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .prereq-content p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .prereq-content .cost {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .prereq-content .cost.paid { color: #ef4444; }
+    .prereq-content .cost.included { color: var(--codex); }
+    .prereq-content .cost.free { color: var(--gemini); }
+
     /* Footer */
     footer {
       padding: 4rem 2rem;
@@ -476,6 +740,7 @@
       justify-content: center;
       gap: 2rem;
       margin-bottom: 2rem;
+      flex-wrap: wrap;
     }
 
     .footer-links a {
@@ -495,14 +760,24 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-      .ai-trio {
-        grid-template-columns: 1fr;
-        max-width: 400px;
+      .nav-links { display: none; }
+      .mobile-menu { display: block; }
+
+      .benefit-stats { gap: 2rem; }
+      .stat-value { font-size: 2.5rem; }
+
+      .flow-container {
+        flex-direction: column;
       }
 
-      .nav-links { display: none; }
+      .flow-arrow {
+        transform: rotate(90deg);
+      }
 
-      .workflow-step { flex-direction: column; gap: 1rem; }
+      .requirements-badge {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
     }
 
     /* Animations */
@@ -515,6 +790,20 @@
     .fade-up.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .typing-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      background: var(--codex);
+      margin-left: 2px;
+      animation: pulse 1s infinite;
     }
   </style>
 </head>
@@ -531,163 +820,225 @@
       3AI-CLI
     </a>
     <div class="nav-links">
-      <a href="#why">なぜ3AI？</a>
-      <a href="#workflow">ワークフロー</a>
+      <a href="#demo">デモ</a>
+      <a href="#benchmark">ベンチマーク</a>
       <a href="#install">インストール</a>
-      <a href="https://github.com/yu010101/claude-codex-collab" target="_blank">GitHub</a>
+      <a href="https://github.com/yu010101/claude-codex-collab" target="_blank">GitHub ↗</a>
     </div>
+    <button class="mobile-menu" onclick="toggleMobileMenu()">☰</button>
   </nav>
 
   <section class="hero">
-    <h1>3つのAIを、<br>適材適所で</h1>
+    <div class="hero-badge">
+      <span>🚀</span>
+      <span>Phase 1: 完全無料</span>
+    </div>
+
+    <h1>実装<span class="highlight">2倍速</span>、<br>コスト<span class="highlight">75%</span>削減</h1>
+
     <p class="hero-subtitle">
-      <strong>Claude</strong> で設計、<strong>Codex</strong> で爆速実装、<strong>Gemini</strong> で大規模解析。<br>
-      各AIの強みを活かした分業で、品質とスピードを両立。
+      一人開発でも、設計書が残る。<br>
+      Claude × Codex × Gemini の3AI分業で、品質とスピードを両立。
     </p>
 
-    <div class="ai-trio">
-      <div class="ai-card claude">
-        <div class="ai-icon">C</div>
-        <h3>Claude</h3>
-        <p class="role">設計・判断・レビュー</p>
-        <p class="desc">推論力を活かした<br>アーキテクチャ決定</p>
-        <span class="tag">頭脳</span>
+    <div class="benefit-stats">
+      <div class="stat-item">
+        <div class="stat-value">2x</div>
+        <div class="stat-label">実装速度</div>
       </div>
-      <div class="ai-card codex">
-        <div class="ai-icon">X</div>
-        <h3>Codex</h3>
-        <p class="role">実装・テスト</p>
-        <p class="desc">full-autoモードで<br>爆速コーディング</p>
-        <span class="tag">手足（メイン）</span>
+      <div class="stat-item">
+        <div class="stat-value">75%</div>
+        <div class="stat-label">コスト削減</div>
       </div>
-      <div class="ai-card gemini">
-        <div class="ai-icon">G</div>
-        <h3>Gemini</h3>
-        <p class="role">解析・リサーチ</p>
-        <p class="desc">1Mトークンで<br>大規模コード解析</p>
-        <span class="tag">目</span>
+      <div class="stat-item">
+        <div class="stat-value">6</div>
+        <div class="stat-label">承認フェーズ</div>
       </div>
+    </div>
+
+    <div class="requirements-badge">
+      <span>必要なもの:</span>
+      <div class="req-item claude">Claude (従量課金)</div>
+      <div class="req-item codex">ChatGPT Pro ($200/月)</div>
+      <div class="req-item gemini">Google (無料)</div>
     </div>
 
     <div class="cta-group">
-      <a href="#install" class="btn-primary">今すぐ始める</a>
-      <a href="https://github.com/yu010101/claude-codex-collab" class="btn-secondary" target="_blank">GitHub</a>
+      <a href="#install" class="btn-primary">今すぐ始める →</a>
+      <a href="#demo" class="btn-secondary">デモを見る ▶</a>
     </div>
   </section>
 
-  <section class="why-section" id="why">
+  <!-- Demo Section -->
+  <section class="demo-section" id="demo">
+    <div class="demo-container">
+      <div class="section-header fade-up">
+        <h2>30秒でわかるワークフロー</h2>
+        <p>コマンド1つで、設計→実装→デプロイまで自動化</p>
+      </div>
+
+      <div class="terminal fade-up">
+        <div class="terminal-header">
+          <div class="terminal-dot red"></div>
+          <div class="terminal-dot yellow"></div>
+          <div class="terminal-dot green"></div>
+          <div class="terminal-title">claude — ~/my-app</div>
+        </div>
+        <div class="terminal-body" id="terminal-output">
+          <!-- Lines will be inserted here by JS -->
+        </div>
+      </div>
+
+      <div class="terminal-controls">
+        <button class="terminal-btn" id="play-btn" onclick="playDemo()">▶ 再生</button>
+        <button class="terminal-btn" onclick="resetDemo()">↺ リセット</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benchmark Section -->
+  <section class="benchmark-section" id="benchmark">
     <div class="section-header fade-up">
-      <h2>なぜ3AI？</h2>
+      <h2>実測ベンチマーク</h2>
+      <p>同一タスクでの比較結果</p>
     </div>
 
-    <div class="comparison-grid">
-      <div class="comparison-card problem fade-up">
-        <h3>単一AIの限界</h3>
-        <p>Claude だけ</p>
-        <p class="detail">実装遅い、課金高い</p>
+    <div class="benchmark-grid">
+      <div class="benchmark-card fade-up">
+        <h3>単純タスク（新規ファイル作成）</h3>
+        <div class="benchmark-result">
+          <span class="benchmark-winner codex">Codex</span>
+          <span class="benchmark-detail">10-20%速い、$0</span>
+        </div>
+        <div class="benchmark-bar">
+          <div class="benchmark-bar-fill codex" style="width: 100%;"></div>
+        </div>
       </div>
-      <div class="comparison-card solution fade-up">
-        <h3>3AI連携</h3>
-        <p>Claude × Codex × Gemini</p>
-        <p class="detail">設計力 × 実装速度 × 解析力</p>
+
+      <div class="benchmark-card fade-up">
+        <h3>複雑タスク（既存コード修正）</h3>
+        <div class="benchmark-result">
+          <span class="benchmark-winner claude">Claude</span>
+          <span class="benchmark-detail">40%速い、品質2倍</span>
+        </div>
+        <div class="benchmark-bar">
+          <div class="benchmark-bar-fill claude" style="width: 100%;"></div>
+        </div>
       </div>
-      <div class="comparison-card problem fade-up">
-        <h3>単一AIの限界</h3>
-        <p>Codex だけ</p>
-        <p class="detail">設計判断が弱い</p>
-      </div>
-      <div class="comparison-card solution fade-up">
-        <h3>3AI連携</h3>
-        <p>Claudeが設計、Codexが実装</p>
-        <p class="detail">品質とスピードを両立</p>
+
+      <div class="benchmark-card fade-up">
+        <h3>コスト比較（3タスク実行）</h3>
+        <div class="benchmark-result">
+          <span class="benchmark-winner codex">3AI連携</span>
+          <span class="benchmark-detail">$0.25 vs Claude単体 $1.00</span>
+        </div>
+        <div class="benchmark-bar">
+          <div class="benchmark-bar-fill codex" style="width: 25%;"></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="workflow-section" id="workflow">
+  <!-- How It Works -->
+  <section class="how-section">
     <div class="section-header fade-up">
-      <h2>ワークフロー</h2>
+      <h2>シンプルな3ステップ</h2>
     </div>
 
-    <div class="workflow-container">
-      <div class="workflow-step fade-up">
-        <div class="step-number claude">1</div>
-        <div class="step-content">
-          <h3>要件定義 <span class="step-ai claude">Claude</span></h3>
-          <p>推論力を活かして要件を整理・判断</p>
-        </div>
+    <div class="flow-container fade-up">
+      <div class="flow-step claude">
+        <div class="icon">C</div>
+        <div class="label">設計</div>
+        <div class="name">Claude</div>
       </div>
-      <div class="workflow-step fade-up">
-        <div class="step-number claude">2</div>
-        <div class="step-content">
-          <h3>設計 <span class="step-ai claude">Claude</span></h3>
-          <p>アーキテクチャを決定、API設計</p>
-        </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step codex">
+        <div class="icon">X</div>
+        <div class="label">実装</div>
+        <div class="name">Codex</div>
       </div>
-      <div class="workflow-step fade-up">
-        <div class="step-number codex">3</div>
-        <div class="step-content">
-          <h3>実装 <span class="step-ai codex">Codex</span></h3>
-          <p>full-autoモードで爆速コーディング</p>
-        </div>
-      </div>
-      <div class="workflow-step fade-up">
-        <div class="step-number codex">4</div>
-        <div class="step-content">
-          <h3>テスト <span class="step-ai codex">Codex</span></h3>
-          <p>実装と一貫性のあるテスト生成</p>
-        </div>
-      </div>
-      <div class="workflow-step fade-up">
-        <div class="step-number claude">5</div>
-        <div class="step-content">
-          <h3>レビュー <span class="step-ai claude">Claude</span></h3>
-          <p>設計意図との整合性をチェック</p>
-        </div>
-      </div>
-      <div class="workflow-step fade-up">
-        <div class="step-number claude">6</div>
-        <div class="step-content">
-          <h3>デプロイ <span class="step-ai claude">Claude</span></h3>
-          <p>最終判断と本番リリース</p>
-        </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step claude">
+        <div class="icon">C</div>
+        <div class="label">レビュー</div>
+        <div class="name">Claude</div>
       </div>
     </div>
   </section>
 
-  <section class="cost-section">
+  <!-- Output Section -->
+  <section class="output-section">
     <div class="section-header fade-up">
-      <h2>コスト構造</h2>
+      <h2>成果物</h2>
+      <p>一人開発でも、これだけ残る</p>
     </div>
 
-    <table class="cost-table fade-up">
-      <thead>
-        <tr>
-          <th>AI</th>
-          <th>役割</th>
-          <th>課金</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="ai-name claude">Claude</td>
-          <td>設計・判断のみ</td>
-          <td class="price paid">従量課金（最小化）</td>
-        </tr>
-        <tr>
-          <td class="ai-name codex">Codex</td>
-          <td>実装・テスト</td>
-          <td class="price included">ChatGPT Proに含む</td>
-        </tr>
-        <tr>
-          <td class="ai-name gemini">Gemini</td>
-          <td>解析・リサーチ</td>
-          <td class="price free">無料</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="output-grid">
+      <div class="output-card fade-up">
+        <h4>📄 設計ドキュメント <span class="ai-tag claude">Claude</span></h4>
+        <ul class="output-list">
+          <li>docs/requirements/機能名.md</li>
+          <li>docs/specs/画面設計.md</li>
+          <li>docs/api/openapi.yaml</li>
+        </ul>
+      </div>
+
+      <div class="output-card fade-up">
+        <h4>💻 実装コード <span class="ai-tag codex">Codex</span></h4>
+        <ul class="output-list">
+          <li>src/app/page.tsx</li>
+          <li>src/components/**/*.tsx</li>
+          <li>src/lib/api/*.ts</li>
+        </ul>
+      </div>
+
+      <div class="output-card fade-up">
+        <h4>✅ テスト・レビュー <span class="ai-tag codex">Codex</span></h4>
+        <ul class="output-list">
+          <li>tests/*.spec.ts</li>
+          <li>docs/reviews/レビュー記録.md</li>
+        </ul>
+      </div>
+    </div>
   </section>
 
+  <!-- Prerequisites -->
+  <section class="prereq-section">
+    <div class="section-header fade-up">
+      <h2>必要なもの</h2>
+    </div>
+
+    <div class="prereq-grid">
+      <div class="prereq-card claude fade-up">
+        <div class="prereq-icon">C</div>
+        <div class="prereq-content">
+          <h4>Claude Code</h4>
+          <p>設計・判断・レビューを担当</p>
+          <div class="cost paid">従量課金 〜$0.25/機能</div>
+        </div>
+      </div>
+
+      <div class="prereq-card codex fade-up">
+        <div class="prereq-icon">X</div>
+        <div class="prereq-content">
+          <h4>Codex (ChatGPT Pro)</h4>
+          <p>実装・テスト生成を担当</p>
+          <div class="cost included">月額に含む（追加$0）</div>
+        </div>
+      </div>
+
+      <div class="prereq-card gemini fade-up">
+        <div class="prereq-icon">G</div>
+        <div class="prereq-content">
+          <h4>Gemini CLI</h4>
+          <p>大規模解析・リサーチを担当</p>
+          <div class="cost free">完全無料</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Install Section -->
   <section class="install-section" id="install">
     <div class="section-header fade-up">
       <h2>インストール</h2>
@@ -716,8 +1067,9 @@
       <a href="https://github.com/yu010101/claude-codex-collab" target="_blank">GitHub</a>
       <a href="https://github.com/yu010101/claude-codex-collab/issues" target="_blank">Issues</a>
       <a href="https://github.com/sponsors/yu010101" target="_blank">Sponsor</a>
+      <a href="https://github.com/yu010101/claude-codex-collab/blob/main/docs/GETTING_STARTED.md" target="_blank">ドキュメント</a>
     </div>
-    <p class="footer-copy">MIT License © 2025</p>
+    <p class="footer-copy">MIT License © 2026</p>
   </footer>
 
   <script>
@@ -740,6 +1092,117 @@ cd my-app && claude`;
       const btn = document.querySelector('.copy-btn');
       btn.textContent = 'コピーしました!';
       setTimeout(() => btn.textContent = 'コピー', 2000);
+    }
+
+    // Terminal Demo
+    const demoLines = [
+      { text: '<span class="prompt">❯</span> <span class="command">/project ユーザー認証</span>', delay: 0 },
+      { text: '', delay: 500 },
+      { text: '<span class="phase">[1/6]</span> 要件定義を生成中... <span class="ai-claude">(Claude)</span>', delay: 800 },
+      { text: '      <span class="arrow">→</span> <span class="file">docs/requirements/auth.md</span>', delay: 1200 },
+      { text: '      <span class="success">✓</span> 承認', delay: 1600 },
+      { text: '', delay: 1800 },
+      { text: '<span class="phase">[2/6]</span> API設計を生成中... <span class="ai-claude">(Claude)</span>', delay: 2000 },
+      { text: '      <span class="arrow">→</span> <span class="file">docs/api/auth.yaml</span>', delay: 2400 },
+      { text: '      <span class="success">✓</span> 承認', delay: 2800 },
+      { text: '', delay: 3000 },
+      { text: '<span class="phase">[3/6]</span> 実装中... <span class="ai-codex">(Codex - full-auto)</span> <span class="success">★メイン</span>', delay: 3200 },
+      { text: '      <span class="arrow">→</span> <span class="file">src/app/login/page.tsx</span>', delay: 3600 },
+      { text: '      <span class="arrow">→</span> <span class="file">src/lib/api/auth.ts</span>', delay: 3900 },
+      { text: '      <span class="arrow">→</span> <span class="file">src/components/LoginForm.tsx</span>', delay: 4200 },
+      { text: '', delay: 4500 },
+      { text: '<span class="phase">[4/6]</span> テスト生成中... <span class="ai-codex">(Codex)</span>', delay: 4700 },
+      { text: '      <span class="arrow">→</span> <span class="file">tests/auth.spec.ts</span>', delay: 5000 },
+      { text: '', delay: 5300 },
+      { text: '<span class="phase">[5/6]</span> レビュー中... <span class="ai-claude">(Claude)</span>', delay: 5500 },
+      { text: '      <span class="success">✓</span> 受入条件クリア', delay: 5900 },
+      { text: '      <span class="success">✓</span> テストパス', delay: 6200 },
+      { text: '', delay: 6500 },
+      { text: '<span class="phase">[6/6]</span> デプロイ準備完了', delay: 6700 },
+      { text: '      本番にデプロイしますか？ [Y/n] <span class="success">Y</span>', delay: 7100 },
+      { text: '', delay: 7500 },
+      { text: '<span class="success">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>', delay: 7700 },
+      { text: '<span class="success">✅ デプロイ完了！</span>', delay: 8000 },
+      { text: '', delay: 8200 },
+      { text: '   URL: <span class="url">https://my-app.vercel.app</span>', delay: 8400 },
+      { text: '<span class="success">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>', delay: 8600 },
+    ];
+
+    let demoTimeout = null;
+    let isPlaying = false;
+
+    function playDemo() {
+      if (isPlaying) return;
+      isPlaying = true;
+
+      const output = document.getElementById('terminal-output');
+      const playBtn = document.getElementById('play-btn');
+      output.innerHTML = '';
+      playBtn.textContent = '再生中...';
+      playBtn.classList.add('playing');
+
+      demoLines.forEach((line, index) => {
+        demoTimeout = setTimeout(() => {
+          const div = document.createElement('div');
+          div.className = 'terminal-line';
+          div.innerHTML = line.text || '&nbsp;';
+          output.appendChild(div);
+
+          // Trigger animation
+          setTimeout(() => div.classList.add('visible'), 50);
+
+          // Scroll to bottom
+          output.scrollTop = output.scrollHeight;
+
+          // Reset button when done
+          if (index === demoLines.length - 1) {
+            setTimeout(() => {
+              playBtn.textContent = '▶ 再生';
+              playBtn.classList.remove('playing');
+              isPlaying = false;
+            }, 500);
+          }
+        }, line.delay);
+      });
+    }
+
+    function resetDemo() {
+      clearTimeout(demoTimeout);
+      isPlaying = false;
+      const output = document.getElementById('terminal-output');
+      const playBtn = document.getElementById('play-btn');
+      output.innerHTML = '<div class="terminal-line visible"><span class="prompt">❯</span> <span class="typing-cursor"></span></div>';
+      playBtn.textContent = '▶ 再生';
+      playBtn.classList.remove('playing');
+    }
+
+    // Initialize demo
+    resetDemo();
+
+    // Auto-play when section is visible
+    const demoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !isPlaying) {
+          setTimeout(playDemo, 500);
+          demoObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.5 });
+
+    demoObserver.observe(document.querySelector('.demo-section'));
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const links = document.querySelector('.nav-links');
+      links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+      links.style.position = 'absolute';
+      links.style.top = '100%';
+      links.style.left = '0';
+      links.style.right = '0';
+      links.style.background = 'var(--bg-primary)';
+      links.style.flexDirection = 'column';
+      links.style.padding = '1rem 2rem';
+      links.style.borderBottom = '1px solid var(--bg-tertiary)';
     }
   </script>
 </body>

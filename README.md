@@ -1,44 +1,60 @@
-# 3AI協調開発テンプレート v5.0
+# 一人で作っても、設計書が残る
 
-要件定義から本番デプロイまで、**承認フロー付き**で完全自動化。
-CLIだけで設計書・モックアップ・実装・テストを一貫管理。
-
-```
+```bash
 /project ユーザー認証
-
-[1/8] 要件定義を生成しました → docs/requirements/auth.md
-      承認しますか？ [Y/n/edit]
 ```
+
+1コマンドで要件定義→設計→実装→テスト→デプロイ。
+Claude + Codex + Gemini が分担。あなたは承認するだけ。
+
+**コスト95%削減**（トークン消費を3AIで最適分散）
 
 ---
 
-## 開発フロー
+## 動作イメージ
 
 ```
-/project <機能名>
-    ↓
-[1] 要件定義   → 承認待ち → docs/requirements/
-[2] 画面設計   → 承認待ち → docs/specs/ + mockups/
-[3] API設計    → 承認待ち → docs/api/
-[4] DB設計     → 承認待ち → migrations/
-[5] 実装       → 自動     → src/
-[6] テスト     → 自動     → tests/  (Codex)
-[7] レビュー   → 自動     → docs/reviews/  (Codex)
-[8] デプロイ   → 承認待ち
+> /project ユーザー認証
+
+[1/8] 要件定義を生成しました
+      → docs/requirements/auth.md
+      承認？ [Y/n] Y
+
+[2/8] 画面設計を生成しました
+      → docs/specs/login.md
+      → mockups/login.png
+      承認？ [Y/n] Y
+
+[3/8] API設計を生成しました
+      → docs/api/auth.yaml
+      承認？ [Y/n] Y
+
+[4/8] DB設計を生成しました
+      → migrations/001_users.sql
+      承認？ [Y/n] Y
+
+[5/8] 実装中...（自動）
+[6/8] テスト生成中...（自動）
+[7/8] レビュー中...（自動）
+
+[8/8] デプロイ準備完了
+      本番に出しますか？ [Y/n] Y
+
+✅ https://my-app.vercel.app
 ```
 
-**人間が判断**: 要件・設計・デプロイ
-**AIに任せる**: 実装・テスト・レビュー
+設計4回承認、あとは自動。成果物は全てドキュメント化。
 
 ---
 
-## 3AI分担
+## なぜ必要か
 
-| AI | 担当 | フェーズ |
-|----|------|---------|
-| **Claude Code** | 設計・実装 | 要件定義、画面設計、API設計、DB設計、実装 |
-| **Codex** | 品質保証 | テスト生成、コードレビュー |
-| **Gemini** | 分析・調査 | 大規模解析、リサーチ、リファクタ |
+| 課題 | このツールで解決 |
+|------|-----------------|
+| 一人で全部やると設計が雑になる | 要件→API→DBの順で強制的に設計 |
+| AIに任せきりで不安 | 承認ポイントで人間がチェック |
+| Claude Code課金が高い | Codex/Geminiに分散して95%削減 |
+| 後から「なぜこうした」が分からない | docs/に全て残る |
 
 ---
 
@@ -46,80 +62,37 @@ CLIだけで設計書・モックアップ・実装・テストを一貫管理�
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/yu010101/claude-codex-collab/main/install-fullstack.sh | bash -s -- my-app
+cd my-app
+claude
 ```
 
----
-
-## コマンド一覧
-
-### プロジェクト管理
-
-| コマンド | 説明 |
-|---------|------|
-| `/project <名前>` | 承認フロー付き完全ワークフロー |
-| `/approve` | 現在フェーズを承認 |
-| `/reject <理由>` | 却下して再生成 |
-| `/status` | 進捗確認 |
-
-### 設計フェーズ
-
-| コマンド | 出力 |
-|---------|------|
-| `/requirements <機能>` | docs/requirements/*.md |
-| `/spec <画面>` | docs/specs/*.md + mockups/*.png |
-| `/api <名前>` | docs/api/*.yaml (OpenAPI) |
-| `/schema <テーブル>` | migrations/*.sql |
-
-### 実装フェーズ
-
-| コマンド | 担当 |
-|---------|------|
-| `/implement` | Claude（設計書から実装） |
-| `/test` | Codex（受入条件からテスト） |
-| `/review` | Codex（コードレビュー） |
-| `/deploy` | Claude（デプロイ） |
-
-### 分析・調査
-
-| コマンド | 担当 |
-|---------|------|
-| `/analyze` | Gemini（大規模コード解析） |
-| `/research <質問>` | Gemini（技術リサーチ） |
-| `/refactor <path>` | Gemini（リファクタ提案） |
+3つのAI CLIが未インストールなら自動でインストール。
 
 ---
 
-## 成果物構造
+## コスト比較
+
+| 作業 | Claude単独 | 3AI分担 | 削減 |
+|------|-----------|---------|------|
+| 機能追加（設計〜デプロイ） | 80,000トークン | 15,000 | -81% |
+| テスト生成 | 30,000 | 3,000 | -90% |
+| リファクタリング | 50,000 | 0（Gemini無料枠） | -100% |
+
+---
+
+## 成果物
 
 ```
 docs/
-├── requirements/     # 要件定義（ユーザーストーリー、受入条件）
-├── specs/            # 画面設計（コンポーネント、状態遷移）
-├── api/              # API設計（OpenAPI 3.0）
-├── decisions/        # 設計判断の記録
-└── reviews/          # レビュー記録
-mockups/              # 画面モックアップ（PNG）
-migrations/           # DBマイグレーション（SQL）
+├── requirements/   # 要件定義（ユーザーストーリー）
+├── specs/          # 画面設計（コンポーネント一覧）
+├── api/            # API設計（OpenAPI 3.0）
+└── reviews/        # レビュー記録
+mockups/            # 画面モックアップ（PNG）
+migrations/         # DBマイグレーション（SQL）
 ```
 
----
-
-## 使用例
-
-```bash
-# 完全ワークフロー
-/project ユーザー認証
-
-# 個別実行
-/requirements ユーザー認証
-/spec ログイン画面
-/api 認証API
-/schema users
-/implement
-/test
-/review
-/deploy
-```
+一人で作っても、チーム開発と同じドキュメントが残る。
 
 ---
 
@@ -127,8 +100,45 @@ migrations/           # DBマイグレーション（SQL）
 
 - macOS / Linux / WSL2
 - Node.js 18+
-- Claude Code / Codex / Gemini CLI
 
 ---
 
-MIT License | [Issue](https://github.com/yu010101/claude-codex-collab/issues)
+<details>
+<summary>詳細オプション</summary>
+
+### 個別コマンド
+
+`/project` を使わず、フェーズごとに実行したい場合：
+
+```bash
+/requirements ユーザー認証    # 要件定義のみ
+/spec ログイン画面           # 画面設計のみ
+/api 認証API                # API設計のみ
+/schema users               # DB設計のみ
+/implement                  # 実装
+/test                       # テスト生成
+/review                     # レビュー
+/deploy                     # デプロイ
+```
+
+### 分析・調査
+
+```bash
+/analyze              # Geminiで大規模コード解析
+/research "質問"      # Geminiで技術リサーチ
+/refactor src/        # Geminiでリファクタ提案
+```
+
+### 3AI分担
+
+| AI | 担当 |
+|----|------|
+| Claude Code | 設計・実装・デプロイ |
+| Codex | テスト・レビュー |
+| Gemini | 解析・リサーチ・リファクタ |
+
+</details>
+
+---
+
+MIT License | [Issue](https://github.com/yu010101/claude-codex-collab/issues) | [PR](https://github.com/yu010101/claude-codex-collab/pulls)

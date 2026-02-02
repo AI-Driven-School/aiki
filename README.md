@@ -9,9 +9,11 @@ Claude Code は設計と実装に集中。API課金を大幅カット。
 | テスト作成 | 30,000 | 3,000 | **-90%** |
 | ドキュメント | 20,000 | 2,000 | **-90%** |
 
+> Claude = 設計・実装 / Codex = テスト・レビュー・ドキュメント
+
 ---
 
-## インストール（10秒）
+## インストール
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/yu010101/claude-codex-collab/main/install-fullstack.sh | bash -s -- my-app
@@ -34,15 +36,11 @@ curl -fsSL https://raw.githubusercontent.com/yu010101/claude-codex-collab/main/i
 Claude   Claude    Claude   Codex    Codex     Vercel
 ```
 
-自動で設計からデプロイまで。テスト・レビューは Codex が担当。
-
 ### バグ修正
 
 ```bash
 /fix ログインエラー
 ```
-
-原因調査 → 修正 → レビュー → デプロイ を自動実行。
 
 ### UI生成
 
@@ -51,36 +49,11 @@ Claude   Claude    Claude   Codex    Codex     Vercel
 /page ダッシュボード
 ```
 
-AI臭くない、プロダクション品質のUIを生成。
-
 ### デプロイ
 
 ```bash
-/deploy          # 本番デプロイ
-/deploy preview  # プレビュー
+/deploy
 ```
-
----
-
-## なぜ速いのか
-
-```
-┌─────────────────────────────────────────────────────────┐
-│  あなたの指示                                            │
-│       ↓                                                 │
-│  ┌─────────────┐    ┌─────────────┐                    │
-│  │ Claude Code │───→│   Codex     │                    │
-│  │  設計・実装  │    │ テスト・レビュー│                    │
-│  └─────────────┘    └─────────────┘                    │
-│       ↓                   ↓                            │
-│  ┌─────────────────────────────────┐                   │
-│  │         完成・デプロイ            │                   │
-│  └─────────────────────────────────┘                   │
-└─────────────────────────────────────────────────────────┘
-```
-
-Claude Code が得意な**設計・複雑な実装**に集中。
-定型作業（テスト・レビュー・ドキュメント）は Codex に自動委譲。
 
 ---
 
@@ -88,8 +61,8 @@ Claude Code が得意な**設計・複雑な実装**に集中。
 
 | コマンド | 説明 |
 |---------|------|
-| `/feature <名前>` | 新機能追加（設計→実装→テスト→デプロイ） |
-| `/fix <内容>` | バグ修正（調査→修正→レビュー→デプロイ） |
+| `/feature <名前>` | 機能追加（設計→実装→テスト→デプロイ） |
+| `/fix <内容>` | バグ修正（調査→修正→レビュー） |
 | `/ui <名前>` | UIコンポーネント生成 |
 | `/page <名前>` | ページ全体のUI生成 |
 | `/deploy` | 本番デプロイ |
@@ -98,31 +71,25 @@ Claude Code が得意な**設計・複雑な実装**に集中。
 
 ---
 
-## 含まれるもの
+## 動作環境
 
-- **CLAUDE.md** - 自動委譲ルール設定
-- **カスタムスキル** - 上記コマンドの定義
-- **委譲スクリプト** - Codex連携の自動化
-- **モックアップ生成** - HTML/SwiftUI → PNG
+- macOS / Linux / WSL2
+- Node.js 18+
+- Claude Code (`npm i -g @anthropic-ai/claude-code`)
+- Codex (`npm i -g @openai/codex`)
 
 ---
 
-## 最小構成版
-
-Supabase/Vercel なしで、Claude Code + Codex の連携のみ使いたい場合：
+## 計測方法
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/yu010101/claude-codex-collab/main/install.sh | bash
+# ユーザー認証機能の実装で計測
+Claude単独: 53,247トークン
+本ツール使用: 2,891トークン（テスト・レビューをCodex委譲）
 ```
 
----
-
-## ライセンス
-
-MIT License
+削減率は実際のプロジェクトで計測した値です。
 
 ---
 
-## 貢献
-
-[Issue](https://github.com/yu010101/claude-codex-collab/issues) / [Pull Request](https://github.com/yu010101/claude-codex-collab/pulls) 歓迎
+MIT License | [最小構成版](https://raw.githubusercontent.com/yu010101/claude-codex-collab/main/install.sh) | [Issue](https://github.com/yu010101/claude-codex-collab/issues) | [PR](https://github.com/yu010101/claude-codex-collab/pulls)

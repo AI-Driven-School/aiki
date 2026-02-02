@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Claude × Codex × Gemini | 一人で作っても、設計書が残る</title>
-  <meta name="description" content="3AI連携で設計書を自動生成。コスト95%削減、8フェーズ承認ワークフロー。完全無料。">
+  <title>3AI協調開発 | Claude設計 × Codex実装 × Gemini解析</title>
+  <meta name="description" content="Claude で設計、Codex で爆速実装、Gemini で大規模解析。3つのAIを適材適所で活用。">
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;600;800&family=Noto+Sans+JP:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -19,28 +18,19 @@
       --text-primary: #e8e8f0;
       --text-secondary: #8888a0;
       --text-muted: #555566;
-      --cyan: #00f5d4;
-      --magenta: #f72585;
-      --lime: #b8ff57;
-      --purple: #9b5de5;
-      --orange: #ff9f1c;
-      --glow-cyan: 0 0 20px rgba(0, 245, 212, 0.5);
-      --glow-magenta: 0 0 20px rgba(247, 37, 133, 0.5);
+      --claude: #d4a574;
+      --codex: #4ade80;
+      --gemini: #60a5fa;
+      --glow-claude: 0 0 20px rgba(212, 165, 116, 0.4);
+      --glow-codex: 0 0 20px rgba(74, 222, 128, 0.4);
+      --glow-gemini: 0 0 20px rgba(96, 165, 250, 0.4);
       --font-display: 'Outfit', 'Noto Sans JP', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       --font-body: 'Noto Sans JP', sans-serif;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       font-family: var(--font-body);
       background: var(--bg-primary);
@@ -49,37 +39,15 @@
       overflow-x: hidden;
     }
 
-    /* Scanline Effect */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.1) 2px,
-        rgba(0, 0, 0, 0.1) 4px
-      );
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0.3;
-    }
-
     /* Grid Background */
     .grid-bg {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background-image:
-        linear-gradient(rgba(0, 245, 212, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 245, 212, 0.03) 1px, transparent 1px);
-      background-size: 50px 50px;
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
       pointer-events: none;
       z-index: -1;
     }
@@ -87,39 +55,41 @@
     /* Navigation */
     nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(10, 10, 15, 0.8);
+      background: rgba(10, 10, 15, 0.9);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(0, 245, 212, 0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
       z-index: 1000;
     }
 
     .logo {
       font-family: var(--font-mono);
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 700;
-      color: var(--cyan);
+      color: var(--text-primary);
       text-decoration: none;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
 
-    .logo::before {
-      content: '>';
-      animation: blink 1s infinite;
+    .logo-dots {
+      display: flex;
+      gap: 4px;
     }
 
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
+    .logo-dots span {
+      width: 8px; height: 8px;
+      border-radius: 50%;
     }
+
+    .logo-dots span:nth-child(1) { background: var(--claude); }
+    .logo-dots span:nth-child(2) { background: var(--codex); }
+    .logo-dots span:nth-child(3) { background: var(--gemini); }
 
     .nav-links {
       display: flex;
@@ -135,27 +105,7 @@
       transition: color 0.3s;
     }
 
-    .nav-links a:hover {
-      color: var(--cyan);
-    }
-
-    .sponsor-btn {
-      background: transparent;
-      border: 1px solid var(--magenta);
-      color: var(--magenta);
-      padding: 0.5rem 1rem;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-decoration: none;
-    }
-
-    .sponsor-btn:hover {
-      background: var(--magenta);
-      color: var(--bg-primary);
-      box-shadow: var(--glow-magenta);
-    }
+    .nav-links a:hover { color: var(--text-primary); }
 
     /* Hero Section */
     .hero {
@@ -165,97 +115,99 @@
       justify-content: center;
       align-items: center;
       padding: 8rem 2rem 4rem;
-      position: relative;
-    }
-
-    .hero-badge {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--lime);
-      background: rgba(184, 255, 87, 0.1);
-      padding: 0.5rem 1rem;
-      border: 1px solid rgba(184, 255, 87, 0.3);
-      margin-bottom: 2rem;
-      animation: pulse-glow 2s infinite;
-    }
-
-    @keyframes pulse-glow {
-      0%, 100% { box-shadow: 0 0 5px rgba(184, 255, 87, 0.3); }
-      50% { box-shadow: 0 0 20px rgba(184, 255, 87, 0.5); }
+      text-align: center;
     }
 
     .hero h1 {
       font-family: var(--font-display);
-      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
       font-weight: 800;
-      text-align: center;
       line-height: 1.1;
       margin-bottom: 1.5rem;
-    }
-
-    .hero h1 .accent {
-      background: linear-gradient(135deg, var(--cyan), var(--magenta));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
 
     .hero-subtitle {
       font-size: 1.25rem;
       color: var(--text-secondary);
-      text-align: center;
       max-width: 600px;
       margin-bottom: 3rem;
     }
 
+    /* 3 AI Cards */
     .ai-trio {
-      display: flex;
-      gap: 2rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 900px;
       margin-bottom: 3rem;
-      flex-wrap: wrap;
-      justify-content: center;
     }
 
     .ai-card {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 1rem 1.5rem;
+      padding: 2rem;
       background: var(--bg-secondary);
       border: 1px solid var(--bg-tertiary);
+      text-align: center;
       transition: all 0.3s;
     }
 
     .ai-card:hover {
-      border-color: var(--cyan);
-      transform: translateY(-2px);
+      transform: translateY(-4px);
     }
 
+    .ai-card.claude:hover { border-color: var(--claude); box-shadow: var(--glow-claude); }
+    .ai-card.codex:hover { border-color: var(--codex); box-shadow: var(--glow-codex); }
+    .ai-card.gemini:hover { border-color: var(--gemini); box-shadow: var(--glow-gemini); }
+
     .ai-icon {
-      width: 40px;
-      height: 40px;
+      width: 64px; height: 64px;
+      margin: 0 auto 1rem;
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-mono);
+      font-size: 1.5rem;
       font-weight: 700;
-      font-size: 1.2rem;
+      color: #fff;
     }
 
-    .ai-card:nth-child(1) .ai-icon { background: linear-gradient(135deg, #d4a574, #8b6914); color: #fff; }
-    .ai-card:nth-child(2) .ai-icon { background: linear-gradient(135deg, #4ade80, #16a34a); color: #fff; }
-    .ai-card:nth-child(3) .ai-icon { background: linear-gradient(135deg, #60a5fa, #2563eb); color: #fff; }
+    .ai-card.claude .ai-icon { background: linear-gradient(135deg, var(--claude), #a67c4a); }
+    .ai-card.codex .ai-icon { background: linear-gradient(135deg, var(--codex), #16a34a); }
+    .ai-card.gemini .ai-icon { background: linear-gradient(135deg, var(--gemini), #2563eb); }
 
-    .ai-info h3 {
-      font-family: var(--font-mono);
-      font-size: 0.9rem;
+    .ai-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .ai-card.claude h3 { color: var(--claude); }
+    .ai-card.codex h3 { color: var(--codex); }
+    .ai-card.gemini h3 { color: var(--gemini); }
+
+    .ai-card .role {
+      font-size: 1rem;
       color: var(--text-primary);
+      margin-bottom: 0.5rem;
     }
 
-    .ai-info p {
-      font-size: 0.75rem;
+    .ai-card .desc {
+      font-size: 0.85rem;
       color: var(--text-muted);
     }
+
+    .ai-card .tag {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.25rem 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      border-radius: 4px;
+    }
+
+    .ai-card.claude .tag { background: rgba(212, 165, 116, 0.1); color: var(--claude); border: 1px solid rgba(212, 165, 116, 0.3); }
+    .ai-card.codex .tag { background: rgba(74, 222, 128, 0.1); color: var(--codex); border: 1px solid rgba(74, 222, 128, 0.3); }
+    .ai-card.gemini .tag { background: rgba(96, 165, 250, 0.1); color: var(--gemini); border: 1px solid rgba(96, 165, 250, 0.3); }
 
     .cta-group {
       display: flex;
@@ -269,19 +221,16 @@
       align-items: center;
       gap: 0.5rem;
       padding: 1rem 2rem;
-      background: var(--cyan);
-      color: var(--bg-primary);
+      background: linear-gradient(135deg, var(--codex), #16a34a);
+      color: #000;
       font-family: var(--font-mono);
       font-weight: 600;
-      font-size: 1rem;
       text-decoration: none;
-      border: none;
-      cursor: pointer;
       transition: all 0.3s;
     }
 
     .btn-primary:hover {
-      box-shadow: var(--glow-cyan);
+      box-shadow: var(--glow-codex);
       transform: translateY(-2px);
     }
 
@@ -293,157 +242,17 @@
       background: transparent;
       color: var(--text-primary);
       font-family: var(--font-mono);
-      font-size: 1rem;
       text-decoration: none;
       border: 1px solid var(--text-muted);
-      cursor: pointer;
       transition: all 0.3s;
     }
 
-    .btn-secondary:hover {
-      border-color: var(--text-primary);
-    }
+    .btn-secondary:hover { border-color: var(--text-primary); }
 
-    /* Terminal Demo */
-    .terminal-section {
-      padding: 6rem 2rem;
-      display: flex;
-      justify-content: center;
-    }
-
-    .terminal {
-      width: 100%;
-      max-width: 800px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--bg-tertiary);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-    }
-
-    .terminal-header {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1rem;
-      background: var(--bg-tertiary);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .terminal-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-
-    .terminal-dot:nth-child(1) { background: #ff5f56; }
-    .terminal-dot:nth-child(2) { background: #ffbd2e; }
-    .terminal-dot:nth-child(3) { background: #27ca40; }
-
-    .terminal-title {
-      flex: 1;
-      text-align: center;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    .terminal-body {
-      padding: 1.5rem;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      line-height: 1.8;
-      min-height: 400px;
-    }
-
-    .terminal-line {
-      opacity: 0;
-      animation: fadeIn 0.3s forwards;
-    }
-
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-
-    .prompt {
-      color: var(--cyan);
-    }
-
-    .command {
-      color: var(--text-primary);
-    }
-
-    .output {
-      color: var(--text-secondary);
-      padding-left: 1rem;
-    }
-
-    .output.success {
-      color: var(--lime);
-    }
-
-    .output.file {
-      color: var(--purple);
-    }
-
-    .output.prompt-text {
-      color: var(--orange);
-    }
-
-    .output.link {
-      color: var(--cyan);
-    }
-
-    /* Stats Section */
-    .stats-section {
+    /* Why Section */
+    .why-section {
       padding: 6rem 2rem;
       background: var(--bg-secondary);
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .stat-card {
-      padding: 2rem;
-      background: var(--bg-primary);
-      border: 1px solid var(--bg-tertiary);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, var(--cyan), var(--magenta));
-    }
-
-    .stat-value {
-      font-family: var(--font-display);
-      font-size: 3.5rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--cyan), var(--lime));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .stat-label {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      margin-top: 0.5rem;
-    }
-
-    /* Pain Points */
-    .pain-section {
-      padding: 6rem 2rem;
     }
 
     .section-header {
@@ -458,145 +267,151 @@
       margin-bottom: 1rem;
     }
 
-    .section-header p {
-      color: var(--text-secondary);
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    .pain-grid {
+    .comparison-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 0 auto;
     }
 
-    .pain-card {
+    .comparison-card {
       padding: 2rem;
-      background: var(--bg-secondary);
+      background: var(--bg-primary);
       border: 1px solid var(--bg-tertiary);
-      transition: all 0.3s;
     }
 
-    .pain-card:hover {
-      border-color: var(--cyan);
-      transform: translateY(-4px);
+    .comparison-card.problem {
+      border-left: 3px solid #ef4444;
     }
 
-    .pain-icon {
-      font-size: 2rem;
+    .comparison-card.solution {
+      border-left: 3px solid var(--codex);
+    }
+
+    .comparison-card h3 {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
       margin-bottom: 1rem;
     }
 
-    .pain-card h3 {
-      font-family: var(--font-mono);
-      font-size: 1rem;
-      color: var(--magenta);
-      margin-bottom: 0.5rem;
-    }
+    .comparison-card.problem h3 { color: #ef4444; }
+    .comparison-card.solution h3 { color: var(--codex); }
 
-    .pain-card .solution {
+    .comparison-card p {
       font-size: 1.1rem;
       color: var(--text-primary);
       margin-bottom: 0.5rem;
     }
 
-    .pain-card p {
+    .comparison-card .detail {
       font-size: 0.85rem;
       color: var(--text-muted);
     }
 
-    /* Workflow */
+    /* Workflow Section */
     .workflow-section {
       padding: 6rem 2rem;
-      background: var(--bg-secondary);
     }
 
     .workflow-container {
-      max-width: 900px;
+      max-width: 800px;
       margin: 0 auto;
     }
 
-    .workflow-phase {
+    .workflow-step {
       display: flex;
-      gap: 2rem;
-      padding: 2rem 0;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
       border-bottom: 1px solid var(--bg-tertiary);
-      opacity: 0;
-      transform: translateX(-20px);
-      transition: all 0.5s;
     }
 
-    .workflow-phase.visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
+    .workflow-step:last-child { border-bottom: none; }
 
-    .workflow-phase:last-child {
-      border-bottom: none;
-    }
-
-    .phase-number {
-      width: 60px;
-      height: 60px;
+    .step-number {
+      width: 48px; height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-mono);
-      font-size: 1.5rem;
-      font-weight: 700;
-      background: var(--bg-primary);
-      border: 2px solid var(--cyan);
-      color: var(--cyan);
-      flex-shrink: 0;
-    }
-
-    .phase-number.human {
-      border-color: var(--magenta);
-      color: var(--magenta);
-    }
-
-    .phase-number.auto {
-      border-color: var(--lime);
-      color: var(--lime);
-    }
-
-    .phase-content h3 {
-      font-family: var(--font-display);
       font-size: 1.25rem;
-      margin-bottom: 0.5rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      border-radius: 8px;
     }
 
-    .phase-content p {
-      color: var(--text-secondary);
+    .step-number.claude { background: rgba(212, 165, 116, 0.15); color: var(--claude); }
+    .step-number.codex { background: rgba(74, 222, 128, 0.15); color: var(--codex); }
+
+    .step-content h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .step-content p {
       font-size: 0.9rem;
-      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
     }
 
-    .phase-tag {
-      display: inline-block;
+    .step-ai {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
-      padding: 0.25rem 0.5rem;
-      background: rgba(0, 245, 212, 0.1);
-      color: var(--cyan);
-      border: 1px solid rgba(0, 245, 212, 0.3);
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-left: 0.5rem;
     }
 
-    .phase-tag.human {
-      background: rgba(247, 37, 133, 0.1);
-      color: var(--magenta);
-      border-color: rgba(247, 37, 133, 0.3);
+    .step-ai.claude { background: rgba(212, 165, 116, 0.15); color: var(--claude); }
+    .step-ai.codex { background: rgba(74, 222, 128, 0.15); color: var(--codex); }
+
+    /* Cost Section */
+    .cost-section {
+      padding: 6rem 2rem;
+      background: var(--bg-secondary);
     }
 
-    .phase-tag.auto {
-      background: rgba(184, 255, 87, 0.1);
-      color: var(--lime);
-      border-color: rgba(184, 255, 87, 0.3);
+    .cost-table {
+      max-width: 700px;
+      margin: 0 auto;
+      border-collapse: collapse;
     }
 
-    /* Install */
+    .cost-table th,
+    .cost-table td {
+      padding: 1rem 1.5rem;
+      text-align: left;
+      border-bottom: 1px solid var(--bg-tertiary);
+    }
+
+    .cost-table th {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .cost-table td {
+      font-size: 1rem;
+    }
+
+    .cost-table .ai-name {
+      font-weight: 600;
+    }
+
+    .cost-table .ai-name.claude { color: var(--claude); }
+    .cost-table .ai-name.codex { color: var(--codex); }
+    .cost-table .ai-name.gemini { color: var(--gemini); }
+
+    .cost-table .price {
+      font-family: var(--font-mono);
+    }
+
+    .cost-table .price.paid { color: #ef4444; }
+    .cost-table .price.included { color: var(--codex); }
+    .cost-table .price.free { color: var(--gemini); }
+
+    /* Install Section */
     .install-section {
       padding: 6rem 2rem;
     }
@@ -635,8 +450,8 @@
     }
 
     .copy-btn:hover {
-      border-color: var(--cyan);
-      color: var(--cyan);
+      border-color: var(--codex);
+      color: var(--codex);
     }
 
     .install-code {
@@ -646,78 +461,8 @@
       line-height: 2;
     }
 
-    .install-code .comment {
-      color: var(--text-muted);
-    }
-
-    .install-code .command {
-      color: var(--cyan);
-    }
-
-    /* Pricing */
-    .pricing-section {
-      padding: 6rem 2rem;
-      background: var(--bg-secondary);
-    }
-
-    .pricing-card {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 3rem;
-      background: var(--bg-primary);
-      border: 2px solid var(--cyan);
-      text-align: center;
-      position: relative;
-    }
-
-    .pricing-badge {
-      position: absolute;
-      top: -15px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--cyan);
-      color: var(--bg-primary);
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      font-weight: 700;
-      padding: 0.5rem 1.5rem;
-    }
-
-    .pricing-price {
-      font-family: var(--font-display);
-      font-size: 5rem;
-      font-weight: 800;
-      color: var(--cyan);
-      line-height: 1;
-      margin: 1rem 0;
-    }
-
-    .pricing-period {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 2rem;
-    }
-
-    .pricing-features {
-      list-style: none;
-      text-align: left;
-      margin-bottom: 2rem;
-    }
-
-    .pricing-features li {
-      padding: 0.75rem 0;
-      border-bottom: 1px solid var(--bg-tertiary);
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 0.95rem;
-    }
-
-    .pricing-features li::before {
-      content: '>';
-      color: var(--lime);
-      font-family: var(--font-mono);
-    }
+    .install-code .comment { color: var(--text-muted); }
+    .install-code .command { color: var(--codex); }
 
     /* Footer */
     footer {
@@ -731,7 +476,6 @@
       justify-content: center;
       gap: 2rem;
       margin-bottom: 2rem;
-      flex-wrap: wrap;
     }
 
     .footer-links a {
@@ -742,18 +486,7 @@
       transition: color 0.3s;
     }
 
-    .footer-links a:hover {
-      color: var(--cyan);
-    }
-
-    .footer-ascii {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      color: var(--text-muted);
-      line-height: 1.2;
-      white-space: pre;
-      margin-bottom: 1rem;
-    }
+    .footer-links a:hover { color: var(--text-primary); }
 
     .footer-copy {
       font-size: 0.8rem;
@@ -762,34 +495,17 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-      nav {
-        padding: 1rem;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      .hero h1 {
-        font-size: 2rem;
-      }
-
       .ai-trio {
-        flex-direction: column;
-        align-items: center;
+        grid-template-columns: 1fr;
+        max-width: 400px;
       }
 
-      .workflow-phase {
-        flex-direction: column;
-        gap: 1rem;
-      }
+      .nav-links { display: none; }
 
-      .stat-value {
-        font-size: 2.5rem;
-      }
+      .workflow-step { flex-direction: column; gap: 1rem; }
     }
 
-    /* Scroll animations */
+    /* Animations */
     .fade-up {
       opacity: 0;
       transform: translateY(30px);
@@ -806,204 +522,175 @@
   <div class="grid-bg"></div>
 
   <nav>
-    <a href="#" class="logo">3AI-CLI</a>
+    <a href="#" class="logo">
+      <div class="logo-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      3AI-CLI
+    </a>
     <div class="nav-links">
-      <a href="#demo">デモ</a>
+      <a href="#why">なぜ3AI？</a>
       <a href="#workflow">ワークフロー</a>
       <a href="#install">インストール</a>
-      <a href="https://github.com/sponsors/yu010101" class="sponsor-btn" target="_blank">Sponsor</a>
+      <a href="https://github.com/yu010101/claude-codex-collab" target="_blank">GitHub</a>
     </div>
   </nav>
 
   <section class="hero">
-    <div class="hero-badge">Phase 1: 完全無料</div>
-    <h1>
-      一人で作っても、<br>
-      <span class="accent">設計書が残る</span>
-    </h1>
+    <h1>3つのAIを、<br>適材適所で</h1>
     <p class="hero-subtitle">
-      Claude + Codex + Gemini が連携。<br>
-      要件定義→設計→実装→テスト→デプロイを1コマンドで。<br>
-      あなたは承認するだけ。
+      <strong>Claude</strong> で設計、<strong>Codex</strong> で爆速実装、<strong>Gemini</strong> で大規模解析。<br>
+      各AIの強みを活かした分業で、品質とスピードを両立。
     </p>
 
     <div class="ai-trio">
-      <div class="ai-card">
+      <div class="ai-card claude">
         <div class="ai-icon">C</div>
-        <div class="ai-info">
-          <h3>Claude Code</h3>
-          <p>設計・実装・デプロイ</p>
-        </div>
+        <h3>Claude</h3>
+        <p class="role">設計・判断・レビュー</p>
+        <p class="desc">推論力を活かした<br>アーキテクチャ決定</p>
+        <span class="tag">頭脳</span>
       </div>
-      <div class="ai-card">
+      <div class="ai-card codex">
         <div class="ai-icon">X</div>
-        <div class="ai-info">
-          <h3>Codex</h3>
-          <p>テスト・レビュー</p>
-        </div>
+        <h3>Codex</h3>
+        <p class="role">実装・テスト</p>
+        <p class="desc">full-autoモードで<br>爆速コーディング</p>
+        <span class="tag">手足（メイン）</span>
       </div>
-      <div class="ai-card">
+      <div class="ai-card gemini">
         <div class="ai-icon">G</div>
-        <div class="ai-info">
-          <h3>Gemini</h3>
-          <p>解析・リサーチ</p>
-        </div>
+        <h3>Gemini</h3>
+        <p class="role">解析・リサーチ</p>
+        <p class="desc">1Mトークンで<br>大規模コード解析</p>
+        <span class="tag">目</span>
       </div>
     </div>
 
     <div class="cta-group">
-      <a href="#install" class="btn-primary">
-        <span>></span> 今すぐインストール
-      </a>
-      <a href="https://github.com/yu010101/claude-codex-collab" class="btn-secondary" target="_blank">
-        GitHub
-      </a>
+      <a href="#install" class="btn-primary">今すぐ始める</a>
+      <a href="https://github.com/yu010101/claude-codex-collab" class="btn-secondary" target="_blank">GitHub</a>
     </div>
   </section>
 
-  <section class="terminal-section" id="demo">
-    <div class="terminal">
-      <div class="terminal-header">
-        <div class="terminal-dot"></div>
-        <div class="terminal-dot"></div>
-        <div class="terminal-dot"></div>
-        <span class="terminal-title">~/my-project — zsh</span>
-      </div>
-      <div class="terminal-body" id="terminal-output">
-        <!-- Terminal content will be animated by JS -->
-      </div>
-    </div>
-  </section>
-
-  <section class="stats-section">
-    <div class="stats-grid">
-      <div class="stat-card fade-up">
-        <div class="stat-value">95%</div>
-        <div class="stat-label">トークンコスト削減</div>
-      </div>
-      <div class="stat-card fade-up">
-        <div class="stat-value">8</div>
-        <div class="stat-label">フェーズ自動化</div>
-      </div>
-      <div class="stat-card fade-up">
-        <div class="stat-value">4</div>
-        <div class="stat-label">承認ポイント</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="pain-section">
+  <section class="why-section" id="why">
     <div class="section-header fade-up">
-      <h2>なぜ必要か</h2>
-      <p>個人開発の「あるある」を解決</p>
+      <h2>なぜ3AI？</h2>
     </div>
 
-    <div class="pain-grid">
-      <div class="pain-card fade-up">
-        <div class="pain-icon">📝</div>
-        <h3>課題</h3>
-        <p class="solution">一人だと設計が雑になる</p>
-        <p>要件→API→DBの順で強制的に設計フェーズを踏む</p>
+    <div class="comparison-grid">
+      <div class="comparison-card problem fade-up">
+        <h3>単一AIの限界</h3>
+        <p>Claude だけ</p>
+        <p class="detail">実装遅い、課金高い</p>
       </div>
-      <div class="pain-card fade-up">
-        <div class="pain-icon">🤖</div>
-        <h3>課題</h3>
-        <p class="solution">AIに任せきりで不安</p>
-        <p>4つの承認ポイントで人間がチェック</p>
+      <div class="comparison-card solution fade-up">
+        <h3>3AI連携</h3>
+        <p>Claude × Codex × Gemini</p>
+        <p class="detail">設計力 × 実装速度 × 解析力</p>
       </div>
-      <div class="pain-card fade-up">
-        <div class="pain-icon">💸</div>
-        <h3>課題</h3>
-        <p class="solution">Claude Code課金が高い</p>
-        <p>Codex/Geminiに分散して95%削減</p>
+      <div class="comparison-card problem fade-up">
+        <h3>単一AIの限界</h3>
+        <p>Codex だけ</p>
+        <p class="detail">設計判断が弱い</p>
       </div>
-      <div class="pain-card fade-up">
-        <div class="pain-icon">🔍</div>
-        <h3>課題</h3>
-        <p class="solution">後から「なぜこうした」が不明</p>
-        <p>docs/に全ての決定が残る</p>
+      <div class="comparison-card solution fade-up">
+        <h3>3AI連携</h3>
+        <p>Claudeが設計、Codexが実装</p>
+        <p class="detail">品質とスピードを両立</p>
       </div>
     </div>
   </section>
 
   <section class="workflow-section" id="workflow">
     <div class="section-header fade-up">
-      <h2>8フェーズ・ワークフロー</h2>
-      <p>設計4回承認、あとは自動</p>
+      <h2>ワークフロー</h2>
     </div>
 
     <div class="workflow-container">
-      <div class="workflow-phase">
-        <div class="phase-number human">1</div>
-        <div class="phase-content">
-          <h3>要件定義</h3>
-          <p>ユーザーストーリー・受入条件を生成</p>
-          <span class="phase-tag human">承認必要</span>
+      <div class="workflow-step fade-up">
+        <div class="step-number claude">1</div>
+        <div class="step-content">
+          <h3>要件定義 <span class="step-ai claude">Claude</span></h3>
+          <p>推論力を活かして要件を整理・判断</p>
         </div>
       </div>
-      <div class="workflow-phase">
-        <div class="phase-number human">2</div>
-        <div class="phase-content">
-          <h3>画面設計</h3>
-          <p>コンポーネント仕様・モックアップを生成</p>
-          <span class="phase-tag human">承認必要</span>
+      <div class="workflow-step fade-up">
+        <div class="step-number claude">2</div>
+        <div class="step-content">
+          <h3>設計 <span class="step-ai claude">Claude</span></h3>
+          <p>アーキテクチャを決定、API設計</p>
         </div>
       </div>
-      <div class="workflow-phase">
-        <div class="phase-number human">3</div>
-        <div class="phase-content">
-          <h3>API設計</h3>
-          <p>OpenAPI 3.0仕様を生成</p>
-          <span class="phase-tag human">承認必要</span>
+      <div class="workflow-step fade-up">
+        <div class="step-number codex">3</div>
+        <div class="step-content">
+          <h3>実装 <span class="step-ai codex">Codex</span></h3>
+          <p>full-autoモードで爆速コーディング</p>
         </div>
       </div>
-      <div class="workflow-phase">
-        <div class="phase-number human">4</div>
-        <div class="phase-content">
-          <h3>DB設計</h3>
-          <p>マイグレーションSQLを生成</p>
-          <span class="phase-tag human">承認必要</span>
+      <div class="workflow-step fade-up">
+        <div class="step-number codex">4</div>
+        <div class="step-content">
+          <h3>テスト <span class="step-ai codex">Codex</span></h3>
+          <p>実装と一貫性のあるテスト生成</p>
         </div>
       </div>
-      <div class="workflow-phase">
-        <div class="phase-number auto">5</div>
-        <div class="phase-content">
-          <h3>実装</h3>
-          <p>承認済み設計に基づいてコード生成</p>
-          <span class="phase-tag auto">自動</span>
+      <div class="workflow-step fade-up">
+        <div class="step-number claude">5</div>
+        <div class="step-content">
+          <h3>レビュー <span class="step-ai claude">Claude</span></h3>
+          <p>設計意図との整合性をチェック</p>
         </div>
       </div>
-      <div class="workflow-phase">
-        <div class="phase-number auto">6</div>
-        <div class="phase-content">
-          <h3>テスト生成</h3>
-          <p>Codexがユニットテストを作成</p>
-          <span class="phase-tag auto">自動</span>
-        </div>
-      </div>
-      <div class="workflow-phase">
-        <div class="phase-number auto">7</div>
-        <div class="phase-content">
-          <h3>レビュー</h3>
-          <p>Codexがコードレビューを実施</p>
-          <span class="phase-tag auto">自動</span>
-        </div>
-      </div>
-      <div class="workflow-phase">
-        <div class="phase-number human">8</div>
-        <div class="phase-content">
-          <h3>デプロイ</h3>
-          <p>本番環境へのデプロイ準備</p>
-          <span class="phase-tag human">承認必要</span>
+      <div class="workflow-step fade-up">
+        <div class="step-number claude">6</div>
+        <div class="step-content">
+          <h3>デプロイ <span class="step-ai claude">Claude</span></h3>
+          <p>最終判断と本番リリース</p>
         </div>
       </div>
     </div>
   </section>
 
+  <section class="cost-section">
+    <div class="section-header fade-up">
+      <h2>コスト構造</h2>
+    </div>
+
+    <table class="cost-table fade-up">
+      <thead>
+        <tr>
+          <th>AI</th>
+          <th>役割</th>
+          <th>課金</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="ai-name claude">Claude</td>
+          <td>設計・判断のみ</td>
+          <td class="price paid">従量課金（最小化）</td>
+        </tr>
+        <tr>
+          <td class="ai-name codex">Codex</td>
+          <td>実装・テスト</td>
+          <td class="price included">ChatGPT Proに含む</td>
+        </tr>
+        <tr>
+          <td class="ai-name gemini">Gemini</td>
+          <td>解析・リサーチ</td>
+          <td class="price free">無料</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
   <section class="install-section" id="install">
     <div class="section-header fade-up">
       <h2>インストール</h2>
-      <p>3つのAI CLIが未インストールなら自動でインストール</p>
     </div>
 
     <div class="install-box fade-up">
@@ -1015,46 +702,16 @@
         <div class="comment"># インストール</div>
         <div class="command">curl -fsSL https://raw.githubusercontent.com/yu010101/claude-codex-collab/main/install-fullstack.sh | bash -s -- my-app</div>
         <br>
-        <div class="comment"># 起動</div>
+        <div class="comment"># 開始</div>
         <div class="command">cd my-app && claude</div>
         <br>
-        <div class="comment"># 開発開始</div>
+        <div class="comment"># 開発</div>
         <div class="command">/project ユーザー認証</div>
       </div>
     </div>
   </section>
 
-  <section class="pricing-section">
-    <div class="section-header fade-up">
-      <h2>料金</h2>
-      <p>Phase 1: ユーザー獲得フェーズ</p>
-    </div>
-
-    <div class="pricing-card fade-up">
-      <div class="pricing-badge">現在</div>
-      <div class="pricing-price">¥0</div>
-      <div class="pricing-period">完全無料・制限なし</div>
-      <ul class="pricing-features">
-        <li>3AI連携（Claude/Codex/Gemini）</li>
-        <li>8フェーズ承認ワークフロー</li>
-        <li>モックアップ生成（HTML/SwiftUI）</li>
-        <li>構造化ドキュメント出力</li>
-        <li>無制限プロジェクト</li>
-      </ul>
-      <a href="#install" class="btn-primary" style="width: 100%; justify-content: center;">
-        今すぐ始める
-      </a>
-    </div>
-  </section>
-
   <footer>
-    <div class="footer-ascii">
-   _____ _    ___     ____ _     ___
-  |___ // \  |_ _|   / ___| |   |_ _|
-    |_ / _ \  | |   | |   | |    | |
-   ___) / ___ \ | |   | |___| |___ | |
-  |____/_/   \_\___|   \____|_____|___|
-    </div>
     <div class="footer-links">
       <a href="https://github.com/yu010101/claude-codex-collab" target="_blank">GitHub</a>
       <a href="https://github.com/yu010101/claude-codex-collab/issues" target="_blank">Issues</a>
@@ -1064,94 +721,16 @@
   </footer>
 
   <script>
-    // Terminal Animation
-    const terminalLines = [
-      { type: 'prompt', text: '> ' },
-      { type: 'command', text: '/project ユーザー認証' },
-      { type: 'blank' },
-      { type: 'output', text: '[1/8] 要件定義を生成しました', class: 'success' },
-      { type: 'output', text: '      → docs/requirements/auth.md', class: 'file' },
-      { type: 'output', text: '      承認？ [Y/n] Y', class: 'prompt-text' },
-      { type: 'blank' },
-      { type: 'output', text: '[2/8] 画面設計を生成しました', class: 'success' },
-      { type: 'output', text: '      → docs/specs/login.md', class: 'file' },
-      { type: 'output', text: '      → mockups/login.png', class: 'file' },
-      { type: 'output', text: '      承認？ [Y/n] Y', class: 'prompt-text' },
-      { type: 'blank' },
-      { type: 'output', text: '[3/8] API設計を生成しました', class: 'success' },
-      { type: 'output', text: '      → docs/api/auth.yaml', class: 'file' },
-      { type: 'output', text: '      承認？ [Y/n] Y', class: 'prompt-text' },
-      { type: 'blank' },
-      { type: 'output', text: '[4/8] DB設計を生成しました', class: 'success' },
-      { type: 'output', text: '      → migrations/001_users.sql', class: 'file' },
-      { type: 'output', text: '      承認？ [Y/n] Y', class: 'prompt-text' },
-      { type: 'blank' },
-      { type: 'output', text: '[5/8] 実装中...', class: '' },
-      { type: 'output', text: '[6/8] テスト生成中...', class: '' },
-      { type: 'output', text: '[7/8] レビュー中...', class: '' },
-      { type: 'blank' },
-      { type: 'output', text: '[8/8] デプロイ準備完了', class: 'success' },
-      { type: 'output', text: '      本番に出しますか？ [Y/n] Y', class: 'prompt-text' },
-      { type: 'blank' },
-      { type: 'output', text: '✅ https://my-app.vercel.app', class: 'link' },
-    ];
-
-    let terminalStarted = false;
-
-    function animateTerminal() {
-      if (terminalStarted) return;
-      terminalStarted = true;
-
-      const output = document.getElementById('terminal-output');
-      output.innerHTML = '';
-
-      let delay = 0;
-      terminalLines.forEach((line, idx) => {
-        setTimeout(() => {
-          const div = document.createElement('div');
-          div.className = 'terminal-line';
-          div.style.animationDelay = '0s';
-
-          if (line.type === 'blank') {
-            div.innerHTML = '<br>';
-          } else if (line.type === 'prompt') {
-            div.innerHTML = `<span class="prompt">${line.text}</span>`;
-          } else if (line.type === 'command') {
-            div.innerHTML = `<span class="command">${line.text}</span>`;
-          } else {
-            div.innerHTML = `<span class="output ${line.class || ''}">${line.text}</span>`;
-          }
-
-          output.appendChild(div);
-          output.scrollTop = output.scrollHeight;
-        }, delay);
-
-        delay += line.type === 'command' ? 800 : line.type === 'blank' ? 200 : 150;
-      });
-    }
-
     // Scroll animations
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-
-          // Start terminal animation when visible
-          if (entry.target.closest('.terminal-section')) {
-            animateTerminal();
-          }
         }
       });
     }, { threshold: 0.1 });
 
-    document.querySelectorAll('.fade-up, .workflow-phase, .terminal').forEach(el => {
-      observer.observe(el);
-    });
-
-    // Workflow phases animation
-    document.querySelectorAll('.workflow-phase').forEach((phase, idx) => {
-      phase.style.transitionDelay = `${idx * 0.1}s`;
-    });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
     // Copy install command
     function copyInstall() {

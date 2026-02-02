@@ -1,117 +1,174 @@
-# Claude Code + Codex 自動連携テンプレート
+# Claude Code + Codex フルスタック開発テンプレート
 
-Claude Code（Anthropic）とCodex CLI（OpenAI）を自動連携させ、効率的なAI駆動開発を実現するテンプレートです。
+Claude Code + Codex + Supabase + Vercel + frontend-design を統合した、AI駆動フルスタック開発テンプレートです。
 
 ## 特徴
 
-- **自動タスク委譲**: 「レビューして」と言うだけでCodexが自動実行
-- **トークン節約**: 定型タスクをCodexに委譲し、約95%のトークン削減
-- **並列実行**: バックグラウンドでCodexを実行しながら開発継続
-- **サブエージェント活用**: 調査・計画を自動的にサブエージェントに委託
+- 🤖 **AI連携**: Claude Code + Codex 自動タスク委譲
+- 🎨 **デザイン**: frontend-design スキルで高品質UI生成
+- 🗄️ **バックエンド**: Supabase (PostgreSQL + Auth + Storage)
+- 🚀 **デプロイ**: Vercel ワンクリックデプロイ
+- ⚡ **ワークフロー**: 機能追加・バグ修正の自動化
 
 ## クイックスタート
 
-### ワンラインインストール
+### フルスタック版（推奨）
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/yu010101/claude-codex-collab/main/install-fullstack.sh | bash -s -- my-app
+```
+
+### 基本版（AI連携のみ）
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/yu010101/claude-codex-collab/main/install.sh | bash
 ```
 
-### 既存プロジェクトに導入
+## カスタムスキル
+
+### デザインスキル 🎨
 
 ```bash
-cd your-project
-curl -fsSL https://raw.githubusercontent.com/yu010101/claude-codex-collab/main/install.sh | bash -s -- .
+/design ログインフォーム              # UIコンポーネント生成
+/design-page ダッシュボード           # ページ全体のデザイン
+/design-system                        # デザインシステム構築
 ```
 
-## 必要条件
-
-- [Claude Code](https://claude.ai/claude-code) (`claude` コマンド)
-- [Codex CLI](https://github.com/openai/codex) (`codex` コマンド)
+### 開発スキル 💻
 
 ```bash
-# インストール確認
-claude --version
-codex --version
+/new-feature ユーザー認証             # 機能追加ワークフロー
+/fix-bug ログインエラー               # バグ修正ワークフロー
+/review                               # Codexコードレビュー
+/test src/components/                 # テスト生成
 ```
 
-## 使い方
-
-### 1. Claude Codeを起動
+### インフラスキル 🏗️
 
 ```bash
-claude
+/deploy                               # Vercel本番デプロイ
+/deploy-preview                       # プレビューデプロイ
+/db-push                              # Supabaseマイグレーション
+/db-gen                               # 型定義生成
+/setup-env                            # 環境変数セットアップ
 ```
 
-### 2. 自動連携キーワード
+## ワークフロー自動化
 
-以下のキーワードを含む指示で、自動的にCodexに委譲されます：
+### /new-feature ワークフロー
 
-| キーワード | 動作 |
-|-----------|------|
-| 「レビュー」「review」 | コードレビュー実行 |
-| 「テスト作成」「test」 | ユニットテスト生成 |
-| 「ドキュメント」 | ドキュメント生成 |
-| 「リファクタ」 | コード整理 |
-
-### 3. 手動でCodexに委譲
-
-```bash
-# コードレビュー
-./scripts/auto-delegate.sh review
-
-# 特定ブランチとの差分レビュー
-./scripts/auto-delegate.sh review main
-
-# テスト作成
-./scripts/auto-delegate.sh test src/services/
-
-# ドキュメント生成
-./scripts/auto-delegate.sh docs
-
-# カスタムタスク
-./scripts/auto-delegate.sh custom "APIのエラーハンドリングを改善して"
-
-# バックグラウンド実行
-./scripts/auto-delegate.sh background "全ファイルのリファクタリング"
+```
+[依頼] → [設計] → [UI生成] → [実装] → [テスト] → [レビュー] → [デプロイ]
+         Plan    design    Claude   Codex    Codex     Vercel
 ```
 
-### 4. タスク状態確認
+### /fix-bug ワークフロー
 
-```bash
-# 最新タスクの確認
-./scripts/check-codex-task.sh
-
-# 特定タスクの確認
-./scripts/check-codex-task.sh 20240201-143022
+```
+[報告] → [調査] → [修正] → [レビュー] → [デプロイ]
+        Explore  Claude    Codex      Vercel
 ```
 
 ## ファイル構成
 
 ```
 your-project/
-├── CLAUDE.md              # Claude Code自動ルール（自動読み込み）
-├── AGENTS.md              # エージェント共有情報（Codex自動読み込み）
-├── TODO.md                # タスク管理
+├── CLAUDE.md                 # Claude Code設定（自動読み込み）
+├── AGENTS.md                 # エージェント共有情報
+├── TODO.md                   # タスク管理
+├── .claude/
+│   └── skills/              # カスタムスキル
+│       ├── design.md        # /design
+│       ├── deploy.md        # /deploy
+│       ├── db.md            # /db-push, /db-gen
+│       ├── new-feature.md   # /new-feature
+│       └── fix-bug.md       # /fix-bug
 ├── scripts/
-│   ├── auto-delegate.sh   # Codex委譲スクリプト
-│   └── check-codex-task.sh # タスク確認スクリプト
-└── .codex-tasks/          # タスク出力（gitignore済み）
+│   ├── auto-delegate.sh     # Codex委譲
+│   ├── check-codex-task.sh  # タスク確認
+│   └── setup-env.sh         # 環境変数設定
+└── .codex-tasks/            # タスク出力
 ```
 
-## 推奨タスク分担
+## セットアップ後の手順
+
+```bash
+# 1. Next.jsプロジェクト作成
+npx create-next-app@latest . --typescript --tailwind --app
+
+# 2. Supabase初期化
+supabase init
+supabase start
+
+# 3. Vercel連携
+vercel link
+
+# 4. 環境変数設定
+./scripts/setup-env.sh
+
+# 5. Claude Code起動
+claude
+```
+
+## 使用例
+
+### 新機能追加
+
+```
+> /new-feature ユーザープロフィール編集機能
+
+[Plan] 設計中...
+- プロフィール編集フォーム
+- Supabase users テーブル更新API
+- 画像アップロード機能
+
+[Design] UI生成中...
+✓ ProfileEditForm.tsx 作成
+
+[実装] ロジック実装中...
+✓ app/profile/edit/page.tsx
+✓ lib/supabase/profile.ts
+
+[Test] テスト生成中... (Codex)
+✓ __tests__/profile.test.tsx
+
+[Review] レビュー中... (Codex)
+✓ 問題なし
+
+[Deploy] プレビューデプロイ中...
+✓ https://my-app-xxx.vercel.app
+```
+
+### バグ修正
+
+```
+> /fix-bug ログイン後にリダイレクトされない
+
+[Explore] 調査中...
+原因: middleware.ts のリダイレクト条件が不正
+
+[修正]
+✓ middleware.ts 修正完了
+
+[Review] レビュー中... (Codex)
+✓ 問題なし
+
+[Deploy]
+✓ デプロイ完了
+```
+
+## タスク分担
 
 | タスク | 担当 | 理由 |
 |-------|------|------|
-| 設計・計画 | Claude Code | コンテキスト理解が重要 |
-| 複雑な実装 | Claude Code | 既存コードとの整合性 |
-| デバッグ | Claude Code | 対話的な調査が必要 |
-| **コードレビュー** | **Codex** | `codex review`で自動化 |
+| 設計・計画 | Claude Code | コンテキスト理解 |
+| UIデザイン | Claude Code | frontend-design |
+| ロジック実装 | Claude Code | 複雑な処理 |
+| **コードレビュー** | **Codex** | 自動化・高速 |
 | **テスト作成** | **Codex** | 定型作業 |
 | **ドキュメント** | **Codex** | 定型作業 |
-| **リファクタリング** | **Codex** | 単純な整理 |
 
-## トークン消費量の比較
+## トークン削減効果
 
 | タスク | Claude単独 | 連携時 | 削減率 |
 |-------|-----------|-------|--------|
@@ -119,49 +176,22 @@ your-project/
 | テスト作成 | ~30,000 | ~3,000 | **90%** |
 | ドキュメント | ~20,000 | ~2,000 | **90%** |
 
-## カスタマイズ
+## 必要条件
 
-### CLAUDE.md
+- Node.js 18+
+- npm / pnpm
+- Git
 
-プロジェクト固有のルールを追加：
-
-```markdown
-## プロジェクト概要
-<!-- プロジェクトの説明 -->
-
-## コーディング規約
-<!-- プロジェクト固有のルール -->
-```
-
-### AGENTS.md
-
-エージェント共有情報を追加：
-
-```markdown
-## ディレクトリ構造
-<!-- プロジェクトの構造 -->
-
-## 重要なファイル
-<!-- 主要ファイルの説明 -->
-```
-
-## トラブルシューティング
-
-### Codexが実行されない
+### 推奨ツール
 
 ```bash
-# Codexの動作確認
-codex --help
+# AI開発ツール
+npm install -g @anthropic-ai/claude-code
+npm install -g @openai/codex
 
-# 認証確認
-codex login
-```
-
-### タスクがバックグラウンドで失敗
-
-```bash
-# ログを確認
-cat .codex-tasks/output-*.txt
+# クラウドツール
+npm install -g supabase
+npm install -g vercel
 ```
 
 ## ライセンス

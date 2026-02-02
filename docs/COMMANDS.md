@@ -7,9 +7,9 @@
 ## 目次
 
 1. [プロジェクト管理](#プロジェクト管理)
-2. [設計コマンド](#設計コマンド)
-3. [実装コマンド](#実装コマンド)
-4. [AI委譲コマンド](#ai委譲コマンド)
+2. [設計コマンド（Claude）](#設計コマンドclaude)
+3. [実装コマンド（Codex）](#実装コマンドcodex)
+4. [解析コマンド（Gemini）](#解析コマンドgemini)
 
 ---
 
@@ -17,7 +17,7 @@
 
 ### /project
 
-承認フロー付きの完全ワークフローを実行。
+6フェーズの承認ワークフローを実行。
 
 ```bash
 /project <機能名>
@@ -39,17 +39,15 @@
 | `--list` | 進行中プロジェクト一覧 |
 | `--skip-tests` | テスト生成をスキップ |
 
-#### ワークフロー
+#### ワークフロー（6フェーズ）
 
 ```
-Phase 1: 要件定義     → 承認待ち
-Phase 2: 画面設計     → 承認待ち
-Phase 3: API設計      → 承認待ち
-Phase 4: DB設計       → 承認待ち
-Phase 5: 実装         → 自動
-Phase 6: テスト生成   → 自動（Codex）
-Phase 7: レビュー     → 自動（Codex）
-Phase 8: デプロイ     → 承認待ち
+Phase 1: 要件定義     → Claude（承認待ち）
+Phase 2: 設計         → Claude（承認待ち）
+Phase 3: 実装         → Codex（自動）★メイン
+Phase 4: テスト       → Codex（自動）
+Phase 5: レビュー     → Claude（自動）
+Phase 6: デプロイ     → Claude（承認待ち）
 ```
 
 ---
@@ -70,14 +68,12 @@ Phase 8: デプロイ     → 承認待ち
 プロジェクト: ユーザー認証
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[1/8] 要件定義    ✅ 承認済み
-[2/8] 画面設計    ✅ 承認済み
-[3/8] API設計     🔄 進行中
-[4/8] DB設計      ⏳ 待機中
-[5/8] 実装        ⏳ 待機中
-[6/8] テスト      ⏳ 待機中
-[7/8] レビュー    ⏳ 待機中
-[8/8] デプロイ    ⏳ 待機中
+[1/6] 要件定義    ✅ 承認済み
+[2/6] 設計        🔄 進行中
+[3/6] 実装        ⏳ 待機中（→Codex）
+[4/6] テスト      ⏳ 待機中（→Codex）
+[5/6] レビュー    ⏳ 待機中
+[6/6] デプロイ    ⏳ 待機中
 ```
 
 ---
@@ -110,7 +106,7 @@ Phase 8: デプロイ     → 承認待ち
 
 ---
 
-## 設計コマンド
+## 設計コマンド（Claude）
 
 ### /requirements
 
@@ -194,118 +190,9 @@ OpenAPI 3.0形式のAPI設計書を生成。
 
 ---
 
-### /schema
-
-DBマイグレーションSQLを生成。
-
-```bash
-/schema <テーブル名>
-```
-
-#### 出力
-
-`migrations/<timestamp>_<テーブル名>.sql`
-
-#### 例
-
-```bash
-/schema users
-/schema products
-/schema orders
-```
-
----
-
-### /mockup
-
-画面モックアップをHTML/Tailwindで生成しPNG化。
-
-```bash
-/mockup <画面名> [オプション]
-```
-
-#### オプション
-
-| オプション | 説明 | 例 |
-|-----------|------|-----|
-| `--device` | デバイス種別 | `iphone`, `ipad`, `desktop` |
-| `--dark` | ダークモード版も生成 | - |
-| `--implement` | 生成後そのまま実装 | - |
-
-#### 例
-
-```bash
-/mockup ログイン画面
-/mockup ダッシュボード --device desktop
-/mockup 設定画面 --dark
-/mockup 商品一覧 --implement
-```
-
-#### 出力
-
-`mockups/<画面名>.png`
-
----
-
-## 実装コマンド
-
-### /implement
-
-承認済み設計書から実装コードを生成。
-
-```bash
-/implement
-/implement <機能名>
-```
-
-#### 前提条件
-
-以下が承認済みであること:
-
-1. `docs/requirements/<機能名>.md`
-2. `docs/specs/<画面名>.md`
-3. `docs/api/<API名>.yaml`
-4. `migrations/<テーブル名>.sql`
-
-#### 例
-
-```bash
-/implement              # 全設計書から実装
-/implement auth         # 認証機能のみ
-/implement products     # 商品機能のみ
-```
-
----
-
-### /test
-
-テストを生成（Codexに委譲）。
-
-```bash
-/test
-/test <機能名>
-/test <ファイルパス>
-```
-
-#### 例
-
-```bash
-/test                           # 全テスト
-/test auth                      # 認証テスト
-/test src/components/Button.tsx # 特定ファイル
-```
-
-#### 実行内容
-
-```bash
-./scripts/delegate.sh codex test
-```
-
----
-
 ### /review
 
-コードレビューを実行（Codexに委譲）。
+コードレビューを実行。
 
 ```bash
 /review
@@ -337,7 +224,72 @@ DBマイグレーションSQLを生成。
 
 ---
 
-## AI委譲コマンド
+## 実装コマンド（Codex）
+
+> これらのコマンドはCodexに委譲され、full-autoモードで実行されます。
+
+### /implement
+
+承認済み設計書から実装コードを生成。
+
+```bash
+/implement
+/implement <機能名>
+```
+
+#### 前提条件
+
+以下が承認済みであること:
+
+1. `docs/requirements/<機能名>.md`
+2. `docs/specs/<画面名>.md`
+3. `docs/api/<API名>.yaml`
+
+#### 例
+
+```bash
+/implement              # 全設計書から実装
+/implement auth         # 認証機能のみ
+/implement products     # 商品機能のみ
+```
+
+#### 実行内容
+
+```bash
+./scripts/delegate.sh codex implement
+```
+
+---
+
+### /test
+
+テストを生成（Codexに委譲）。
+
+```bash
+/test
+/test <機能名>
+/test <ファイルパス>
+```
+
+#### 例
+
+```bash
+/test                           # 全テスト
+/test auth                      # 認証テスト
+/test src/components/Button.tsx # 特定ファイル
+```
+
+#### 実行内容
+
+```bash
+./scripts/delegate.sh codex test
+```
+
+---
+
+## 解析コマンド（Gemini）
+
+> 1Mトークンコンテキストを活かした大規模解析。無料。
 
 ### /analyze
 
@@ -427,7 +379,7 @@ Geminiでリファクタリング提案。
 
 | 変数名 | 説明 | デフォルト |
 |-------|------|----------|
-| `AI_DEFAULT_DEVICE` | モックアップのデフォルトデバイス | `iphone` |
 | `AI_AUTO_APPROVE` | 自動承認モード | `false` |
 | `AI_SKIP_TESTS` | テスト生成をスキップ | `false` |
 | `AI_DEPLOY_TARGET` | デプロイ先 | `vercel` |
+| `GOOGLE_GENAI_USE_GCA` | Gemini認証 | `true` |

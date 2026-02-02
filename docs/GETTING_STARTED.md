@@ -2,22 +2,30 @@
 
 ## 概要
 
-3AI協調開発テンプレートは、Claude Code + Codex + Gemini を連携させて、要件定義からデプロイまでを自動化するCLIツールです。
+3AI適材適所テンプレートは、**Claude × Codex × Gemini** の強みを活かして開発を効率化するCLIツールです。
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │  /project ユーザー認証                                       │
 │                                                             │
-│  [1/8] 要件定義      → docs/requirements/auth.md   ✓ 承認   │
-│  [2/8] 画面設計      → docs/specs/login.md         ✓ 承認   │
-│  [3/8] API設計       → docs/api/auth.yaml          ✓ 承認   │
-│  [4/8] DB設計        → migrations/001_users.sql    ✓ 承認   │
-│  [5/8] 実装          → src/                        自動     │
-│  [6/8] テスト生成    → tests/                      自動     │
-│  [7/8] レビュー      → docs/reviews/               自動     │
-│  [8/8] デプロイ      → https://my-app.vercel.app   ✓ 承認   │
+│  [1/6] 要件定義      → docs/requirements/auth.md   ✓ 承認   │
+│  [2/6] 設計          → docs/api/auth.yaml          ✓ 承認   │
+│  [3/6] 実装          → src/                        自動     │
+│  [4/6] テスト        → tests/                      自動     │
+│  [5/6] レビュー      → docs/reviews/               自動     │
+│  [6/6] デプロイ      → https://my-app.vercel.app   ✓ 承認   │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 3AI適材適所
+
+| AI | 強み | 役割 | 課金 |
+|----|------|------|------|
+| **Claude** | 推論・設計判断 | 要件定義、アーキテクチャ、レビュー | 従量課金（節約） |
+| **Codex** | 実装速度・full-auto | コーディング、テスト生成 | ChatGPT Proに含む |
+| **Gemini** | 1Mトークン | 大規模解析、リサーチ | 無料 |
 
 ---
 
@@ -69,26 +77,27 @@ cp -r scripts/ /path/to/your-project/
 # Claude Code（必須）
 npm install -g @anthropic-ai/claude-code
 
-# Codex（テスト・レビュー用）
+# Codex（実装・テスト用）
 npm install -g @openai/codex
 
 # Gemini CLI（解析・リサーチ用）
 npm install -g @google/gemini-cli
 ```
 
-### APIキーの設定
+### 認証方法（APIキー不要）
 
-各AIツールには対応するAPIキーが必要です:
+各AIツールはアカウントベースの認証を使用します:
 
 ```bash
-# Claude
-export ANTHROPIC_API_KEY="your-key"
+# Claude Code
+claude  # 初回起動時にAnthropicアカウントでログイン
 
-# OpenAI (Codex)
-export OPENAI_API_KEY="your-key"
+# Codex
+codex   # ChatGPT Plus/Proアカウントでログイン
 
-# Google AI (Gemini)
-export GOOGLE_AI_API_KEY="your-key"
+# Gemini CLI（Google Cloud認証）
+export GOOGLE_GENAI_USE_GCA=true  # ~/.zshrc に追加
+gemini  # Googleアカウントで認証
 ```
 
 ---
@@ -105,23 +114,17 @@ my-project/
 │       ├── requirements.md
 │       ├── spec.md
 │       ├── api.md
-│       ├── schema.md
-│       ├── mockup.md
-│       ├── implement.md
-│       ├── test.md
+│       ├── implement.md    # → Codexに委譲
+│       ├── test.md         # → Codexに委譲
 │       ├── review.md
 │       └── deploy.md
 ├── scripts/
 │   └── delegate.sh       # AI委譲スクリプト
 ├── docs/
-│   ├── requirements/     # 要件定義書
-│   ├── specs/            # 画面設計書
-│   ├── api/              # API設計（OpenAPI）
-│   ├── decisions/        # 設計判断記録
-│   └── reviews/          # レビュー記録
-├── mockups/              # 画面モックアップ（PNG）
-├── migrations/           # DBマイグレーション
-├── .tasks/               # AI実行ログ（gitignore）
+│   ├── requirements/     # 要件定義書（Claude）
+│   ├── specs/            # 画面設計書（Claude）
+│   ├── api/              # API設計（Claude）
+│   └── reviews/          # レビュー記録（Claude）
 ├── CLAUDE.md             # Claude用プロジェクト設定
 ├── AGENTS.md             # マルチAI協調ガイド
 └── .gitignore
@@ -150,7 +153,25 @@ claude
 > /project TODOアプリ
 ```
 
-これで8フェーズの承認ワークフローが始まります。
+これで6フェーズの承認ワークフローが始まります。
+
+---
+
+## ワークフロー
+
+```
+[1] 要件定義    Claude    ← 推論・判断
+      ↓
+[2] 設計        Claude    ← アーキテクチャ決定
+      ↓
+[3] 実装        Codex     ← full-auto で爆速 ★メイン
+      ↓
+[4] テスト      Codex     ← 実装と一貫性
+      ↓
+[5] レビュー    Claude    ← 品質チェック
+      ↓
+[6] デプロイ    Claude    ← 最終判断
+```
 
 ---
 
@@ -158,7 +179,6 @@ claude
 
 - [ハンズオンチュートリアル](./HANDS_ON_TUTORIAL.md) - TODOアプリを実際に作る
 - [コマンドリファレンス](./COMMANDS.md) - 全コマンドの詳細
-- [モックアップガイド](./MOCKUPS.md) - 画面モックアップの作り方
 
 ---
 
@@ -171,8 +191,8 @@ claude
 npm uninstall -g @anthropic-ai/claude-code
 npm install -g @anthropic-ai/claude-code
 
-# APIキー確認
-echo $ANTHROPIC_API_KEY
+# 再ログイン
+claude
 ```
 
 ### Codex/Geminiが動かない
@@ -185,6 +205,17 @@ which gemini
 # 手動で実行テスト
 codex --version
 gemini --version
+```
+
+### Gemini認証エラー
+
+```bash
+# 環境変数を設定
+echo 'export GOOGLE_GENAI_USE_GCA=true' >> ~/.zshrc
+source ~/.zshrc
+
+# 再認証
+gemini
 ```
 
 ### スキルが認識されない

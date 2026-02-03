@@ -177,6 +177,7 @@ claude
 
 ## 次のステップ
 
+- [既存プロジェクトへの導入](./EXISTING_PROJECT_SETUP.md) - 開発中プロジェクトに導入
 - [ハンズオンチュートリアル](./HANDS_ON_TUTORIAL.md) - TODOアプリを実際に作る
 - [コマンドリファレンス](./COMMANDS.md) - 全コマンドの詳細
 

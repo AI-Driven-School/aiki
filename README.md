@@ -1,170 +1,215 @@
-# 実装2倍速、コスト75%削減
+# 2x Faster Implementation, 75% Cost Reduction
 
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/AI-Driven-School?style=for-the-badge&logo=github&label=Sponsor)](https://github.com/sponsors/AI-Driven-School)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
-[![Phase](https://img.shields.io/badge/Phase_1-完全無料-22c55e?style=for-the-badge)](https://github.com/AI-Driven-School/claude-codex-collab)
+[![Phase](https://img.shields.io/badge/Phase_1-Free-22c55e?style=for-the-badge)](https://github.com/AI-Driven-School/claude-codex-collab)
 
 <p align="center">
-  <img src="./landing/promo.gif" alt="3AI協調開発デモ" width="700">
+  <img src="./landing/promo.gif" alt="3AI Collaborative Development Demo" width="700">
 </p>
 
 <p align="center">
-  <strong>Claude</strong> で設計、<strong>Codex</strong> で爆速実装、<strong>Gemini</strong> で大規模解析<br>
-  一人開発でも設計書が残る、3AI分業の開発ワークフロー
+  Design with <strong>Claude</strong>, implement at speed with <strong>Codex</strong>, analyze at scale with <strong>Gemini</strong><br>
+  A 3-AI division of labor workflow that leaves design docs even for solo developers
+</p>
+
+<p align="center">
+  <a href="./README_ja.md">日本語</a>
 </p>
 
 ---
 
-## 30秒で始める
+## Get Started in 30 Seconds
 
 ```bash
-# 1. インストール
+# 1. Install
 curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/install-fullstack.sh | bash -s -- my-app
 
-# 2. 開発開始
+# 2. Start developing
 cd my-app && claude
 
-# 3. 機能を作る
-> /project ユーザー認証
+# 3. Build a feature
+> /project user authentication
 ```
 
-**必要なもの:**
-| AI | 役割 | コスト |
-|----|------|--------|
-| Claude Code | 設計・レビュー | 従量課金 |
-| Codex (ChatGPT Pro) | 実装・テスト | 月額に含む |
-| Gemini CLI | 大規模解析 | 無料 |
+**Requirements:**
+| AI | Role | Cost |
+|----|------|------|
+| Claude Code | Design & Review | Pay-per-use |
+| Codex (ChatGPT Pro) | Implementation & Testing | Included in subscription |
+| Gemini CLI | Large-scale analysis | Free |
 
 ---
 
-## なぜ3AI？
+## Why 3 AIs?
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
-│   単一AI              3AI連携                               │
-│   ────────            ────────                              │
-│   Claude単体          Claude → 設計・判断のみ               │
-│   = 全部課金             ↓                                  │
-│   = コスト高い        Codex → 実装・テスト（$0）            │
-│                          ↓                                  │
-│                       Claude → レビュー                     │
+│   Single AI             3-AI Collaboration                  │
+│   ─────────             ──────────────────                  │
+│   Claude only           Claude → Design & decisions only    │
+│   = Everything billed      ↓                                │
+│   = High cost           Codex → Implementation & tests ($0) │
+│                            ↓                                │
+│                         Claude → Review                     │
 │                                                             │
-│   結果: $1.00         結果: $0.25（75%削減）                │
+│   Result: $1.00         Result: $0.25 (75% reduction)       │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### 実測ベンチマーク
+### Benchmark Results
 
-| タスク種別 | 勝者 | 理由 |
-|-----------|------|------|
-| 新規ファイル作成 | **Codex** | 10-20%速い、$0 |
-| 既存コード修正 | **Claude** | 40%速い、品質2倍 |
-| 大規模解析 | **Gemini** | 1Mトークン、無料 |
+| Task Type | Winner | Reason |
+|-----------|--------|--------|
+| New file creation | **Codex** | 10-20% faster, $0 |
+| Existing code modification | **Claude** | 40% faster, 2x quality |
+| Large-scale analysis | **Gemini** | 1M tokens, free |
 
-> 📊 [詳細なベンチマーク結果](./benchmarks/BENCHMARK_RESULTS.md)
+> [Detailed benchmark results](./benchmarks/BENCHMARK_RESULTS.md)
 
 ---
 
-## ワークフロー
+## Workflow
 
 ```
-> /project ユーザー認証
+> /project user authentication
 
-[1/6] 要件定義   (Claude)  → docs/requirements/auth.md  ✓
-[2/6] API設計    (Claude)  → docs/api/auth.yaml         ✓
-[3/6] 実装       (Codex)   → src/**/*.tsx               ★ full-auto
-[4/6] テスト     (Codex)   → tests/*.spec.ts            ★ $0
-[5/6] レビュー   (Claude)  → 改善提案                    ✓
-[6/6] デプロイ             → https://my-app.vercel.app  ✓
+[1/6] Requirements  (Claude)  → docs/requirements/auth.md  ✓
+[2/6] API Design    (Claude)  → docs/api/auth.yaml         ✓
+[3/6] Implementation(Codex)   → src/**/*.tsx               ★ full-auto
+[4/6] Testing       (Codex)   → tests/*.spec.ts            ★ $0
+[5/6] Review        (Claude)  → Improvement suggestions    ✓
+[6/6] Deploy                  → https://my-app.vercel.app  ✓
 ```
 
-### 成果物
+### Output
 
 ```
 my-app/
 ├── docs/
-│   ├── requirements/   # 要件定義（Claude）
-│   ├── specs/          # 画面設計（Claude）
-│   └── api/            # API設計（Claude）
-├── src/                # 実装コード（Codex）
-└── tests/              # テスト（Codex）
+│   ├── requirements/   # Requirements (Claude)
+│   ├── specs/          # UI specs (Claude)
+│   └── api/            # API design (Claude)
+├── src/                # Implementation (Codex)
+└── tests/              # Tests (Codex)
 ```
 
-**一人開発でも、これだけの設計書が残る。**
+**Even solo developers get comprehensive design documentation.**
 
 ---
 
-## 実績: StressAIAgent
+## Case Study: StressAIAgent
 
-このテンプレートで実際に作ったSaaS:
+A real SaaS built with this template:
 
-### AI駆動型メンタルヘルスSaaS
+### AI-Powered Mental Health SaaS
 
 ```
-/project 組織分析AI
+/project organization analysis AI
 ```
 
-| フェーズ | 担当AI | 成果物 |
-|---------|:------:|--------|
-| 要件定義 | Claude | `docs/requirements/org-analysis-ai.md` |
-| API設計 | Claude | `docs/api/org-analysis.yaml` |
-| 画面設計 | Claude | `docs/specs/org-analysis-ai.md` |
-| 実装 | **Codex** | バックエンド + フロントエンド |
-| テスト | **Codex** | E2Eテスト 10ケース |
-| レビュー | Claude | `docs/reviews/org-analysis-ai.md` |
+| Phase | AI | Output |
+|-------|:--:|--------|
+| Requirements | Claude | `docs/requirements/org-analysis-ai.md` |
+| API Design | Claude | `docs/api/org-analysis.yaml` |
+| UI Specs | Claude | `docs/specs/org-analysis-ai.md` |
+| Implementation | **Codex** | Backend + Frontend |
+| Testing | **Codex** | 10 E2E test cases |
+| Review | Claude | `docs/reviews/org-analysis-ai.md` |
 
-### 生成された機能
+### Generated Features
 
-- 組織全体のストレス分析ダッシュボード
-- 部署別スコアのヒートマップ
-- **GPT-4によるAIインサイト自動生成**
-- PDFレポート出力
-- 管理者権限チェック
+- Organization-wide stress analysis dashboard
+- Department score heatmap
+- **GPT-4 powered AI insights generation**
+- PDF report export
+- Admin permission checks
 
-> 📁 [ソースコード](./benchmarks/complex-test/)
+> [Source code](./benchmarks/complex-test/)
 
 ---
 
-## コマンド
+## Commands
 
-| コマンド | AI | 説明 |
-|---------|-----|------|
-| `/project <機能>` | All | 設計→実装→デプロイの完全フロー |
-| `/requirements <機能>` | Claude | 要件定義生成 |
-| `/spec <画面>` | Claude | 画面設計生成 |
-| `/api <エンドポイント>` | Claude | API設計生成 |
-| `/implement` | Codex | 設計書から実装 |
-| `/test` | Codex | テスト生成 |
-| `/review` | Claude | コードレビュー |
-| `/analyze` | Gemini | 大規模コード解析 |
-| `/research <質問>` | Gemini | 技術リサーチ |
+| Command | AI | Description |
+|---------|-----|-------------|
+| `/project <feature>` | All | Complete flow: design → implementation → deploy |
+| `/requirements <feature>` | Claude | Generate requirements |
+| `/spec <screen>` | Claude | Generate UI specifications |
+| `/api <endpoint>` | Claude | Generate API design |
+| `/implement` | Codex | Implement from design docs |
+| `/test` | Codex | Generate tests |
+| `/review` | Claude | Code review |
+| `/analyze` | Gemini | Large-scale code analysis |
+| `/research <query>` | Gemini | Technical research |
 
 ---
 
-## 動作環境
+## Auto-Orchestration (MCP Server)
+
+**NEW:** Talk naturally to Claude, and tasks are automatically delegated to the right AI.
+
+```
+You: "Implement user authentication"
+→ Automatically delegated to Codex (implementation specialist)
+
+You: "Compare React vs Vue"
+→ Automatically delegated to Gemini (research specialist)
+
+You: "Review my code"
+→ Handled by Claude (design & review specialist)
+```
+
+### Setup
+
+```bash
+# Install and configure MCP server
+./scripts/setup-mcp.sh
+
+# Restart Claude Code
+```
+
+**No API keys needed** - Uses CLI tools (Codex CLI from ChatGPT Pro, Gemini CLI free).
+
+### Available MCP Tools
+
+| Tool | Description |
+|------|-------------|
+| `delegate_to_codex` | Send implementation tasks to Codex |
+| `delegate_to_gemini` | Send research/analysis to Gemini |
+| `auto_delegate` | Automatically route to the right AI |
+| `get_orchestration_status` | Check AI service status |
+
+> See [MCP Server README](.claude/mcp-servers/ai-orchestrator/README.md) for details
+
+---
+
+## System Requirements
 
 - macOS / Linux / WSL2
 - Node.js 18+
-- ChatGPT Pro（Codex用、$200/月）
+- ChatGPT Pro (for Codex CLI, $200/month)
+- Gemini CLI (free, optional for research tasks)
 
 ---
 
-## ドキュメント
+## Documentation
 
-| ドキュメント | 内容 |
-|------------|------|
-| [導入ガイド](./docs/GETTING_STARTED.md) | インストール・セットアップ |
-| [ハンズオン](./docs/HANDS_ON_TUTORIAL.md) | TODOアプリを作るチュートリアル |
-| [コマンド一覧](./docs/COMMANDS.md) | 全コマンドのリファレンス |
-| [ベンチマーク](./benchmarks/BENCHMARK_RESULTS.md) | 実測データ詳細 |
+| Document | Description |
+|----------|-------------|
+| [Getting Started](./docs/GETTING_STARTED.md) | Installation & setup |
+| [Hands-on Tutorial](./docs/HANDS_ON_TUTORIAL.md) | Build a TODO app step by step |
+| [Existing Project Setup](./docs/EXISTING_PROJECT_SETUP.md) | Add to existing projects |
+| [Command Reference](./docs/COMMANDS.md) | Complete command reference |
+| [Benchmarks](./benchmarks/BENCHMARK_RESULTS.md) | Detailed benchmark data |
 
 ---
 
-## サポート
+## Support
 
-Phase 1は完全無料です。開発を支援してくださる方は:
+Phase 1 is completely free. If you'd like to support development:
 
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/AI-Driven-School?style=for-the-badge&logo=github&label=Sponsor)](https://github.com/sponsors/AI-Driven-School)
 

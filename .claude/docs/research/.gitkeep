@@ -1,0 +1,10 @@
+# Research Directory
+
+このディレクトリには、Geminiによる調査結果を保存します。
+
+ファイル命名規則:
+- YYYY-MM-DD-topic.md
+
+例:
+- 2025-02-03-auth-libraries.md
+- 2025-02-03-react-state-management.md

@@ -1,6 +1,10 @@
 ---
 name: mockup
-description: UIモックアップをPNG画像として生成
+description: Generate UI mockup images as PNG using HTML/Tailwind CSS rendered via Playwright. Supports multiple device presets (iPhone, iPad, desktop). Use when creating visual prototypes or running /mockup.
+compatibility: Requires Playwright for screenshot rendering
+metadata:
+  author: AI-Driven-School
+  version: "1.0"
 ---
 
 # /mockup スキル

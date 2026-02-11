@@ -1,6 +1,9 @@
 ---
 name: spec
-description: 画面設計書を生成（Claude）
+description: Generate UI screen design documents with component lists, state transitions, interactions, and responsive breakpoints. Use when designing screens, creating wireframes, or running /spec.
+metadata:
+  author: AI-Driven-School
+  version: "1.0"
 ---
 
 # /spec スキル

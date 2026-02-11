@@ -147,6 +147,43 @@ A real SaaS built with this template:
 
 ---
 
+## Claude Code Skills (13 Skills Included)
+
+This project ships with 13 ready-to-use [Agent Skills](https://agentskills.io) for Claude Code.
+
+### Install Skills
+
+```bash
+# Using Vercel skills CLI
+npx skills add AI-Driven-School/claude-codex-collab
+
+# Or clone and use directly
+git clone https://github.com/AI-Driven-School/claude-codex-collab.git
+cd claude-codex-collab && claude
+```
+
+### Available Skills
+
+| Skill | AI | Description |
+|-------|:--:|-------------|
+| `/project` | All | Full design-to-deploy pipeline (6 phases) |
+| `/requirements` | Claude | Generate requirements with user stories & acceptance criteria |
+| `/spec` | Claude | Generate UI screen design documents |
+| `/api` | Claude | Generate OpenAPI 3.0 specifications |
+| `/implement` | Codex | Auto-generate code from design docs |
+| `/test` | Codex | Generate E2E & unit tests from requirements |
+| `/review` | Claude | Code review against design documents |
+| `/analyze` | Gemini | Full codebase analysis (1M token context) |
+| `/research` | Gemini | Technical research with comparison reports |
+| `/frontend-design` | Claude | Production-grade UI without generic AI aesthetics |
+| `/mockup` | Claude | Generate UI mockup PNGs via Playwright |
+| `/mockup-swift` | Claude | Native iOS/macOS mockups via SwiftUI Preview |
+| `/checkpointing` | Claude | Save & restore session state across sessions |
+
+All skills follow the [Agent Skills open standard](https://agentskills.io/specification) and work with Claude Code, Codex CLI, GitHub Copilot, and other compatible agents.
+
+---
+
 ## Auto-Orchestration (MCP Server)
 
 **NEW:** Talk naturally to Claude, and tasks are automatically delegated to the right AI.

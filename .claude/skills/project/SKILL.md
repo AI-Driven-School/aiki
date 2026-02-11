@@ -1,6 +1,9 @@
 ---
 name: project
-description: 設計→実装→デプロイの完全フロー（3AI協調）
+description: Run the full design-to-deploy pipeline using 3 AIs (Claude + Codex + Gemini). Use when starting a new feature, running /project, or needing end-to-end development with requirements, specs, implementation, testing, review, and deployment phases.
+metadata:
+  author: AI-Driven-School
+  version: "1.0"
 ---
 
 # /project スキル

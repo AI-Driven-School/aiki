@@ -1,6 +1,9 @@
 ---
 name: frontend-design
-description: AI臭くない、プロダクション品質のフロントエンドデザイン生成
+description: Generate distinctive, production-grade frontend UI code that avoids generic AI aesthetics. Follows opinionated design principles for unique visual identity. Use when building web UIs, components, or running /frontend-design.
+metadata:
+  author: AI-Driven-School
+  version: "1.0"
 ---
 
 # /frontend-design スキル

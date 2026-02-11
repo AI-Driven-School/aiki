@@ -1,6 +1,9 @@
 ---
 name: api
-description: API設計書を生成（Claude）
+description: Generate OpenAPI 3.0 specification documents with endpoints, schemas, and security definitions. Use when designing REST APIs, creating API docs, or running /api.
+metadata:
+  author: AI-Driven-School
+  version: "1.0"
 ---
 
 # /api スキル

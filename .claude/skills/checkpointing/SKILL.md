@@ -1,6 +1,9 @@
 ---
 name: checkpointing
-description: セッション状態を保存・復元（永続化）
+description: Save and restore session state for continuity across Claude Code sessions. Captures tasks, changed files, context, and decisions. Use when ending a session, preserving progress, or running /checkpointing.
+metadata:
+  author: AI-Driven-School
+  version: "1.0"
 ---
 
 # /checkpointing - セッション永続化スキル

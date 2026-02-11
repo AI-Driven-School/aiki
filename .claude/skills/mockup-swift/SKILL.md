@@ -1,6 +1,10 @@
 ---
 name: mockup-swift
-description: SwiftUI PreviewでiOS/macOSモックアップをPNG生成
+description: Generate native-quality iOS/macOS mockup PNGs using SwiftUI Preview rendering. Use when designing Apple platform UIs, creating native app mockups, or running /mockup-swift.
+compatibility: Requires macOS with Xcode and Swift installed
+metadata:
+  author: AI-Driven-School
+  version: "1.0"
 ---
 
 # /mockup-swift スキル

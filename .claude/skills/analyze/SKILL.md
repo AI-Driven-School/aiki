@@ -1,6 +1,10 @@
 ---
 name: analyze
-description: 大規模コード解析（Geminiに委譲）
+description: Analyze entire codebases using Gemini CLI's 1M token context. Generates architecture reports covering structure, security, performance, and improvement roadmaps. Use when auditing code quality or running /analyze.
+compatibility: Requires Gemini CLI (free)
+metadata:
+  author: AI-Driven-School
+  version: "1.0"
 ---
 
 # /analyze スキル

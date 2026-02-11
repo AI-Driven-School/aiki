@@ -1,6 +1,9 @@
 ---
 name: review
-description: コードレビューを実行（Claude）
+description: Run code review against design documents, checking acceptance criteria, security, performance, and test coverage. Use when reviewing implementation quality or running /review.
+metadata:
+  author: AI-Driven-School
+  version: "1.0"
 ---
 
 # /review スキル

@@ -1,6 +1,10 @@
 ---
 name: implement
-description: 設計書から実装（Codexに委譲）
+description: Generate implementation code from design documents by delegating to OpenAI Codex. Use when you have specs ready and want to auto-generate source code, or when running /implement.
+compatibility: Requires ChatGPT Pro subscription for Codex access
+metadata:
+  author: AI-Driven-School
+  version: "1.0"
 ---
 
 # /implement スキル

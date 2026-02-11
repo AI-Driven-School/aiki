@@ -1,6 +1,10 @@
 ---
 name: research
-description: 技術リサーチ（Geminiに委譲）
+description: Conduct technical research using Gemini CLI, producing comparison reports with recommendations and code examples. Use when evaluating technologies, comparing libraries, or running /research.
+compatibility: Requires Gemini CLI (free)
+metadata:
+  author: AI-Driven-School
+  version: "1.0"
 ---
 
 # /research スキル

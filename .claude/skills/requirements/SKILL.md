@@ -1,6 +1,9 @@
 ---
 name: requirements
-description: 要件定義書を生成（Claude）
+description: Generate a requirements document with user stories, acceptance criteria, and constraints. Use when defining features, writing specs, or running /requirements before implementation.
+metadata:
+  author: AI-Driven-School
+  version: "1.0"
 ---
 
 # /requirements スキル

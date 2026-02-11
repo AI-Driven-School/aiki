@@ -1,6 +1,10 @@
 ---
 name: test
-description: テストコードを生成（Codexに委譲）
+description: Generate E2E and unit test code from requirements using Playwright, delegated to Codex. Use when writing tests, checking acceptance criteria coverage, or running /test.
+compatibility: Requires ChatGPT Pro subscription for Codex access
+metadata:
+  author: AI-Driven-School
+  version: "1.0"
 ---
 
 # /test スキル

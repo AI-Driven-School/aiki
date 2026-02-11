@@ -7,12 +7,26 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # 現在の作業ディレクトリを使用（実際のプロジェクト）
 PROJECT_DIR="${PWD}"
+
+# Load sensitive file filter
+if [ -f "$SCRIPT_DIR/lib/sensitive-filter.sh" ]; then
+    # shellcheck source=lib/sensitive-filter.sh
+    source "$SCRIPT_DIR/lib/sensitive-filter.sh"
+fi
+
+# Load version checker
+if [ -f "$SCRIPT_DIR/lib/version-check.sh" ]; then
+    # shellcheck source=lib/version-check.sh
+    source "$SCRIPT_DIR/lib/version-check.sh"
+fi
+# shellcheck disable=SC2034
 TEMPLATE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # 色定義
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+# shellcheck disable=SC2034
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
@@ -57,6 +71,7 @@ AI:
   --yolo                承認なしで自動実行 (Gemini)
   --background          バックグラウンドで実行
   --output <file>       出力ファイルを指定
+  --force               機密ファイルフィルタをバイパス（非推奨）
 
 例:
   $0 codex implement auth
@@ -75,6 +90,7 @@ init_task_dir() {
     mkdir -p "$TASK_DIR"
     TASK_ID=$(date +%Y%m%d-%H%M%S)
     OUTPUT_FILE="${TASK_DIR}/output-${TASK_ID}.txt"
+    # shellcheck disable=SC2034
     LOG_FILE="${TASK_DIR}/log-${TASK_ID}.txt"
 
     log_info "プロジェクトディレクトリ: ${PROJECT_DIR}"
@@ -94,10 +110,21 @@ run_codex() {
         exit 1
     fi
 
+    # Version compatibility check
+    if type check_ai_compatibility &>/dev/null; then
+        local compat
+        compat=$(check_ai_compatibility "codex" "${SCRIPT_DIR}/../.ai-versions.json" 2>/dev/null || echo "unknown")
+        if [ "$compat" = "below_min" ]; then
+            log_warn "Codex CLIのバージョンが古い可能性があります。更新を推奨します。"
+        fi
+    fi
+
     local codex_flags=""
     if [ "$full_auto" = "true" ]; then
         codex_flags="--full-auto"
     fi
+
+    warn_external_ai_send "Codex"
 
     case "$command" in
         implement)
@@ -128,17 +155,18 @@ run_codex() {
             log_info "画面設計: ${spec_file:-なし}"
             log_info "API設計: ${api_file:-なし}"
 
-            local prompt="
+            local prompt
+            prompt="
 以下の設計書を読み込み、実装してください。
 
 【要件定義】
-$(cat "$req_file" 2>/dev/null || echo "ファイルなし")
+$(safe_cat "$req_file" 2>/dev/null || echo "ファイルなし")
 
 【画面設計】
-$(cat "$spec_file" 2>/dev/null || echo "ファイルなし")
+$(safe_cat "$spec_file" 2>/dev/null || echo "ファイルなし")
 
 【API設計】
-$(cat "$api_file" 2>/dev/null || echo "ファイルなし")
+$(safe_cat "$api_file" 2>/dev/null || echo "ファイルなし")
 
 【実装要件】
 - 既存のコードスタイルに従う
@@ -159,7 +187,8 @@ $(cat "$api_file" 2>/dev/null || echo "ファイルなし")
             local feature="$args"
             log_info "🧪 Codexでテストを生成中... (${feature})"
 
-            local prompt="
+            local prompt
+            prompt="
 以下の受入条件を全てカバーするE2Eテストを生成してください。
 
 【受入条件】
@@ -228,6 +257,15 @@ run_gemini() {
         exit 1
     fi
 
+    # Version compatibility check
+    if type check_ai_compatibility &>/dev/null; then
+        local compat
+        compat=$(check_ai_compatibility "gemini" "${SCRIPT_DIR}/../.ai-versions.json" 2>/dev/null || echo "unknown")
+        if [ "$compat" = "below_min" ]; then
+            log_warn "Gemini CLIのバージョンが古い可能性があります。更新を推奨します。"
+        fi
+    fi
+
     local gemini_flags=""
     if [ "$yolo" = "true" ]; then
         gemini_flags="--yolo"
@@ -238,8 +276,21 @@ run_gemini() {
             local path="${args:-.}"
             log_info "🔍 Geminiで大規模解析中... (${path})"
 
-            # コードベースを収集
-            local code_content=$(find "$path" -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.py" -o -name "*.js" -o -name "*.jsx" \) -exec cat {} \; 2>/dev/null | head -c 500000)
+            # コードベースを収集（機密ファイルを除外）
+            local code_content
+            local file_list
+            file_list=$(find "$path" -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.py" -o -name "*.js" -o -name "*.jsx" \) 2>/dev/null)
+            local safe_files
+            safe_files=$(filter_sensitive_files "$file_list" 2>/dev/null)
+            code_content=""
+            while IFS= read -r f; do
+                [ -z "$f" ] && continue
+                code_content="${code_content}$(cat "$f" 2>/dev/null)"
+            done <<< "$safe_files"
+            code_content=$(echo "$code_content" | head -c 500000)
+            local file_count
+            file_count=$(echo "$safe_files" | grep -c . 2>/dev/null || echo "0")
+            warn_external_ai_send "Gemini" "$file_count"
 
             local prompt="
 以下のコードベースを解析し、レポートを作成してください。
@@ -362,6 +413,10 @@ main() {
                 ;;
             --background)
                 BACKGROUND=true
+                ;;
+            --force)
+                FORCE_SEND=true
+                export FORCE_SEND
                 ;;
             --output)
                 shift

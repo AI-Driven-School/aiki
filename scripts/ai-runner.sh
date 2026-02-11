@@ -16,14 +16,23 @@
 
 set -e
 
+# Load sensitive file filter
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -f "$SCRIPT_DIR/lib/sensitive-filter.sh" ]; then
+    # shellcheck source=lib/sensitive-filter.sh
+    source "$SCRIPT_DIR/lib/sensitive-filter.sh"
+fi
+
 # カラー定義
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 RED='\033[0;31m'
+# shellcheck disable=SC2034
 GRAY='\033[0;90m'
 NC='\033[0m'
+# shellcheck disable=SC2034
 BOLD='\033[1m'
 
 # デフォルト設定
@@ -98,7 +107,15 @@ check_ai_available() {
 run_ai() {
     local ai=$1
     local prompt=$2
-    local output_file=$(mktemp)
+    local output_file
+    output_file=$(mktemp)
+
+    # Warn when sending to external AI services
+    if [ "$ai" = "codex" ] || [ "$ai" = "gemini" ]; then
+        if type warn_external_ai_send &>/dev/null; then
+            warn_external_ai_send "$ai"
+        fi
+    fi
 
     case $ai in
         claude)
@@ -189,7 +206,8 @@ execute_with_recovery() {
         log_error "$ai がインストールされていません"
 
         if [ "$FALLBACK" = true ]; then
-            local fallback_ai=$(get_fallback_ai "$ai")
+            local fallback_ai
+            fallback_ai=$(get_fallback_ai "$ai")
             if [ -n "$fallback_ai" ]; then
                 log_warn "フォールバック: $fallback_ai を使用します"
                 ai=$fallback_ai
@@ -219,8 +237,10 @@ execute_with_recovery() {
         log_info "実行中: $ai (試行 $attempt/$MAX_RETRY)"
 
         # 実行
-        local output_file=$(mktemp)
-        local start_time=$(date +%s)
+        local output_file
+        output_file=$(mktemp)
+        local start_time
+        start_time=$(date +%s)
 
         if [ "$QUIET" = false ]; then
             run_ai "$ai" "$prompt" &
@@ -233,7 +253,8 @@ execute_with_recovery() {
             local exit_code=$?
         fi
 
-        local end_time=$(date +%s)
+        local end_time
+        end_time=$(date +%s)
         local duration=$((end_time - start_time))
 
         # 成功
@@ -285,7 +306,8 @@ execute_with_recovery() {
 
     # フォールバック
     if [ "$FALLBACK" = true ]; then
-        local fallback_ai=$(get_fallback_ai "$ai")
+        local fallback_ai
+        fallback_ai=$(get_fallback_ai "$ai")
         if [ -n "$fallback_ai" ]; then
             log_warn "フォールバック: $fallback_ai で再試行します"
             execute_with_recovery "$fallback_ai" "$prompt"

@@ -30,12 +30,40 @@ Claude Code skills can execute arbitrary code via `Bash` tool calls. Before inst
 - Check any scripts in `scripts/` directories
 - Verify the source repository is trusted
 
+### Sensitive file protection
+
+This project includes an automatic sensitive file filter (`scripts/lib/sensitive-filter.sh`) that prevents accidental transmission of secrets to external AI services.
+
+**Blocked patterns include:**
+
+| Category | Patterns |
+|----------|----------|
+| Environment files | `*.env`, `.env.*`, `.env.local` |
+| Private keys | `*.pem`, `*.key`, `*.p12`, `*.pfx`, `id_rsa`, `id_ed25519` |
+| Credentials | `*credential*`, `*secret*`, `credentials.json`, `token.json` |
+| Service accounts | `service-account*.json` |
+| Auth configs | `.npmrc`, `.pypirc`, `.netrc`, `.htpasswd` |
+| Cloud configs | `.aws/credentials`, `kube*config*` |
+| Certificates | `*.cert`, `*.crt`, `*.csr` |
+
+**Bypassing the filter:**
+
+Use `--force` flag when you explicitly need to send sensitive files (not recommended):
+
+```bash
+./scripts/delegate.sh codex implement auth --force
+```
+
+**Customizing patterns:**
+
+Override the `SENSITIVE_PATTERNS` array before sourcing the filter, or edit `scripts/lib/sensitive-filter.sh` directly.
+
 ### AI delegation
 
 This project delegates tasks to external AI services (Codex, Gemini). Be aware that:
 
 - Code and context are sent to third-party APIs
-- Do not include secrets, credentials, or sensitive data in delegated tasks
+- Sensitive files are automatically filtered (see above)
 - Review AI-generated code before deploying to production
 
 ### Shell scripts

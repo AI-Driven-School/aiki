@@ -9,6 +9,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 OUTPUT_DIR="$PROJECT_ROOT/.codex-tasks"
 
+# Load sensitive file filter
+if [ -f "$SCRIPT_DIR/lib/sensitive-filter.sh" ]; then
+    # shellcheck source=lib/sensitive-filter.sh
+    source "$SCRIPT_DIR/lib/sensitive-filter.sh"
+fi
+
 # 出力ディレクトリを作成
 mkdir -p "$OUTPUT_DIR"
 
@@ -82,6 +88,11 @@ do_test() {
     local prompt="Create comprehensive unit tests for the following code. Include edge cases and error scenarios."
 
     if [ -n "$target_file" ]; then
+        if type is_sensitive_file &>/dev/null && is_sensitive_file "$target_file"; then
+            print_error "Refusing to send sensitive file to external AI: $target_file"
+            print_warning "Use --force flag in delegate.sh to bypass this check."
+            exit 1
+        fi
         prompt="$prompt\n\nFile: $target_file\n\n$(cat "$target_file")"
     fi
 
@@ -102,7 +113,8 @@ do_docs() {
     print_info "Generating documentation..."
     local output_file="$OUTPUT_DIR/docs-$TIMESTAMP.txt"
 
-    local prompt="Generate comprehensive documentation for this project. Include:
+    local prompt
+    prompt="Generate comprehensive documentation for this project. Include:
 1. Project overview
 2. Installation instructions
 3. Usage examples
@@ -137,6 +149,11 @@ do_refactor() {
 Keep the same functionality."
 
     if [ -n "$target_file" ]; then
+        if type is_sensitive_file &>/dev/null && is_sensitive_file "$target_file"; then
+            print_error "Refusing to send sensitive file to external AI: $target_file"
+            print_warning "Use --force flag in delegate.sh to bypass this check."
+            exit 1
+        fi
         prompt="$prompt\n\nFile: $target_file\n\n$(cat "$target_file")"
     fi
 

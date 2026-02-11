@@ -1,3 +1,8 @@
+---
+name: checkpointing
+description: セッション状態を保存・復元（永続化）
+---
+
 # /checkpointing - セッション永続化スキル
 
 > 作業状態を保存し、セッション間で継続性を維持します。

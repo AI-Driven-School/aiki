@@ -1,0 +1,4 @@
+#!/bin/bash
+# Mock claude CLI for testing
+echo "[mock-claude] called with: $*"
+exit 0

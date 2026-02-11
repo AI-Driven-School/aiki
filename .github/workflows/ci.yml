@@ -56,6 +56,26 @@ jobs:
           echo "Validated $(find .claude/skills -name SKILL.md | wc -l | tr -d ' ') skills"
           if [ $errors -gt 0 ]; then exit 1; fi
 
+  test-scripts:
+    name: Test Shell Scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install bats
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bats
+      - name: Run bats tests
+        run: bats tests/*.bats
+
+  validate-json:
+    name: Validate JSON Files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate .ai-versions.json
+        run: python3 -m json.tool .ai-versions.json > /dev/null
+
   check-docs:
     name: Check Documentation
     runs-on: ubuntu-latest

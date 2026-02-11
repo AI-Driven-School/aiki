@@ -61,6 +61,9 @@ claude
 # Lint with ShellCheck
 shellcheck scripts/*.sh install*.sh
 
+# Run bats tests (install bats first: brew install bats-core)
+bats tests/*.bats
+
 # Dry-run installation
 bash install-fullstack.sh --dry-run my-test-app
 ```

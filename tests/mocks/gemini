@@ -1,0 +1,4 @@
+#!/bin/bash
+# Mock gemini CLI for testing
+echo "[mock-gemini] called with: $*"
+exit 0

@@ -1,0 +1,4 @@
+#!/bin/bash
+# Mock codex CLI for testing
+echo "[mock-codex] called with: $*"
+exit 0

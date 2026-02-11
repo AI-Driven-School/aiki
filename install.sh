@@ -8,10 +8,12 @@
 
 set -e
 
+# shellcheck disable=SC2034
 VERSION="3.0.0"
 
 # カラー定義
 GREEN='\033[0;32m'
+# shellcheck disable=SC2034
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'

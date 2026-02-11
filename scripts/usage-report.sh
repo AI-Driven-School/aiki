@@ -25,12 +25,15 @@ BOLD='\033[1m'
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 USAGE_DIR="$PROJECT_DIR/.usage"
 USAGE_FILE="$USAGE_DIR/usage.log"
+# shellcheck disable=SC2034
 SUMMARY_FILE="$USAGE_DIR/summary.json"
 
 # 料金設定（1Kトークンあたり）
 CLAUDE_INPUT_COST=0.003    # $3/1M input
 CLAUDE_OUTPUT_COST=0.015   # $15/1M output
+# shellcheck disable=SC2034
 CODEX_COST=0               # ChatGPT Pro に含む
+# shellcheck disable=SC2034
 GEMINI_COST=0              # 無料枠
 
 # ディレクトリ初期化
@@ -55,24 +58,28 @@ log_usage() {
     local input_tokens="$2"
     local output_tokens="$3"
     local task="$4"
-    local timestamp=$(date +"%Y-%m-%d %H:%M:%S")
+    local timestamp
+    timestamp=$(date +"%Y-%m-%d %H:%M:%S")
 
     echo "$timestamp|$ai|$input_tokens|$output_tokens|$task" >> "$USAGE_FILE"
 }
 
 # 今日の使用量を取得
 get_today_usage() {
-    local today=$(date +"%Y-%m-%d")
+    local today
+    today=$(date +"%Y-%m-%d")
     grep "^$today" "$USAGE_FILE" 2>/dev/null || echo ""
 }
 
 # 期間の使用量を取得
 get_period_usage() {
     local days="$1"
-    local start_date=$(date -v-${days}d +"%Y-%m-%d" 2>/dev/null || date -d "-${days} days" +"%Y-%m-%d")
+    local start_date
+    start_date=$(date -v-${days}d +"%Y-%m-%d" 2>/dev/null || date -d "-${days} days" +"%Y-%m-%d")
 
     while IFS= read -r line; do
-        local log_date=$(echo "$line" | cut -d'|' -f1 | cut -d' ' -f1)
+        local log_date
+        log_date=$(echo "$line" | cut -d'|' -f1 | cut -d' ' -f1)
         if [[ "$log_date" > "$start_date" ]] || [[ "$log_date" == "$start_date" ]]; then
             echo "$line"
         fi
@@ -116,9 +123,12 @@ calculate_cost() {
     local claude_output="$2"
 
     # Claude のコスト計算（$3/1M input, $15/1M output）
-    local input_cost=$(echo "scale=4; $claude_input * $CLAUDE_INPUT_COST / 1000" | bc)
-    local output_cost=$(echo "scale=4; $claude_output * $CLAUDE_OUTPUT_COST / 1000" | bc)
-    local total=$(echo "scale=2; $input_cost + $output_cost" | bc)
+    local input_cost
+    input_cost=$(echo "scale=4; $claude_input * $CLAUDE_INPUT_COST / 1000" | bc)
+    local output_cost
+    output_cost=$(echo "scale=4; $claude_output * $CLAUDE_OUTPUT_COST / 1000" | bc)
+    local total
+    total=$(echo "scale=2; $input_cost + $output_cost" | bc)
 
     echo "$total"
 }
@@ -150,6 +160,7 @@ draw_bar() {
 
 # メインレポート表示
 show_report() {
+    # shellcheck disable=SC2034
     local period="$1"
     local period_label="$2"
     local data="$3"
@@ -163,7 +174,8 @@ show_report() {
         return
     fi
 
-    local usage=$(calculate_usage "$data")
+    local usage
+    usage=$(calculate_usage "$data")
     IFS='|' read -r claude_in claude_out codex_in codex_out gemini_in gemini_out <<< "$usage"
 
     local claude_total=$((claude_in + claude_out))
@@ -171,7 +183,8 @@ show_report() {
     local gemini_total=$((gemini_in + gemini_out))
     local all_total=$((claude_total + codex_total + gemini_total))
 
-    local claude_cost=$(calculate_cost "$claude_in" "$claude_out")
+    local claude_cost
+    claude_cost=$(calculate_cost "$claude_in" "$claude_out")
 
     echo -e "${BOLD}$period_label${NC}"
     echo ""
@@ -198,8 +211,10 @@ show_report() {
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
     # 合計とコスト削減
-    local claude_only_cost=$(echo "scale=2; ($claude_in + $codex_in + $gemini_in) * $CLAUDE_INPUT_COST / 1000 + ($claude_out + $codex_out + $gemini_out) * $CLAUDE_OUTPUT_COST / 1000" | bc)
-    local savings=$(echo "scale=0; (1 - $claude_cost / $claude_only_cost) * 100" | bc 2>/dev/null || echo "0")
+    local claude_only_cost
+    claude_only_cost=$(echo "scale=2; ($claude_in + $codex_in + $gemini_in) * $CLAUDE_INPUT_COST / 1000 + ($claude_out + $codex_out + $gemini_out) * $CLAUDE_OUTPUT_COST / 1000" | bc)
+    local savings
+    savings=$(echo "scale=0; (1 - $claude_cost / $claude_only_cost) * 100" | bc 2>/dev/null || echo "0")
 
     printf "  ${BOLD}合計:${NC} %'d tokens\n" "$all_total"
     echo ""
@@ -229,13 +244,19 @@ show_simulation() {
     # 概算: 1行 ≈ 20トークン、実装50%、設計30%、テスト20%
     local total_tokens=$((lines * 20))
     local design_tokens=$((total_tokens * 30 / 100))
+    # shellcheck disable=SC2034
     local impl_tokens=$((total_tokens * 50 / 100))
+    # shellcheck disable=SC2034
     local test_tokens=$((total_tokens * 20 / 100))
 
-    local claude_only=$(echo "scale=2; $total_tokens * ($CLAUDE_INPUT_COST + $CLAUDE_OUTPUT_COST) / 2 / 1000" | bc)
-    local with_collab=$(echo "scale=2; $design_tokens * ($CLAUDE_INPUT_COST + $CLAUDE_OUTPUT_COST) / 2 / 1000" | bc)
-    local savings=$(echo "scale=2; $claude_only - $with_collab" | bc)
-    local percent=$(echo "scale=0; (1 - $with_collab / $claude_only) * 100" | bc)
+    local claude_only
+    claude_only=$(echo "scale=2; $total_tokens * ($CLAUDE_INPUT_COST + $CLAUDE_OUTPUT_COST) / 2 / 1000" | bc)
+    local with_collab
+    with_collab=$(echo "scale=2; $design_tokens * ($CLAUDE_INPUT_COST + $CLAUDE_OUTPUT_COST) / 2 / 1000" | bc)
+    local savings
+    savings=$(echo "scale=2; $claude_only - $with_collab" | bc)
+    local percent
+    percent=$(echo "scale=0; (1 - $with_collab / $claude_only) * 100" | bc)
 
     echo ""
     echo "  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

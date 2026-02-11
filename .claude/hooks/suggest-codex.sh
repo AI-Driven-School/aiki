@@ -5,6 +5,7 @@
 #
 
 # 環境変数から情報取得
+# shellcheck disable=SC2034
 tool_name="${CLAUDE_TOOL_NAME:-unknown}"
 
 # 大規模な編集の場合のみ提案（小さな修正はClaudeで直接実行）

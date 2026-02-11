@@ -1,0 +1,21 @@
+# Team Configuration for claude-codex-collab
+# This file is read by project-workflow.sh for team coordination.
+
+# Branch naming
+branch_prefix: "feat"
+branch_format: "{prefix}/{feature}-{author}"
+
+# Auto-approval phases (skip manual confirmation)
+# Valid values: requirements, design, implement, test, review, deploy
+auto_approve_phases: []
+
+# Lock settings
+lock_timeout_minutes: 60
+force_unlock_allowed: true
+
+# Team members (optional, for branch suggestions)
+# team_members:
+#   - name: alice
+#     default_phases: [requirements, design, review]
+#   - name: bob
+#     default_phases: [implement, test]

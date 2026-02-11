@@ -7,12 +7,14 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # 現在の作業ディレクトリを使用（実際のプロジェクト）
 PROJECT_DIR="${PWD}"
+# shellcheck disable=SC2034
 TEMPLATE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # 色定義
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+# shellcheck disable=SC2034
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 PURPLE='\033[0;35m'
@@ -21,6 +23,7 @@ NC='\033[0m'
 
 # 状態管理
 STATE_FILE=""
+LOCK_FILE=""
 FEATURE=""
 CURRENT_PHASE=1
 TOTAL_PHASES=6
@@ -58,6 +61,7 @@ show_help() {
   --skip=N,M    指定フェーズをスキップ
   --auto        全承認を自動でY
   --dry-run     実行せずにプレビュー
+  --force-unlock  強制的にロックを解除
 
 フェーズ:
   [1] 要件定義   (Claude)  → docs/requirements/{feature}.md
@@ -69,6 +73,62 @@ show_help() {
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
+}
+
+# ===== Team locking =====
+
+# Read team config if available
+TEAM_CONFIG_FILE="${PROJECT_DIR}/.claude/team-config.yaml"
+LOCK_TIMEOUT_MINUTES=60
+
+if [ -f "$TEAM_CONFIG_FILE" ]; then
+    _timeout=$(grep 'lock_timeout_minutes:' "$TEAM_CONFIG_FILE" 2>/dev/null | sed 's/.*: *//')
+    if [ -n "$_timeout" ]; then
+        LOCK_TIMEOUT_MINUTES="$_timeout"
+    fi
+fi
+
+acquire_lock() {
+    LOCK_FILE="${PROJECT_DIR}/.project-state-${FEATURE_SLUG}.lock"
+
+    if [ -f "$LOCK_FILE" ]; then
+        local lock_owner lock_time current_time age_minutes
+        lock_owner=$(head -1 "$LOCK_FILE" 2>/dev/null || echo "unknown")
+        lock_time=$(sed -n '2p' "$LOCK_FILE" 2>/dev/null || echo "0")
+        current_time=$(date +%s)
+        age_minutes=$(( (current_time - lock_time) / 60 ))
+
+        if [ "$age_minutes" -ge "$LOCK_TIMEOUT_MINUTES" ]; then
+            log_warn "Stale lock detected (${age_minutes}min old, owner: ${lock_owner}). Auto-releasing."
+            rm -f "$LOCK_FILE"
+        else
+            log_error "Feature '${FEATURE}' is locked by: ${lock_owner} (${age_minutes}min ago)"
+            log_info "Use --force-unlock to override"
+            exit 1
+        fi
+    fi
+
+    # Write lock
+    echo "$(whoami)@$(hostname)" > "$LOCK_FILE"
+    date +%s >> "$LOCK_FILE"
+}
+
+release_lock() {
+    if [ -n "${LOCK_FILE:-}" ] && [ -f "$LOCK_FILE" ]; then
+        rm -f "$LOCK_FILE"
+    fi
+}
+
+force_unlock() {
+    local slug="$1"
+    local lock="${PROJECT_DIR}/.project-state-${slug}.lock"
+    if [ -f "$lock" ]; then
+        log_warn "Force-removing lock: $lock"
+        rm -f "$lock"
+        log_success "Lock released"
+    else
+        log_info "No lock found for: $slug"
+    fi
 }
 
 # 状態保存
@@ -506,9 +566,17 @@ main() {
             --dry-run)
                 DRY_RUN=true
                 ;;
+            --force-unlock)
+                force_unlock "$FEATURE_SLUG"
+                exit 0
+                ;;
         esac
         shift
     done
+
+    # Acquire lock for team coordination
+    acquire_lock
+    trap release_lock EXIT
 
     CURRENT_PHASE=$start_phase
 

@@ -1,8 +1,9 @@
 # 2x Faster Implementation, 75% Cost Reduction
 
-[![GitHub Sponsors](https://img.shields.io/github/sponsors/AI-Driven-School?style=for-the-badge&logo=github&label=Sponsor)](https://github.com/sponsors/AI-Driven-School)
+[![GitHub Stars](https://img.shields.io/github/stars/AI-Driven-School/claude-codex-collab?style=for-the-badge&logo=github&label=Stars)](https://github.com/AI-Driven-School/claude-codex-collab/stargazers)
+[![npm](https://img.shields.io/npm/v/claude-codex-collab?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/claude-codex-collab)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
-[![Phase](https://img.shields.io/badge/Phase_1-Free-22c55e?style=for-the-badge)](https://github.com/AI-Driven-School/claude-codex-collab)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/AI-Driven-School?style=for-the-badge&logo=github&label=Sponsor)](https://github.com/sponsors/AI-Driven-School)
 
 <p align="center">
   <img src="./landing/promo.gif" alt="3AI Collaborative Development Demo" width="700">
@@ -14,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="./README_ja.md">日本語</a>
+  <a href="./README_ja.md">日本語</a> · If this project helps you, please <a href="https://github.com/AI-Driven-School/claude-codex-collab/stargazers">give it a star</a>
 </p>
 
 ---
@@ -282,8 +283,13 @@ Version compatibility is automatically checked during installation and delegatio
 
 ## Support
 
-Phase 1 is completely free. If you'd like to support development:
+Phase 1 is completely free. The easiest way to support this project:
 
+1. [Give it a star on GitHub](https://github.com/AI-Driven-School/claude-codex-collab/stargazers) - helps others discover this project
+2. [Share on X/Twitter](https://twitter.com/intent/tweet?text=3-AI%20collaborative%20development%20with%20Claude%20%2B%20Codex%20%2B%20Gemini.%2075%25%20cost%20reduction%20%F0%9F%9A%80&url=https%3A%2F%2Fgithub.com%2FAI-Driven-School%2Fclaude-codex-collab) - spread the word
+3. [Sponsor development](https://github.com/sponsors/AI-Driven-School) - support ongoing work
+
+[![GitHub Stars](https://img.shields.io/github/stars/AI-Driven-School/claude-codex-collab?style=for-the-badge&logo=github&label=Star)](https://github.com/AI-Driven-School/claude-codex-collab/stargazers)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/AI-Driven-School?style=for-the-badge&logo=github&label=Sponsor)](https://github.com/sponsors/AI-Driven-School)
 
 ---

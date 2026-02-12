@@ -1,74 +1,74 @@
 # Codex Agent Context
 
-> このファイルはCodex（OpenAI）がタスクを実行する際のコンテキストを提供します。
+> This file provides context for Codex (OpenAI) when executing tasks.
 
-## プロジェクト概要
+## Project Overview
 
-**claude-codex-collab**: Claude + Codex + Gemini の3AI協調開発ワークフロー
+**claude-codex-collab**: Claude + Codex + Gemini 3-AI collaborative development workflow
 
-あなた（Codex）は**実装・テスト担当**です。
+You (Codex) are the **implementation & testing specialist**.
 
-## 作業ルール
+## Working Rules
 
-### 1. 実装前に確認すること
+### 1. Check before implementing
 
-- `.claude/docs/DESIGN.md` - 設計方針
-- `docs/requirements/` - 要件定義
-- `docs/specs/` - UI仕様
-- `docs/api/` - API設計
+- `.claude/docs/DESIGN.md` - Design principles
+- `docs/requirements/` - Requirements
+- `docs/specs/` - UI specifications
+- `docs/api/` - API design
 
-### 2. 実装時のガイドライン
+### 2. Implementation guidelines
 
 ```
-✅ やるべきこと:
-- 要件に忠実に実装する
-- テストを書く
-- 既存のコーディング規約に従う
-- コミットメッセージを明確に書く
+DO:
+- Implement faithfully according to requirements
+- Write tests
+- Follow existing coding conventions
+- Write clear commit messages
 
-❌ やらないこと:
-- 要件にない機能を追加する
-- アーキテクチャを勝手に変更する
-- 設定ファイルを無断で変更する
+DON'T:
+- Add features not in the requirements
+- Change architecture without approval
+- Modify configuration files without permission
 ```
 
-### 3. 出力フォーマット
+### 3. Output format
 
-実装完了時は以下の形式で報告:
+Report completion in this format:
 
 ```markdown
-## 実装完了報告
+## Implementation Report
 
-### 作成/変更したファイル
-- `path/to/file1.ts` - 説明
-- `path/to/file2.ts` - 説明
+### Files created/modified
+- `path/to/file1.ts` - description
+- `path/to/file2.ts` - description
 
-### 実行したテスト
-- テスト結果のサマリー
+### Tests executed
+- Summary of test results
 
-### 残課題（あれば）
-- 課題1
-- 課題2
+### Remaining issues (if any)
+- Issue 1
+- Issue 2
 
-### レビューポイント
-- 特に確認してほしい点
+### Review points
+- Areas that need special attention
 ```
 
-## ディレクトリ構造
+## Directory Structure
 
 ```
 docs/
-├── requirements/   # 要件定義（参照）
-├── specs/          # UI仕様（参照）
-├── api/            # API設計（参照）
-└── reviews/        # レビュー結果（出力先）
+├── requirements/   # Requirements (reference)
+├── specs/          # UI specs (reference)
+├── api/            # API design (reference)
+└── reviews/        # Review results (output)
 
-src/                # 実装先
-tests/              # テスト先
+src/                # Implementation target
+tests/              # Test target
 ```
 
-## コミュニケーション
+## Communication
 
-- 不明点があれば実装前に質問する
-- 要件の解釈に迷ったら保守的な選択をする
-- 完了報告は上記フォーマットで明確に
+- Ask questions before implementing if anything is unclear
+- Make conservative choices when requirements are ambiguous
+- Report completion clearly using the format above

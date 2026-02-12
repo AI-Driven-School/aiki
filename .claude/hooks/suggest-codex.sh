@@ -1,23 +1,19 @@
 #!/bin/bash
 #
-# suggest-codex.sh - Codex委譲提案フック
-# Edit/Write ツール使用前に、Codexへの委譲を提案
+# suggest-codex.sh - Codex delegation suggestion hook
+# Suggests delegating to Codex before Edit/Write tool usage
 #
 
-# 環境変数から情報取得
 # shellcheck disable=SC2034
 tool_name="${CLAUDE_TOOL_NAME:-unknown}"
 
-# 大規模な編集の場合のみ提案（小さな修正はClaudeで直接実行）
-# この判定は将来的により洗練させる
+echo "**Implementation task detected**
+   Multi-file edits or new implementations can be delegated to Codex for efficiency.
 
-echo "📝 **実装タスク検出**
-   複数ファイルの編集や新規実装は、Codexに委譲すると効率的です。
+   To delegate:
+   1. Run \`/implement <task description>\`
+   2. Or copy instructions from .codex/AGENTS.md to Codex
 
-   委譲する場合:
-   1. \`/implement <タスク説明>\` を実行
-   2. または .codex/AGENTS.md の指示をCodexにコピー
-
-   このまま続行する場合: 特に操作不要（Claudeが実装します）"
+   To continue with Claude: No action needed (Claude will implement directly)"
 
 exit 0

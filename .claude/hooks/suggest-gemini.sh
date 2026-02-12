@@ -1,16 +1,16 @@
 #!/bin/bash
 #
-# suggest-gemini.sh - Gemini委譲提案フック
-# WebSearch/WebFetch ツール使用前に、Geminiへの委譲を提案
+# suggest-gemini.sh - Gemini delegation suggestion hook
+# Suggests delegating to Gemini before WebSearch/WebFetch tool usage
 #
 
-echo "🌐 **Web調査タスク検出**
-   大規模な調査・比較分析はGemini（無料）が得意です。
+echo "**Web research task detected**
+   Large-scale research and comparative analysis is a strength of Gemini (free).
 
-   Geminiに依頼する場合:
-   1. .gemini/GEMINI.md の指示テンプレートを使用
-   2. 調査結果を .claude/docs/research/ に保存するよう依頼
+   To delegate to Gemini:
+   1. Use the request template in .gemini/GEMINI.md
+   2. Ask to save results in .claude/docs/research/
 
-   このまま続行する場合: 特に操作不要（Claudeが検索します）"
+   To continue with Claude: No action needed (Claude will search directly)"
 
 exit 0

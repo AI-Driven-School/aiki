@@ -9,10 +9,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ### Changed
 - Skills now comply with [Agent Skills open standard](https://agentskills.io/specification)
 - All skill descriptions improved with "what + when to use" format
-- Skills available at both `.claude/skills/` and repo root `skills/`
+- Skills located in `.claude/skills/` (Agent Skills standard directory format)
 
 ### Added
-- CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md
+- CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md, TEAM_USAGE.md
 - GitHub Actions CI (ShellCheck, skill validation)
 - Issue and PR templates
 - GitHub topics: agent-skills, claude-code, claude-skills

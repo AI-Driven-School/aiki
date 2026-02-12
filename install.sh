@@ -21,8 +21,8 @@ NC='\033[0m'
 
 echo -e "${CYAN}"
 echo "┌───────────────────────────────────────────┐"
-echo "│  Claude Code トークン消費 95% 削減        │"
-echo "│  最小構成版（Claude Code + Codex のみ）   │"
+echo "│  Claude Code 95% Token Reduction          │"
+echo "│  Minimal Setup (Claude Code + Codex)      │"
 echo "└───────────────────────────────────────────┘"
 echo -e "${NC}"
 
@@ -35,7 +35,7 @@ else
     PROJECT_DIR=$(pwd)
 fi
 
-echo "セットアップ中..."
+echo "Setting up..."
 
 mkdir -p scripts
 mkdir -p .codex-tasks
@@ -153,12 +153,12 @@ SCRIPT_EOF
 chmod +x scripts/auto-delegate.sh
 
 echo ""
-echo -e "${GREEN}セットアップ完了${NC}"
+echo -e "${GREEN}Setup complete${NC}"
 echo ""
-echo "Claude Code を起動:"
+echo "Start Claude Code:"
 echo -e "  ${BLUE}claude${NC}"
 echo ""
-echo "Codex委譲:"
+echo "Delegate to Codex:"
 echo -e "  ${BLUE}./scripts/auto-delegate.sh review${NC}"
 echo -e "  ${BLUE}./scripts/auto-delegate.sh test${NC}"
 echo ""

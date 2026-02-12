@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# auto-delegate.sh - Codexへの自動タスク委譲スクリプト
+# auto-delegate.sh - Auto-delegation script for Codex tasks
 # Usage: ./scripts/auto-delegate.sh <command> [args...]
 
-set -e
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -15,13 +15,13 @@ if [ -f "$SCRIPT_DIR/lib/sensitive-filter.sh" ]; then
     source "$SCRIPT_DIR/lib/sensitive-filter.sh"
 fi
 
-# 出力ディレクトリを作成
+# Create output directory
 mkdir -p "$OUTPUT_DIR"
 
-# タイムスタンプ
+# Timestamp
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 
-# カラー出力
+# Color output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -44,7 +44,7 @@ print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# Codexがインストールされているか確認
+# Check if Codex is installed
 check_codex() {
     if ! command -v codex &> /dev/null; then
         print_error "Codex CLI is not installed."
@@ -55,7 +55,7 @@ check_codex() {
     fi
 }
 
-# コードレビュー
+# Code review
 do_review() {
     print_info "Starting code review..."
     local output_file="$OUTPUT_DIR/review-$TIMESTAMP.txt"
@@ -79,7 +79,7 @@ do_review() {
     print_success "Review output saved to: $output_file"
 }
 
-# テスト作成
+# Test creation
 do_test() {
     local target_file="$1"
     print_info "Creating tests for: ${target_file:-all files}"
@@ -108,7 +108,7 @@ do_test() {
     print_success "Test output saved to: $output_file"
 }
 
-# ドキュメント生成
+# Documentation generation
 do_docs() {
     print_info "Generating documentation..."
     local output_file="$OUTPUT_DIR/docs-$TIMESTAMP.txt"
@@ -134,7 +134,7 @@ $(find . -type f -name "*.py" -o -name "*.ts" -o -name "*.tsx" | head -50)"
     print_success "Docs output saved to: $output_file"
 }
 
-# リファクタリング
+# Refactoring
 do_refactor() {
     local target_file="$1"
     print_info "Refactoring: ${target_file:-current changes}"
@@ -167,7 +167,7 @@ Keep the same functionality."
     print_success "Refactor output saved to: $output_file"
 }
 
-# カスタムタスク
+# Custom task
 do_custom() {
     local task="$1"
     print_info "Running custom task: $task"
@@ -183,7 +183,7 @@ do_custom() {
     print_success "Custom task output saved to: $output_file"
 }
 
-# バックグラウンド実行
+# Background execution
 do_background() {
     local task="$1"
     print_info "Running in background: $task"
@@ -201,7 +201,7 @@ do_background() {
     fi
 }
 
-# ヘルプ表示
+# Show help
 show_help() {
     echo "Usage: $0 <command> [args...]"
     echo ""
@@ -220,7 +220,7 @@ show_help() {
     echo "  $0 background 'Refactor entire codebase'"
 }
 
-# メイン処理
+# Main
 case "${1:-help}" in
     review)
         do_review

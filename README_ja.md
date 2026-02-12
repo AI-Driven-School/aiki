@@ -18,13 +18,16 @@
 ## 30秒で始める
 
 ```bash
-# 1. インストール
+# 方法A: npx（推奨）
+npx claude-codex-collab init my-app
+
+# 方法B: curl
 curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/install-fullstack.sh | bash -s -- my-app
 
-# 2. 開発開始
+# 開発開始
 cd my-app && claude
 
-# 3. 機能を作る
+# 機能を作る
 > /project ユーザー認証
 ```
 

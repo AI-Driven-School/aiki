@@ -49,6 +49,10 @@ Thumbs.db
 # Test workspaces
 benchmarks/workspace/
 
+# Nested node_modules
+landing/promo-video/node_modules/
+benchmarks/complex-test/node_modules/
+
 # Binary assets (use GitHub Releases for distribution)
 *.mp4
 *.gif

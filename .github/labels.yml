@@ -1,0 +1,31 @@
+- name: "good first issue"
+  color: "7057ff"
+  description: "Good for newcomers"
+
+- name: "help wanted"
+  color: "008672"
+  description: "Extra attention is needed"
+
+- name: "documentation"
+  color: "0075ca"
+  description: "Improvements or additions to documentation"
+
+- name: "i18n"
+  color: "e4e669"
+  description: "Internationalization and localization"
+
+- name: "distribution"
+  color: "d876e3"
+  description: "npm, Homebrew, and other distribution channels"
+
+- name: "testing"
+  color: "f9d0c4"
+  description: "Test coverage and quality"
+
+- name: "skills"
+  color: "1d76db"
+  description: "Claude Code skills and Agent Skills"
+
+- name: "enhancement"
+  color: "a2eeef"
+  description: "New feature or request"

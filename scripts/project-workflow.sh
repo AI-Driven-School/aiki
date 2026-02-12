@@ -1,16 +1,16 @@
 #!/bin/bash
-# 3AI協調システム - プロジェクトワークフロー
-# 6フェーズの設計→実装→デプロイフローを自動実行
+# 3-AI Collaboration System - Project Workflow
+# Automated 6-phase design -> implementation -> deploy flow
 
-set -e
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# 現在の作業ディレクトリを使用（実際のプロジェクト）
+# Use current working directory (actual project)
 PROJECT_DIR="${PWD}"
 # shellcheck disable=SC2034
 TEMPLATE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-# 色定義
+# Color definitions
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -21,14 +21,14 @@ PURPLE='\033[0;35m'
 BOLD='\033[1m'
 NC='\033[0m'
 
-# 状態管理
+# State management
 STATE_FILE=""
 LOCK_FILE=""
 FEATURE=""
 CURRENT_PHASE=1
 TOTAL_PHASES=6
 
-# ログ出力
+# Log output
 log_phase() {
     local phase=$1
     local desc=$2
@@ -41,35 +41,35 @@ log_success() { echo -e "${GREEN}    ✓${NC} $1"; }
 log_warn() { echo -e "${YELLOW}    ⚠${NC} $1"; }
 log_error() { echo -e "${RED}    ✗${NC} $1"; }
 
-# ヘルプ表示
+# Show help
 show_help() {
     cat << EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🚀 /project ワークフロー
+  /project Workflow
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-使用方法:
-  $0 <機能名> [オプション]
+Usage:
+  $0 <feature> [options]
 
-例:
-  $0 "ユーザー認証"
-  $0 "商品検索" --from=3
-  $0 "ダッシュボード" --skip=1,2
+Examples:
+  $0 "user-auth"
+  $0 "search" --from=3
+  $0 "dashboard" --skip=1,2
 
-オプション:
-  --from=N      N番目のフェーズから開始
-  --skip=N,M    指定フェーズをスキップ
-  --auto        全承認を自動でY
-  --dry-run     実行せずにプレビュー
-  --force-unlock  強制的にロックを解除
+Options:
+  --from=N        Start from phase N
+  --skip=N,M      Skip specified phases
+  --auto          Auto-approve all phases
+  --dry-run       Preview without executing
+  --force-unlock  Force-release a stale lock
 
-フェーズ:
-  [1] 要件定義   (Claude)  → docs/requirements/{feature}.md
-  [2] 設計       (Claude)  → docs/specs/{feature}.md
-  [3] 実装       (Codex)   → src/**/*
-  [4] テスト     (Codex)   → tests/**/*
-  [5] レビュー   (Claude)  → docs/reviews/{feature}.md
-  [6] デプロイ   (Claude)  → 最終確認
+Phases:
+  [1] Requirements (Claude)  -> docs/requirements/{feature}.md
+  [2] Design       (Claude)  -> docs/specs/{feature}.md
+  [3] Implement    (Codex)   -> src/**/*
+  [4] Test         (Codex)   -> tests/**/*
+  [5] Review       (Claude)  -> docs/reviews/{feature}.md
+  [6] Deploy       (Claude)  -> Final check
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
@@ -90,7 +90,46 @@ fi
 
 acquire_lock() {
     LOCK_FILE="${PROJECT_DIR}/.project-state-${FEATURE_SLUG}.lock"
+    LOCK_FD=9
 
+    # Try atomic lock with flock if available (Linux), fall back to mkdir (portable)
+    if command -v flock &>/dev/null; then
+        _acquire_lock_flock
+    else
+        _acquire_lock_mkdir
+    fi
+}
+
+_acquire_lock_flock() {
+    # Open lock file descriptor for flock
+    eval "exec ${LOCK_FD}>\"${LOCK_FILE}\""
+
+    if ! flock -n "$LOCK_FD" 2>/dev/null; then
+        # Lock held by another process — read owner info
+        local lock_owner
+        lock_owner=$(head -1 "$LOCK_FILE" 2>/dev/null || echo "unknown")
+        log_error "Feature '${FEATURE}' is locked by: ${lock_owner}"
+        log_info "Use --force-unlock to override"
+        exit 1
+    fi
+
+    # Write owner info (we hold the flock)
+    echo "$(whoami)@$(hostname)" > "$LOCK_FILE"
+    date +%s >> "$LOCK_FILE"
+}
+
+_acquire_lock_mkdir() {
+    # mkdir is atomic on all filesystems including NFS
+    local lock_dir="${LOCK_FILE}.d"
+
+    if mkdir "$lock_dir" 2>/dev/null; then
+        # We got the lock — write info
+        echo "$(whoami)@$(hostname)" > "$LOCK_FILE"
+        date +%s >> "$LOCK_FILE"
+        return 0
+    fi
+
+    # Lock exists — check staleness
     if [ -f "$LOCK_FILE" ]; then
         local lock_owner lock_time current_time age_minutes
         lock_owner=$(head -1 "$LOCK_FILE" 2>/dev/null || echo "unknown")
@@ -100,59 +139,69 @@ acquire_lock() {
 
         if [ "$age_minutes" -ge "$LOCK_TIMEOUT_MINUTES" ]; then
             log_warn "Stale lock detected (${age_minutes}min old, owner: ${lock_owner}). Auto-releasing."
+            rm -rf "$lock_dir"
             rm -f "$LOCK_FILE"
-        else
-            log_error "Feature '${FEATURE}' is locked by: ${lock_owner} (${age_minutes}min ago)"
-            log_info "Use --force-unlock to override"
-            exit 1
+            # Retry once
+            if mkdir "$lock_dir" 2>/dev/null; then
+                echo "$(whoami)@$(hostname)" > "$LOCK_FILE"
+                date +%s >> "$LOCK_FILE"
+                return 0
+            fi
         fi
+
+        log_error "Feature '${FEATURE}' is locked by: ${lock_owner} (${age_minutes}min ago)"
+        log_info "Use --force-unlock to override"
+        exit 1
     fi
 
-    # Write lock
-    echo "$(whoami)@$(hostname)" > "$LOCK_FILE"
-    date +%s >> "$LOCK_FILE"
+    log_error "Lock acquisition failed for '${FEATURE}'"
+    exit 1
 }
 
 release_lock() {
-    if [ -n "${LOCK_FILE:-}" ] && [ -f "$LOCK_FILE" ]; then
+    if [ -n "${LOCK_FILE:-}" ]; then
         rm -f "$LOCK_FILE"
+        rm -rf "${LOCK_FILE}.d" 2>/dev/null || true
+        # Release flock fd if held
+        eval "exec ${LOCK_FD:-9}>&-" 2>/dev/null || true
     fi
 }
 
 force_unlock() {
     local slug="$1"
     local lock="${PROJECT_DIR}/.project-state-${slug}.lock"
-    if [ -f "$lock" ]; then
+    if [ -f "$lock" ] || [ -d "${lock}.d" ]; then
         log_warn "Force-removing lock: $lock"
         rm -f "$lock"
+        rm -rf "${lock}.d" 2>/dev/null || true
         log_success "Lock released"
     else
         log_info "No lock found for: $slug"
     fi
 }
 
-# 状態保存
+# Save state
 save_state() {
     echo "$CURRENT_PHASE" > "$STATE_FILE"
 }
 
-# 状態復元
+# Load state
 load_state() {
     if [ -f "$STATE_FILE" ]; then
         CURRENT_PHASE=$(cat "$STATE_FILE")
     fi
 }
 
-# ユーザー確認
+# User confirmation
 ask_approval() {
     local message="$1"
     if [ "$AUTO_APPROVE" = "true" ]; then
-        echo "Y (自動承認)"
+        echo "Y (auto-approved)"
         return 0
     fi
 
     echo -e "\n${YELLOW}${message}${NC}"
-    read -p "承認しますか？ [Y/n/reject 理由] > " answer
+    read -p "Approve? [Y/n/reject reason] > " answer
 
     case "$answer" in
         [Yy]|"")
@@ -163,7 +212,7 @@ ask_approval() {
             ;;
         reject*)
             local reason="${answer#reject }"
-            log_warn "却下: ${reason}"
+            log_warn "Rejected: ${reason}"
             return 2
             ;;
         *)
@@ -172,9 +221,9 @@ ask_approval() {
     esac
 }
 
-# Phase 1: 要件定義
+# Phase 1: Requirements
 phase_requirements() {
-    log_phase 1 "要件定義を生成中..." "Claude"
+    log_phase 1 "Generating requirements..." "Claude"
 
     local output_dir="${PROJECT_DIR}/docs/requirements"
     local output_file="${output_dir}/${FEATURE_SLUG}.md"
@@ -242,17 +291,17 @@ EOF
     echo "..."
     echo "───────────────────────────────────────"
 
-    if ask_approval "要件定義を承認しますか？"; then
-        log_success "要件定義を承認しました"
+    if ask_approval "Approve requirements?"; then
+        log_success "Requirements approved"
         return 0
     else
         return 1
     fi
 }
 
-# Phase 2: 設計
+# Phase 2: Design
 phase_design() {
-    log_phase 2 "設計を生成中..." "Claude"
+    log_phase 2 "Generating design..." "Claude"
 
     local spec_dir="${PROJECT_DIR}/docs/specs"
     local api_dir="${PROJECT_DIR}/docs/api"
@@ -380,49 +429,48 @@ EOF
 
     log_info "→ ${api_file}"
 
-    if ask_approval "設計を承認しますか？"; then
-        log_success "設計を承認しました"
+    if ask_approval "Approve design?"; then
+        log_success "Design approved"
         return 0
     else
         return 1
     fi
 }
 
-# Phase 3: 実装
+# Phase 3: Implementation
 phase_implement() {
-    log_phase 3 "実装中..." "Codex - full-auto"
-    log_warn "★ Codexに委譲します（ChatGPT Pro必須）"
+    log_phase 3 "Implementing..." "Codex - full-auto"
+    log_warn "Delegating to Codex (requires ChatGPT Pro)"
 
-    # Codexがある場合は実行
     if command -v codex &> /dev/null; then
         bash "$SCRIPT_DIR/delegate.sh" codex implement "$FEATURE_SLUG" --full-auto
-        log_success "実装が完了しました"
+        log_success "Implementation complete"
     else
-        log_warn "Codexが未インストールのためスキップ"
-        log_info "手動で実装してください: src/app/${FEATURE_SLUG}/"
+        log_warn "Codex not installed, skipping"
+        log_info "Please implement manually: src/app/${FEATURE_SLUG}/"
     fi
 
     return 0
 }
 
-# Phase 4: テスト
+# Phase 4: Testing
 phase_test() {
-    log_phase 4 "テスト生成中..." "Codex"
+    log_phase 4 "Generating tests..." "Codex"
 
     if command -v codex &> /dev/null; then
         bash "$SCRIPT_DIR/delegate.sh" codex test "$FEATURE_SLUG" --full-auto
-        log_success "テストが生成されました"
+        log_success "Tests generated"
     else
-        log_warn "Codexが未インストールのためスキップ"
-        log_info "手動でテストを作成してください: tests/${FEATURE_SLUG}.spec.ts"
+        log_warn "Codex not installed, skipping"
+        log_info "Please create tests manually: tests/${FEATURE_SLUG}.spec.ts"
     fi
 
     return 0
 }
 
-# Phase 5: レビュー
+# Phase 5: Review
 phase_review() {
-    log_phase 5 "レビュー中..." "Claude"
+    log_phase 5 "Reviewing..." "Claude"
 
     local review_dir="${PROJECT_DIR}/docs/reviews"
     mkdir -p "$review_dir"
@@ -483,44 +531,43 @@ phase_review() {
 EOF
 
     log_info "→ ${review_file}"
-    log_success "レビューテンプレートを作成しました"
-    log_info "Claude Codeで詳細レビューを実行してください"
+    log_success "Review template created"
+    log_info "Run detailed review with Claude Code"
 
     return 0
 }
 
-# Phase 6: デプロイ
+# Phase 6: Deploy
 phase_deploy() {
-    log_phase 6 "デプロイ準備完了" "Claude"
+    log_phase 6 "Deploy ready" "Claude"
 
     echo ""
     echo "───────────────────────────────────────"
-    echo "レビュー結果:"
-    echo "  ⏳ 受入条件: 確認待ち"
-    echo "  ⏳ テスト: 未実行"
+    echo "Review results:"
+    echo "  Acceptance criteria: pending"
+    echo "  Tests: not executed"
     echo "───────────────────────────────────────"
 
-    if ask_approval "本番にデプロイしますか？"; then
-        log_info "デプロイを実行中..."
+    if ask_approval "Deploy to production?"; then
+        log_info "Deploying..."
 
-        # Vercelがある場合
         if command -v vercel &> /dev/null; then
             vercel --prod
-            log_success "デプロイ完了！"
+            log_success "Deploy complete!"
         else
-            log_warn "Vercelが未インストールです"
-            log_info "手動でデプロイしてください: vercel --prod"
+            log_warn "Vercel not installed"
+            log_info "Please deploy manually: vercel --prod"
         fi
     else
-        log_warn "デプロイをスキップしました"
+        log_warn "Deploy skipped"
     fi
 
     return 0
 }
 
-# メイン処理
+# Main
 main() {
-    # まず--helpを先にチェック
+    # Check --help first
     for arg in "$@"; do
         case "$arg" in
             --help|-h|help)
@@ -536,19 +583,19 @@ main() {
     fi
 
     FEATURE="$1"
-    # 日本語を含む場合はそのまま使用、英数字のみの場合は小文字化
+    # If contains non-ASCII (e.g. Japanese), use as-is; otherwise lowercase
     if echo "$FEATURE" | grep -q '[^a-zA-Z0-9 -]'; then
-        # 日本語等を含む場合はスペースをハイフンに置換
+        # Non-ASCII: replace spaces with hyphens
         FEATURE_SLUG=$(echo "$FEATURE" | sed 's/ /-/g')
     else
-        # 英数字のみの場合は小文字化
+        # ASCII only: lowercase and replace spaces with hyphens
         FEATURE_SLUG=$(echo "$FEATURE" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')
     fi
     STATE_FILE="${PROJECT_DIR}/.project-state-${FEATURE_SLUG}"
 
     shift
 
-    # オプション解析
+    # Parse options
     local start_phase=1
     local skip_phases=""
 
@@ -582,23 +629,23 @@ main() {
 
     echo ""
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo -e "🚀 ${BOLD}プロジェクト開始: ${FEATURE}${NC}"
+    echo -e "${BOLD}Project started: ${FEATURE}${NC}"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-    # 各フェーズを実行
+    # Execute each phase
     local phases=(phase_requirements phase_design phase_implement phase_test phase_review phase_deploy)
 
     for i in "${!phases[@]}"; do
         local phase_num=$((i + 1))
 
-        # 開始フェーズより前はスキップ
+        # Skip phases before start phase
         if [ $phase_num -lt $start_phase ]; then
             continue
         fi
 
-        # スキップ指定されたフェーズはスキップ
+        # Skip specified phases
         if [[ ",$skip_phases," == *",$phase_num,"* ]]; then
-            log_warn "Phase ${phase_num} をスキップ"
+            log_warn "Skipping phase ${phase_num}"
             continue
         fi
 
@@ -613,25 +660,25 @@ main() {
         ${phases[$i]}
 
         if [ $? -ne 0 ]; then
-            log_error "Phase ${phase_num} で中断されました"
-            log_info "再開: $0 \"${FEATURE}\" --from=${phase_num}"
+            log_error "Interrupted at phase ${phase_num}"
+            log_info "Resume: $0 \"${FEATURE}\" --from=${phase_num}"
             exit 1
         fi
     done
 
     echo ""
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo -e "${GREEN}✅ プロジェクト完了！${NC}"
+    echo -e "${GREEN}Project complete!${NC}"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo ""
-    echo "生成されたファイル:"
+    echo "Generated files:"
     echo "  📄 docs/requirements/${FEATURE_SLUG}.md"
     echo "  📄 docs/specs/${FEATURE_SLUG}.md"
     echo "  📄 docs/api/${FEATURE_SLUG}.yaml"
     echo "  📄 docs/reviews/${FEATURE_SLUG}.md"
     echo ""
 
-    # 状態ファイル削除
+    # Remove state file
     rm -f "$STATE_FILE"
 }
 

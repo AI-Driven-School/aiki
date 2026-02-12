@@ -1,131 +1,131 @@
 # CLAUDE.md - Project Memory
 
-> このファイルはClaudeが毎回のセッション開始時に読み込み、プロジェクトの文脈を維持するためのものです。
+> This file is read by Claude at the start of each session to maintain project context.
 
 ## Project Overview
 
-**claude-codex-collab**: Claude + Codex + Gemini の3AI協調開発ワークフローテンプレート
+**claude-codex-collab**: 3-AI collaborative development workflow template using Claude + Codex + Gemini
 
-- Claude: 設計・レビュー担当
-- Codex: 実装・テスト担当（ChatGPT Pro、$0）
-- Gemini: 大規模分析担当（無料）
+- Claude: Design & review
+- Codex: Implementation & testing (ChatGPT Pro, $0)
+- Gemini: Large-scale analysis (free)
 
 ## Key Directories
 
 ```
 .claude/
-├── settings.json   # Hooks設定（自動協調提案）
-├── hooks/          # AI振り分けスクリプト
-├── rules/          # 委譲ルール
-├── docs/           # 知識ベース（DESIGN.md, research/）
-└── checkpoints/    # セッション状態の保存先
+├── settings.json   # Hooks settings (auto-collaboration suggestions)
+├── hooks/          # AI routing scripts
+├── rules/          # Delegation rules
+├── docs/           # Knowledge base (DESIGN.md, research/)
+└── checkpoints/    # Session state storage
 
 .codex/
-└── AGENTS.md       # Codex用コンテキスト
+└── AGENTS.md       # Codex context
 
 .gemini/
-└── GEMINI.md       # Gemini用コンテキスト
+└── GEMINI.md       # Gemini context
 
 docs/
-├── requirements/   # 要件定義（Claude作成）
-├── specs/          # UI仕様（Claude作成）
-├── api/            # API設計（Claude作成）
-├── decisions/      # 重要な決定事項の記録
-└── reviews/        # コードレビュー結果
+├── requirements/   # Requirements (created by Claude)
+├── specs/          # UI specs (created by Claude)
+├── api/            # API design (created by Claude)
+├── decisions/      # Important decision records
+└── reviews/        # Code review results
 
-skills/             # カスタムスキル
-scripts/            # ユーティリティスクリプト
-benchmarks/         # ベンチマーク結果・サンプル実装
-landing/            # ランディングページ
+skills/             # Custom skills
+scripts/            # Utility scripts
+benchmarks/         # Benchmark results & sample implementations
+landing/            # Landing page
 ```
 
 ## Working Rules
 
-### 1. 重要な決定は記録する
+### 1. Record important decisions
 
-アーキテクチャ、技術選定、設計方針などの重要な決定は必ず記録：
+Always record architecture, technology choices, and design decisions:
 
 ```bash
 docs/decisions/YYYY-MM-DD-title.md
 ```
 
-### 2. セッション終了時
+### 2. End of session
 
-作業終了前に以下を実行：
-- 「今日の作業をCLAUDE.mdに追記して」と依頼
-- または自分でWork Historyセクションを更新
+Before ending a session:
+- Ask "Update CLAUDE.md with today's work"
+- Or manually update the Work History section
 
-### 3. コマンド体系
+### 3. Command system
 
-| コマンド | 担当AI | 用途 |
-|---------|--------|------|
-| `/project <機能>` | 全員 | 設計→実装→デプロイの完全フロー |
-| `/requirements` | Claude | 要件定義 |
-| `/spec` | Claude | UI仕様 |
-| `/implement` | Codex | 実装 |
-| `/review` | Claude | レビュー |
-| `/checkpointing` | Claude | セッション状態の保存 |
+| Command | AI | Purpose |
+|---------|-----|---------|
+| `/project <feature>` | All | Complete flow: design -> implementation -> deploy |
+| `/requirements` | Claude | Requirements definition |
+| `/spec` | Claude | UI specifications |
+| `/implement` | Codex | Implementation |
+| `/review` | Claude | Review |
+| `/checkpointing` | Claude | Save session state |
 
 ## Claude Code Orchestra
 
-### 自動協調提案（Hooks）
+### Auto-collaboration suggestions (Hooks)
 
-Claudeは入力内容を自動解析し、適切なAIを提案します：
+Claude automatically analyzes input and suggests the appropriate AI:
 
-| キーワード | 提案先AI | 例 |
-|-----------|---------|-----|
-| 実装, implement, create | Codex | 「認証機能を実装して」 |
-| テスト, test | Codex | 「ユニットテストを書いて」 |
-| 調査, research, 分析 | Gemini | 「Reactの状態管理を比較して」 |
-| 比較, ライブラリ | Gemini | 「認証ライブラリを選定して」 |
+| Keyword | Suggested AI | Example |
+|---------|-------------|---------|
+| implement, create | Codex | "Implement authentication" |
+| test | Codex | "Write unit tests" |
+| research, analyze | Gemini | "Compare React state management" |
+| compare, library | Gemini | "Evaluate auth libraries" |
 
-### 知識共有
+### Knowledge sharing
 
-すべてのAIが参照する共有知識ベース：
-- `.claude/docs/DESIGN.md` - 設計方針
-- `.claude/docs/research/` - Geminiの調査結果
+Shared knowledge base referenced by all AIs:
+- `.claude/docs/DESIGN.md` - Design principles
+- `.claude/docs/research/` - Gemini research results
 
-### セッション永続化
+### Session persistence
 
 ```bash
-/checkpointing              # 作業状態を保存
-/checkpointing --analyze    # パターン分析
+/checkpointing              # Save session state
+/checkpointing --analyze    # Pattern analysis
 ```
 
 ---
 
 ## Important Decisions
 
-最新の重要決定事項（詳細は `docs/decisions/` を参照）：
+Latest important decisions (see `docs/decisions/` for details):
 
-- **2026-02-03**: Claude Code Orchestra機能を統合（Hooks + Rules + 知識ベース + Checkpointing）
+- **2026-02-03**: Integrated Claude Code Orchestra (Hooks + Rules + Knowledge Base + Checkpointing)
 
 ---
 
 ## Work History
 
 ### 2026-02-03
-- Claude Code Orchestra機能を統合
-  - .claude/settings.json（Hooks設定）
-  - .claude/hooks/（agent-router, suggest-codex, suggest-gemini, post-impl-check）
-  - .claude/rules/（codex-delegation.md, gemini-delegation.md）
-  - .claude/docs/（DESIGN.md, research/）
+- Integrated Claude Code Orchestra
+  - .claude/settings.json (Hooks settings)
+  - .claude/hooks/ (agent-router, suggest-codex, suggest-gemini, post-impl-check)
+  - .claude/rules/ (codex-delegation.md, gemini-delegation.md)
+  - .claude/docs/ (DESIGN.md, research/)
   - .codex/AGENTS.md, .gemini/GEMINI.md
   - skills/checkpointing.md, scripts/checkpoint.sh
 
 ### 2025-02-03
-- CLAUDE.md（このファイル）を作成
-- docs/decisions/ ディレクトリを作成
-- 記憶永続化の運用ルールを策定
+- Created CLAUDE.md (this file)
+- Created docs/decisions/ directory
+- Established memory persistence rules
 
 ---
 
 ## Notes for Claude
 
-- 新機能追加時は必ず `docs/requirements/` に要件を書く
-- 実装はCodexに委譲するのが基本方針
-- ベンチマーク結果は `benchmarks/` に保存
-- ユーザーが「決定事項を記録して」と言ったら `docs/decisions/` に保存
-- Hooksによる提案は自動表示される（実行はユーザー判断）
-- 設計方針は `.claude/docs/DESIGN.md` に記録する
-- Geminiの調査結果は `.claude/docs/research/` に保存される
+- Always write requirements in `docs/requirements/` before adding new features
+- Default policy: delegate implementation to Codex
+- Save benchmark results in `benchmarks/`
+- When user says "record this decision", save to `docs/decisions/`
+- Hook suggestions are displayed automatically (execution is user's choice)
+- Record design principles in `.claude/docs/DESIGN.md`
+- Gemini research results are saved to `.claude/docs/research/`

@@ -1,29 +1,29 @@
-# Codex委譲ルール
+# Codex Delegation Rules
 
-## 適用条件
+## When to Delegate
 
-以下のタスクはCodexへの委譲を検討する：
+Consider delegating the following tasks to Codex:
 
-1. **新規ファイル作成**: 3ファイル以上の新規作成
-2. **大規模リファクタリング**: 10ファイル以上の変更
-3. **テスト作成**: テストファイルの新規作成
-4. **ボイラープレート生成**: 定型的なコード生成
+1. **New file creation**: 3+ new files
+2. **Large-scale refactoring**: 10+ file changes
+3. **Test creation**: New test files
+4. **Boilerplate generation**: Repetitive code generation
 
-## 委譲手順
+## Delegation Process
 
-1. タスクを明確に定義（要件、制約、期待する出力）
-2. `.codex/AGENTS.md` のテンプレートを使用
-3. Codexからの出力を `/review` でレビュー
+1. Clearly define the task (requirements, constraints, expected output)
+2. Use the template in `.codex/AGENTS.md`
+3. Review Codex output with `/review`
 
-## 委譲しないケース
+## When NOT to Delegate
 
-- セキュリティに関わる実装
-- 既存コードの小規模な修正（5行以下）
-- アーキテクチャ設計の決定
-- 設定ファイルの編集
+- Security-related implementations
+- Small modifications to existing code (5 lines or fewer)
+- Architecture design decisions
+- Configuration file edits
 
-## コスト考慮
+## Cost Considerations
 
-- ChatGPT Pro: Codex無制限（$0追加コスト）
-- Claude: API使用量に応じた課金
-- 大規模実装はCodexに委譲してコスト最適化
+- ChatGPT Pro: Unlimited Codex ($0 additional cost)
+- Claude: Pay-per-use API billing
+- Delegate large implementations to Codex for cost optimization

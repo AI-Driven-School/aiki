@@ -1,29 +1,29 @@
-# Gemini委譲ルール
+# Gemini Delegation Rules
 
-## 適用条件
+## When to Delegate
 
-以下のタスクはGeminiへの委譲を検討する：
+Consider delegating the following tasks to Gemini:
 
-1. **大規模調査**: 複数ソースからの情報収集
-2. **技術比較**: フレームワーク/ライブラリの比較分析
-3. **トレンド分析**: 最新技術動向の調査
-4. **コードベース分析**: 大規模リポジトリの全体把握
+1. **Large-scale research**: Multi-source information gathering
+2. **Technology comparison**: Framework/library comparative analysis
+3. **Trend analysis**: Latest technology trends research
+4. **Codebase analysis**: Holistic understanding of large repositories
 
-## 委譲手順
+## Delegation Process
 
-1. 調査目的と期待するアウトプットを明確化
-2. `.gemini/GEMINI.md` のテンプレートを使用
-3. 結果を `.claude/docs/research/` に保存するよう依頼
-4. Claudeが結果を読み込んで意思決定に活用
+1. Clarify the research purpose and expected output
+2. Use the template in `.gemini/GEMINI.md`
+3. Ask to save results in `.claude/docs/research/`
+4. Claude reads results and uses them for decision-making
 
-## 委譲しないケース
+## When NOT to Delegate
 
-- 即座の回答が必要なケース
-- プロジェクト固有のコンテキストが必要なケース
-- セキュリティ上機密性の高い情報を含むケース
+- When immediate answers are needed
+- When project-specific context is required
+- When dealing with security-sensitive information
 
-## コスト考慮
+## Cost Considerations
 
-- Gemini: 無料（API制限内）
-- 大規模なコンテキストウィンドウ（100万トークン）
-- 長文ドキュメントの分析に最適
+- Gemini: Free (within API limits)
+- Large context window (1M tokens)
+- Ideal for analyzing long documents

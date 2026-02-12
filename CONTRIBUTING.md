@@ -2,6 +2,15 @@
 
 Thank you for your interest in contributing! This guide will help you get started.
 
+## Good First Issues
+
+New to the project? Look for issues labeled [`good first issue`](https://github.com/AI-Driven-School/claude-codex-collab/labels/good%20first%20issue). These are curated tasks that are well-scoped and include clear acceptance criteria.
+
+Popular areas for first contributions:
+- **i18n**: Translate skill files or documentation to English
+- **Testing**: Add shellcheck compliance or bats tests
+- **Enhancement**: Improve error messages or add CLI flags
+
 ## How to Contribute
 
 ### Reporting Issues
@@ -46,12 +55,33 @@ docs: update README with skill installation guide
 git clone https://github.com/AI-Driven-School/claude-codex-collab.git
 cd claude-codex-collab
 
+# Set up Git LFS (required for binary assets)
+git lfs install
+
 # Verify shell scripts pass linting
 shellcheck scripts/*.sh
 
 # Open with Claude Code
 claude
 ```
+
+### Git LFS
+
+This project uses [Git LFS](https://git-lfs.github.com/) to track binary assets (images, videos, archives).
+If you add or modify binary files, ensure Git LFS is installed:
+
+```bash
+# Install Git LFS (one-time setup)
+git lfs install
+
+# Verify tracked patterns
+cat .gitattributes
+
+# Check which files are tracked by LFS
+git lfs ls-files
+```
+
+Tracked extensions: `*.mp4`, `*.gif`, `*.mov`, `*.png`, `*.jpg`, `*.jpeg`, `*.webp`, `*.webm`, `*.zip`, `*.tar.gz`
 
 ## Testing
 
@@ -85,7 +115,7 @@ New skills should follow the [Agent Skills specification](https://agentskills.io
 2. Name: lowercase, hyphens only, max 64 chars
 3. Description: include what it does AND when to use it
 4. Keep SKILL.md under 500 lines
-5. Add to both `.claude/skills/` and root `skills/` directories
+5. Add to `.claude/skills/` directory (Agent Skills standard format)
 
 ## Code Style
 

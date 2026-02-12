@@ -1,13 +1,13 @@
 #!/bin/bash
 #
-# post-impl-check.sh - 実装後チェックフック
-# Edit/Write ツール使用後に、レビューやテストを提案
+# post-impl-check.sh - Post-implementation check hook
+# Suggests review or testing after Edit/Write tool usage
 #
 
-# 編集回数をトラッキング（セッション中の累積）
+# Track edit count (cumulative within session)
 COUNTER_FILE="${CLAUDE_PROJECT_DIR:-.}/.claude/.edit_counter"
 
-# カウンターを読み込み・インクリメント
+# Read and increment counter
 if [ -f "$COUNTER_FILE" ]; then
     count=$(cat "$COUNTER_FILE")
     count=$((count + 1))
@@ -16,15 +16,15 @@ else
 fi
 echo "$count" > "$COUNTER_FILE"
 
-# 5回の編集ごとにレビュー提案
+# Suggest review every 5 edits
 if [ $((count % 5)) -eq 0 ]; then
-    echo "✅ **レビュータイミング**
-   $count 件のファイル編集が完了しました。
+    echo "**Review checkpoint**
+   $count file edits completed.
 
-   推奨アクション:
-   - \`/review\` でコードレビューを実行
-   - \`git diff\` で変更内容を確認
-   - テストを実行して動作確認"
+   Recommended actions:
+   - Run \`/review\` for code review
+   - Run \`git diff\` to check changes
+   - Run tests to verify behavior"
 fi
 
 exit 0

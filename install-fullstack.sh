@@ -1,7 +1,7 @@
 #!/bin/bash
 # ============================================
-# 3AI協調開発テンプレート v6.0
-# Claude設計 × Codex実装 × Gemini解析
+# 3-AI Collaborative Development Template v6.0
+# Claude Design x Codex Implementation x Gemini Analysis
 # ============================================
 
 set -e
@@ -61,28 +61,28 @@ done
 echo -e "${CYAN}"
 echo "┌─────────────────────────────────────────────────────────┐"
 echo "│                                                         │"
-echo "│   3AI協調開発テンプレート v6.2                          │"
+echo "│   3-AI Collaborative Template v6.2                      │"
 echo "│                                                         │"
 case "$ADOPTION_MODE" in
     claude-only)
 echo "│   Mode: Claude only                                     │"
-echo "│   Claude → 設計・判断・実装                             │"
+echo "│   Claude -> Design, decisions, implementation           │"
         ;;
     claude-codex)
 echo "│   Mode: Claude + Codex                                  │"
-echo "│   Claude → 設計・判断                                   │"
-echo "│   Codex  → 実装・テスト                                 │"
+echo "│   Claude -> Design, decisions                           │"
+echo "│   Codex  -> Implementation, testing                     │"
         ;;
     claude-gemini)
 echo "│   Mode: Claude + Gemini                                 │"
-echo "│   Claude → 設計・判断・実装                             │"
-echo "│   Gemini → 解析・リサーチ                               │"
+echo "│   Claude -> Design, decisions, implementation           │"
+echo "│   Gemini -> Analysis, research                          │"
         ;;
     full)
 echo "│   Mode: Full 3-AI collaboration                         │"
-echo "│   Claude → 設計・判断                                   │"
-echo "│   Codex  → 実装・テスト（メイン）                       │"
-echo "│   Gemini → 解析・リサーチ                               │"
+echo "│   Claude -> Design, decisions                           │"
+echo "│   Codex  -> Implementation, testing (primary)           │"
+echo "│   Gemini -> Analysis, research                          │"
         ;;
 esac
 echo "│                                                         │"
@@ -96,14 +96,33 @@ fi
 # shellcheck disable=SC2034
 PROJECT_DIR=$(pwd)
 
-echo "ツールを確認中..."
+# Idempotency: detect existing installation
+EXISTING_INSTALL=false
+if [ -f "CLAUDE.md" ] && [ -d ".claude/skills" ]; then
+    EXISTING_INSTALL=true
+    echo -e "${YELLOW}Existing installation detected.${NC}"
+    echo -e "Files will be updated only if they don't exist (safe upgrade)."
+    echo ""
+fi
+
+# Helper: write file only if it doesn't exist (idempotent)
+safe_write() {
+    local target="$1"
+    if [ "$EXISTING_INSTALL" = true ] && [ -f "$target" ]; then
+        echo -e "  ${YELLOW}skip${NC} $target (already exists)"
+        return 1
+    fi
+    return 0
+}
+
+echo "Checking tools..."
 echo ""
 
 for cmd in node npm git; do
     if command -v "$cmd" &> /dev/null; then
         echo -e "  ${GREEN}✓${NC} $cmd"
     else
-        echo -e "  ${YELLOW}✗${NC} $cmd (必須)"
+        echo -e "  ${YELLOW}✗${NC} $cmd (required)"
         exit 1
     fi
 done
@@ -149,7 +168,7 @@ done
 echo ""
 
 if [ $MISSING_AI -eq 1 ]; then
-    read -p "必須AIツールをインストール？ [Y/n] " -n 1 -r
+    read -p "Install required AI tools? [Y/n] " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
         for cmd in "${REQUIRED_AIS[@]}"; do
@@ -161,20 +180,21 @@ if [ $MISSING_AI -eq 1 ]; then
                 esac
             fi
         done
-        echo -e "${GREEN}✓ インストール完了${NC}"
+        echo -e "${GREEN}✓ Installation complete${NC}"
     fi
 fi
 
 echo ""
-echo "セットアップ中..."
+echo "Setting up..."
 
-# ディレクトリ構造
+# Directory structure
 mkdir -p scripts
 mkdir -p .claude/skills
 mkdir -p .tasks/{codex,gemini}
 mkdir -p docs/{requirements,specs,api,reviews}
 
 # ===== CLAUDE.md =====
+if safe_write "CLAUDE.md"; then
 cat > CLAUDE.md << 'EOF'
 # CLAUDE.md - 3AI協調開発 v6.0
 
@@ -286,8 +306,10 @@ Task(subagent_type="Explore", prompt="DBスキーマを調査")
 - 1つのメッセージで複数のTaskを同時起動
 - 結果を待ってから次のアクションへ
 EOF
+fi
 
 # ===== AGENTS.md =====
+if safe_write "AGENTS.md"; then
 cat > AGENTS.md << 'EOF'
 # AGENTS.md - 3AI協調ガイド v6.0
 
@@ -333,6 +355,7 @@ cat > AGENTS.md << 'EOF'
 ./scripts/delegate.sh gemini research "Next.js 15 App Router"
 ```
 EOF
+fi
 
 # ===== スキル: project =====
 cat > .claude/skills/project.md << 'EOF'
@@ -712,6 +735,7 @@ SCRIPT_EOF
 chmod +x scripts/delegate.sh
 
 # ===== .gitignore =====
+if safe_write ".gitignore"; then
 cat > .gitignore << 'EOF'
 node_modules/
 .next/
@@ -720,38 +744,39 @@ node_modules/
 .tasks/
 .DS_Store
 EOF
+fi
 
-# ===== 完了メッセージ =====
+# ===== Complete =====
 echo ""
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${GREEN}セットアップ完了 v6.2 (mode: ${ADOPTION_MODE})${NC}"
+echo -e "${GREEN}Setup complete v6.2 (mode: ${ADOPTION_MODE})${NC}"
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
-echo -e "${CYAN}役割分担 (${ADOPTION_MODE}):${NC}"
-echo -e "  ${BLUE}Claude${NC}  → 設計・判断・レビュー"
+echo -e "${CYAN}Roles (${ADOPTION_MODE}):${NC}"
+echo -e "  ${BLUE}Claude${NC}  -> Design, decisions, review"
 if [ "$ADOPTION_MODE" = "claude-codex" ] || [ "$ADOPTION_MODE" = "full" ]; then
-echo -e "  ${BLUE}Codex${NC}   → 実装・テスト（メイン）"
+echo -e "  ${BLUE}Codex${NC}   -> Implementation, testing"
 fi
 if [ "$ADOPTION_MODE" = "claude-gemini" ] || [ "$ADOPTION_MODE" = "full" ]; then
-echo -e "  ${BLUE}Gemini${NC}  → 解析・リサーチ"
+echo -e "  ${BLUE}Gemini${NC}  -> Analysis, research"
 fi
 echo ""
-echo -e "${CYAN}開始:${NC}"
+echo -e "${CYAN}Get started:${NC}"
 echo -e "  ${BLUE}claude${NC}"
-echo -e "  ${BLUE}/project ユーザー認証${NC}"
+echo -e "  ${BLUE}/project user-auth${NC}"
 echo ""
-echo -e "${CYAN}個別コマンド:${NC}"
-echo -e "  ${BLUE}/requirements${NC}  要件定義（Claude）"
-echo -e "  ${BLUE}/spec${NC}          画面設計（Claude）"
-echo -e "  ${BLUE}/api${NC}           API設計（Claude）"
+echo -e "${CYAN}Commands:${NC}"
+echo -e "  ${BLUE}/requirements${NC}  Requirements (Claude)"
+echo -e "  ${BLUE}/spec${NC}          UI specs (Claude)"
+echo -e "  ${BLUE}/api${NC}           API design (Claude)"
 if [ "$ADOPTION_MODE" = "claude-codex" ] || [ "$ADOPTION_MODE" = "full" ]; then
-echo -e "  ${BLUE}/implement${NC}     実装（Codex）"
-echo -e "  ${BLUE}/test${NC}          テスト（Codex）"
+echo -e "  ${BLUE}/implement${NC}     Implement (Codex)"
+echo -e "  ${BLUE}/test${NC}          Test (Codex)"
 fi
-echo -e "  ${BLUE}/review${NC}        レビュー（Claude）"
+echo -e "  ${BLUE}/review${NC}        Review (Claude)"
 if [ "$ADOPTION_MODE" = "claude-gemini" ] || [ "$ADOPTION_MODE" = "full" ]; then
-echo -e "  ${BLUE}/analyze${NC}       解析（Gemini）"
-echo -e "  ${BLUE}/research${NC}      リサーチ（Gemini）"
+echo -e "  ${BLUE}/analyze${NC}       Analyze (Gemini)"
+echo -e "  ${BLUE}/research${NC}      Research (Gemini)"
 fi
 echo ""
 

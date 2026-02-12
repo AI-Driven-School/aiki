@@ -1,0 +1,48 @@
+{
+  "name": "claude-codex-collab",
+  "version": "1.0.0",
+  "description": "3-AI collaborative development workflow: Claude (design) + Codex (implementation) + Gemini (analysis)",
+  "bin": {
+    "claude-codex-collab": "./bin/cli.sh"
+  },
+  "files": [
+    "bin/",
+    "scripts/",
+    ".claude/hooks/",
+    ".claude/rules/",
+    ".claude/docs/",
+    ".codex/",
+    ".gemini/",
+    "install.sh",
+    "install-fullstack.sh",
+    "update.sh",
+    "CLAUDE.md",
+    "CLAUDE_ja.md",
+    ".ai-versions.json",
+    "LICENSE"
+  ],
+  "keywords": [
+    "claude",
+    "codex",
+    "gemini",
+    "ai",
+    "agent-skills",
+    "claude-code",
+    "workflow",
+    "multi-agent",
+    "collaboration"
+  ],
+  "author": "AI-Driven-School",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AI-Driven-School/claude-codex-collab.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AI-Driven-School/claude-codex-collab/issues"
+  },
+  "homepage": "https://github.com/AI-Driven-School/claude-codex-collab#readme",
+  "engines": {
+    "node": ">=18"
+  }
+}

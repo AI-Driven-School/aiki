@@ -1,13 +1,13 @@
 #!/bin/bash
 # ============================================
-# 3-AI Collaborative Development Template v6.0
-# Claude Design x Codex Implementation x Gemini Analysis
+# 4-AI Collaborative Development Template v6.3
+# Claude Design x Codex Implementation x Gemini Analysis x Grok Trends
 # ============================================
 
 set -e
 
 # shellcheck disable=SC2034
-VERSION="6.2.0"
+VERSION="6.3.0"
 
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -61,7 +61,7 @@ done
 echo -e "${CYAN}"
 echo "┌─────────────────────────────────────────────────────────┐"
 echo "│                                                         │"
-echo "│   3-AI Collaborative Template v6.2                      │"
+echo "│   4-AI Collaborative Template v6.3                      │"
 echo "│                                                         │"
 case "$ADOPTION_MODE" in
     claude-only)
@@ -79,10 +79,11 @@ echo "│   Claude -> Design, decisions, implementation           │"
 echo "│   Gemini -> Analysis, research                          │"
         ;;
     full)
-echo "│   Mode: Full 3-AI collaboration                         │"
+echo "│   Mode: Full 4-AI collaboration                         │"
 echo "│   Claude -> Design, decisions                           │"
 echo "│   Codex  -> Implementation, testing (primary)           │"
 echo "│   Gemini -> Analysis, research                          │"
+echo "│   Grok   -> Real-time trends, X search                  │"
         ;;
 esac
 echo "│                                                         │"
@@ -144,6 +145,7 @@ case "$ADOPTION_MODE" in
         ;;
     full)
         REQUIRED_AIS+=("codex" "gemini")
+        OPTIONAL_AIS+=("grok")
         ;;
 esac
 
@@ -190,13 +192,14 @@ echo "Setting up..."
 # Directory structure
 mkdir -p scripts
 mkdir -p .claude/skills
-mkdir -p .tasks/{codex,gemini}
+mkdir -p .tasks/{codex,gemini,grok}
+mkdir -p .grok
 mkdir -p docs/{requirements,specs,api,reviews}
 
 # ===== CLAUDE.md =====
 if safe_write "CLAUDE.md"; then
 cat > CLAUDE.md << 'EOF'
-# CLAUDE.md - 3AI協調開発 v6.0
+# CLAUDE.md - 4AI協調開発 v6.3
 
 ## コンセプト
 
@@ -204,6 +207,7 @@ cat > CLAUDE.md << 'EOF'
 Claude  → 設計・判断（頭脳）
 Codex   → 実装・テスト（手足）
 Gemini  → 解析・リサーチ（目）
+Grok    → リアルタイム情報・トレンド（耳）
 ```
 
 ## ワークフロー
@@ -249,6 +253,8 @@ Gemini  → 解析・リサーチ（目）
 | テスト作成 | Codex | 実装と一貫性 |
 | 解析、調査 | Gemini | 1Mコンテキスト |
 | リサーチ | Gemini | 無料 |
+| トレンド、バズ | Grok | リアルタイム |
+| X検索、最新情報 | Grok | xAI API |
 | 設計、レビュー | Claude | 判断力 |
 
 ## コスト最適化
@@ -257,6 +263,7 @@ Gemini  → 解析・リサーチ（目）
 Claude  → 設計・判断のみ（トークン節約）
 Codex   → 実装・テスト（ChatGPT Proに含む）
 Gemini  → 解析・リサーチ（無料）
+Grok    → リアルタイム情報（xAI API）
 ```
 
 ## サブエージェント活用ルール（重要）
@@ -311,7 +318,7 @@ fi
 # ===== AGENTS.md =====
 if safe_write "AGENTS.md"; then
 cat > AGENTS.md << 'EOF'
-# AGENTS.md - 3AI協調ガイド v6.0
+# AGENTS.md - 4AI協調ガイド v6.3
 
 ## 役割分担
 
@@ -320,6 +327,7 @@ cat > AGENTS.md << 'EOF'
 | **Claude** | 設計・判断・レビュー | 推論力、品質 | 従量課金 |
 | **Codex** | 実装・テスト | 速度、full-auto | Pro含む |
 | **Gemini** | 解析・リサーチ | 1Mコンテキスト | 無料 |
+| **Grok** | トレンド・最新情報 | リアルタイムX検索 | xAI API |
 
 ## なぜこの分担？
 
@@ -338,6 +346,11 @@ cat > AGENTS.md << 'EOF'
 - 大規模コードベースを俯瞰
 - 技術調査・リサーチ
 - 無料なので気軽に使える
+
+### Grok（耳）
+- X/SNSのリアルタイムトレンド
+- 最新技術ニュース・breaking changes
+- コミュニティの反応・感情分析
 
 ## 委譲方法
 
@@ -719,8 +732,33 @@ case "$AI" in
         echo "→ $OUTPUT_FILE"
         ;;
 
+    "grok")
+        TASK_DIR="$PROJECT_DIR/.tasks/grok"
+        mkdir -p "$TASK_DIR"
+        OUTPUT_FILE="$TASK_DIR/output-$TASK_ID.txt"
+
+        case "$TASK" in
+            "trend")
+                echo "📡 Grok: トレンド検索中..."
+                # xAI API経由でトレンド検索
+                echo "Grok trend search: $ARGS" | tee "$OUTPUT_FILE"
+                echo "→ Use x-trend-research skill or xAI API directly"
+                ;;
+            "search")
+                echo "🔍 Grok: X検索中..."
+                echo "Grok X search: $ARGS" | tee "$OUTPUT_FILE"
+                echo "→ Use x-context-research skill or xAI API directly"
+                ;;
+            *)
+                echo "Grokタスク: trend, search"
+                exit 1
+                ;;
+        esac
+        echo "→ $OUTPUT_FILE"
+        ;;
+
     *)
-        echo "3AI協調開発 - 委譲スクリプト"
+        echo "4AI協調開発 - 委譲スクリプト"
         echo ""
         echo "使用方法:"
         echo "  $0 codex implement [prompt]    # Codexで実装"
@@ -728,6 +766,8 @@ case "$AI" in
         echo "  $0 codex review                # Codexでレビュー"
         echo "  $0 gemini analyze [path]       # Geminiで解析"
         echo "  $0 gemini research \"質問\"      # Geminiでリサーチ"
+        echo "  $0 grok trend \"トピック\"       # Grokでトレンド検索"
+        echo "  $0 grok search \"キーワード\"    # GrokでX検索"
         exit 1
         ;;
 esac
@@ -749,7 +789,7 @@ fi
 # ===== Complete =====
 echo ""
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${GREEN}Setup complete v6.2 (mode: ${ADOPTION_MODE})${NC}"
+echo -e "${GREEN}Setup complete v6.3 (mode: ${ADOPTION_MODE})${NC}"
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
 echo -e "${CYAN}Roles (${ADOPTION_MODE}):${NC}"
@@ -759,6 +799,9 @@ echo -e "  ${BLUE}Codex${NC}   -> Implementation, testing"
 fi
 if [ "$ADOPTION_MODE" = "claude-gemini" ] || [ "$ADOPTION_MODE" = "full" ]; then
 echo -e "  ${BLUE}Gemini${NC}  -> Analysis, research"
+fi
+if [ "$ADOPTION_MODE" = "full" ]; then
+echo -e "  ${BLUE}Grok${NC}    -> Real-time trends, X search (optional)"
 fi
 echo ""
 echo -e "${CYAN}Get started:${NC}"

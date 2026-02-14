@@ -28,6 +28,15 @@
       "version_command": "gemini --version",
       "required": false,
       "notes": "Analysis and research. Free to use."
+    },
+    "grok": {
+      "display_name": "Grok (xAI)",
+      "min_version": "0.1.0",
+      "max_tested": "1.0.0",
+      "install_command": "pip install xai-sdk",
+      "version_command": "grok --version",
+      "required": false,
+      "notes": "Real-time trends and X search. Requires xAI API key."
     }
   }
 }

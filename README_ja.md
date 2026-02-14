@@ -10,8 +10,8 @@
 </p>
 
 <p align="center">
-  <strong>Claude</strong> で設計、<strong>Codex</strong> で爆速実装、<strong>Gemini</strong> で大規模解析<br>
-  一人開発でも設計書が残る、3AI分業の開発ワークフロー
+  <strong>Claude</strong> で設計、<strong>Codex</strong> で爆速実装、<strong>Gemini</strong> で大規模解析、<strong>Grok</strong> でトレンド把握<br>
+  一人開発でも設計書が残る、4AI分業の開発ワークフロー
 </p>
 
 <p align="center">
@@ -42,10 +42,11 @@ cd my-app && claude
 | Claude Code | 設計・レビュー | 従量課金 |
 | Codex (ChatGPT Pro) | 実装・テスト | 月額に含む |
 | Gemini CLI | 大規模解析 | 無料 |
+| Grok (xAI) | リアルタイムトレンド・X検索 | xAI API |
 
 ---
 
-## なぜ3AI？
+## なぜ4AI？
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -70,6 +71,7 @@ cd my-app && claude
 | 新規ファイル作成 | **Codex** | 10-20%速い、$0 |
 | 既存コード修正 | **Claude** | 40%速い、品質2倍 |
 | 大規模解析 | **Gemini** | 1Mトークン、無料 |
+| リアルタイムトレンド | **Grok** | ライブX検索、xAI API |
 
 > 📊 [詳細なベンチマーク結果](./benchmarks/BENCHMARK_RESULTS.md)
 
@@ -148,6 +150,8 @@ my-app/
 | `/review` | Claude | コードレビュー |
 | `/analyze` | Gemini | 大規模コード解析 |
 | `/research <質問>` | Gemini | 技術リサーチ |
+| `/x-trend-research` | Grok | Xトレンド検索 |
+| `/x-context-research` | Grok | 記事執筆用Context Pack |
 
 ---
 

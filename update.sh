@@ -16,7 +16,7 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 REPO_URL="https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main"
-LATEST_VERSION="6.1.0"
+LATEST_VERSION="6.3.0"
 
 echo -e "${CYAN}"
 echo "┌─────────────────────────────────────────────────────────┐"
@@ -87,16 +87,45 @@ for skill in project implement test review analyze research requirements spec ap
 done
 echo -e "  ${GREEN}✓${NC} Skills updated"
 
+# Update Grok integration (v6.3+)
+echo -e "  ${BLUE}→${NC} .grok/ (Grok integration)"
+mkdir -p .grok
+curl -fsSL "$REPO_URL/.grok/GROK.md" -o ".grok/GROK.md" 2>/dev/null || true
+echo -e "  ${GREEN}✓${NC} .grok/GROK.md updated"
+
+# Update Grok delegation rules
+echo -e "  ${BLUE}→${NC} .claude/rules/ (Grok delegation)"
+mkdir -p .claude/rules
+curl -fsSL "$REPO_URL/.claude/rules/grok-delegation.md" -o ".claude/rules/grok-delegation.md" 2>/dev/null || true
+curl -fsSL "$REPO_URL/.claude/rules/grok-delegation_ja.md" -o ".claude/rules/grok-delegation_ja.md" 2>/dev/null || true
+echo -e "  ${GREEN}✓${NC} Grok delegation rules updated"
+
+# Update Grok hook
+echo -e "  ${BLUE}→${NC} .claude/hooks/ (Grok hook)"
+mkdir -p .claude/hooks
+curl -fsSL "$REPO_URL/.claude/hooks/suggest-grok.sh" -o ".claude/hooks/suggest-grok.sh" 2>/dev/null || true
+chmod +x .claude/hooks/suggest-grok.sh 2>/dev/null || true
+echo -e "  ${GREEN}✓${NC} Grok hook updated"
+
+# Update agent-router with Grok keywords
+curl -fsSL "$REPO_URL/.claude/hooks/agent-router.sh" -o ".claude/hooks/agent-router.sh" 2>/dev/null || true
+chmod +x .claude/hooks/agent-router.sh 2>/dev/null || true
+echo -e "  ${GREEN}✓${NC} Agent router updated (Grok keywords added)"
+
+# Update settings.json with Grok hook
+curl -fsSL "$REPO_URL/.claude/settings.json" -o ".claude/settings.json" 2>/dev/null || true
+echo -e "  ${GREEN}✓${NC} Settings updated (Grok hook registered)"
+
 echo ""
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e "${GREEN}Update complete! v${LATEST_VERSION}${NC}"
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
-echo -e "${CYAN}What's new in v6.1:${NC}"
-echo -e "  ${BLUE}•${NC} Added sub-agent utilization rules"
-echo -e "    - Task(Explore) for code exploration"
-echo -e "    - Task(Plan) for planning"
-echo -e "    - Parallel Task execution"
+echo -e "${CYAN}What's new in v6.3:${NC}"
+echo -e "  ${BLUE}•${NC} Added Grok (xAI) as 4th AI"
+echo -e "    - Real-time X/Twitter trend research"
+echo -e "    - Auto-suggestion via agent-router hooks"
+echo -e "    - .grok/GROK.md context + delegation rules"
 echo ""
 echo -e "${CYAN}Backup:${NC}"
 echo -e "  ${BLUE}${BACKUP_DIR}/${NC}"

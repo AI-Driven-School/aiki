@@ -10,8 +10,8 @@
 </p>
 
 <p align="center">
-  Design with <strong>Claude</strong>, implement at speed with <strong>Codex</strong>, analyze at scale with <strong>Gemini</strong><br>
-  A 3-AI division of labor workflow that leaves design docs even for solo developers
+  Design with <strong>Claude</strong>, implement at speed with <strong>Codex</strong>, analyze at scale with <strong>Gemini</strong>, track trends with <strong>Grok</strong><br>
+  A 4-AI division of labor workflow that leaves design docs even for solo developers
 </p>
 
 <p align="center">
@@ -42,10 +42,11 @@ cd my-app && claude
 | Claude Code | Design & Review | Pay-per-use |
 | Codex (ChatGPT Pro) | Implementation & Testing | Included in subscription |
 | Gemini CLI | Large-scale analysis | Free |
+| Grok (xAI) | Real-time trends & X search | xAI API |
 
 ---
 
-## Why 3 AIs?
+## Why 4 AIs?
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -70,6 +71,7 @@ cd my-app && claude
 | New file creation | **Codex** | 10-20% faster, $0 |
 | Existing code modification | **Claude** | 40% faster, 2x quality |
 | Large-scale analysis | **Gemini** | 1M tokens, free |
+| Real-time trends | **Grok** | Live X data, xAI API |
 
 > [Detailed benchmark results](./benchmarks/BENCHMARK_RESULTS.md)
 
@@ -148,6 +150,8 @@ A real SaaS built with this template:
 | `/review` | Claude | Code review |
 | `/analyze` | Gemini | Large-scale code analysis |
 | `/research <query>` | Gemini | Technical research |
+| `/x-trend-research` | Grok | X trend search |
+| `/x-context-research` | Grok | Context pack for article writing |
 
 ---
 
@@ -236,13 +240,13 @@ Start small and add AIs as needed:
 | Claude only | `--claude-only` | Claude | Getting started, small projects |
 | Claude + Codex | `--claude-codex` | Claude, Codex | Implementation-heavy projects |
 | Claude + Gemini | `--claude-gemini` | Claude, Gemini | Research-heavy projects |
-| Full (default) | `--full` | All 3 | Maximum productivity |
+| Full (default) | `--full` | All 4 | Maximum productivity |
 
 ```bash
 # Start with Claude only
 bash install-fullstack.sh my-app --claude-only
 
-# Later, upgrade to full 3-AI
+# Later, upgrade to full 4-AI
 bash install-fullstack.sh my-app --full
 ```
 

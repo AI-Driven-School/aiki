@@ -1,7 +1,7 @@
 {
   "name": "claude-codex-collab",
   "version": "1.0.0",
-  "description": "3-AI collaborative development workflow: Claude (design) + Codex (implementation) + Gemini (analysis)",
+  "description": "4-AI collaborative development workflow: Claude (design) + Codex (implementation) + Gemini (analysis) + Grok (real-time trends)",
   "bin": {
     "claude-codex-collab": "./bin/cli.sh"
   },
@@ -13,6 +13,7 @@
     ".claude/docs/",
     ".codex/",
     ".gemini/",
+    ".grok/",
     "install.sh",
     "install-fullstack.sh",
     "update.sh",
@@ -25,6 +26,8 @@
     "claude",
     "codex",
     "gemini",
+    "grok",
+    "xai",
     "ai",
     "agent-skills",
     "claude-code",

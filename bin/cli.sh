@@ -15,7 +15,7 @@ NC='\033[0m'
 show_help() {
     cat << EOF
 claude-codex-collab v${VERSION}
-3-AI collaborative development: Claude + Codex + Gemini
+4-AI collaborative development: Claude + Codex + Gemini + Grok
 
 Usage:
   claude-codex-collab <command> [options]

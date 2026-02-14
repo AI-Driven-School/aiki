@@ -14,7 +14,10 @@ input_lower=$(echo "$input" | tr '[:upper:]' '[:lower:]')
 codex_keywords="実装|implement|新規|create|追加|add|修正|fix|変更|change|テスト|test|コード|code|作成|build"
 
 # Gemini suggestion keywords (research/analysis tasks)
-gemini_keywords="調査|research|分析|analyze|比較|compare|ライブラリ|library|フレームワーク|framework|選定|ベストプラクティス|best practice|トレンド|trend|レビュー|review"
+gemini_keywords="調査|research|分析|analyze|比較|compare|ライブラリ|library|フレームワーク|framework|選定|ベストプラクティス|best practice|レビュー|review"
+
+# Grok suggestion keywords (real-time/trend tasks)
+grok_keywords="トレンド|trend|x検索|x search|sns|twitter|バズ|buzz|バイラル|viral|リアルタイム|realtime|real-time|最新|latest|話題|投稿ネタ|post ideas|世論|sentiment|反応|reaction"
 
 # Prepare output
 output=""
@@ -24,6 +27,18 @@ if echo "$input_lower" | grep -qiE "$codex_keywords"; then
     output="**Codex suggestion**: This looks like an implementation task.
    Use \`/implement\` to delegate to Codex for efficiency.
    (ChatGPT Pro: \$0, parallel execution supported)"
+fi
+
+# Detect Grok keywords
+if echo "$input_lower" | grep -qiE "$grok_keywords"; then
+    if [ -n "$output" ]; then
+        output="$output
+
+"
+    fi
+    output="${output}**Grok suggestion**: This looks like a real-time/trend research task.
+   Grok (xAI) excels at live X search and trend analysis.
+   See .grok/GROK.md for request templates."
 fi
 
 # Detect Gemini keywords

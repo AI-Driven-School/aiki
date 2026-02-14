@@ -4,11 +4,12 @@
 
 ## Project Overview
 
-**claude-codex-collab**: 3-AI collaborative development workflow template using Claude + Codex + Gemini
+**claude-codex-collab**: 4-AI collaborative development workflow template using Claude + Codex + Gemini + Grok
 
 - Claude: Design & review
 - Codex: Implementation & testing (ChatGPT Pro, $0)
 - Gemini: Large-scale analysis (free)
+- Grok: Real-time information & trend research (xAI API)
 
 ## Key Directories
 
@@ -25,6 +26,9 @@
 
 .gemini/
 └── GEMINI.md       # Gemini context
+
+.grok/
+└── GROK.md         # Grok context
 
 docs/
 ├── requirements/   # Requirements (created by Claude)
@@ -78,12 +82,14 @@ Claude automatically analyzes input and suggests the appropriate AI:
 | test | Codex | "Write unit tests" |
 | research, analyze | Gemini | "Compare React state management" |
 | compare, library | Gemini | "Evaluate auth libraries" |
+| trend, buzz, viral | Grok | "What's trending in React community" |
+| X search, realtime | Grok | "Latest developer reactions to Next.js 15" |
 
 ### Knowledge sharing
 
 Shared knowledge base referenced by all AIs:
 - `.claude/docs/DESIGN.md` - Design principles
-- `.claude/docs/research/` - Gemini research results
+- `.claude/docs/research/` - Gemini & Grok research results
 
 ### Session persistence
 
@@ -98,11 +104,21 @@ Shared knowledge base referenced by all AIs:
 
 Latest important decisions (see `docs/decisions/` for details):
 
+- **2026-02-14**: Added Grok (xAI) as 4th AI - real-time trend & X search specialist
 - **2026-02-03**: Integrated Claude Code Orchestra (Hooks + Rules + Knowledge Base + Checkpointing)
 
 ---
 
 ## Work History
+
+### 2026-02-14
+- Added Grok (xAI API) integration as 4th AI
+  - .grok/GROK.md (Grok agent context)
+  - .claude/rules/grok-delegation.md, grok-delegation_ja.md
+  - .claude/hooks/suggest-grok.sh (auto-suggestion hook)
+  - Updated agent-router.sh with Grok keywords
+  - Updated settings.json with Grok hook
+  - Updated CLAUDE.md for 4-AI workflow
 
 ### 2026-02-03
 - Integrated Claude Code Orchestra
@@ -129,3 +145,4 @@ Latest important decisions (see `docs/decisions/` for details):
 - Hook suggestions are displayed automatically (execution is user's choice)
 - Record design principles in `.claude/docs/DESIGN.md`
 - Gemini research results are saved to `.claude/docs/research/`
+- Grok research results are saved to `.claude/docs/research/` (prefixed with `grok-`)

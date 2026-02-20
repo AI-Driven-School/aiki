@@ -45,6 +45,9 @@ SENSITIVE_PATTERNS=(
     ".aws/credentials"
     ".aws/config"
     "kube*config*"
+    "*.tfvars"
+    "terraform.tfstate*"
+    ".docker/config.json"
 )
 
 # Color definitions (safe to re-define if already sourced)

@@ -41,11 +41,11 @@ for arg in "$@"; do
             echo "  --claude-only    Claude Code only (no external AI delegation)"
             echo "  --claude-codex   Claude + Codex (implementation delegation)"
             echo "  --claude-gemini  Claude + Gemini (research delegation)"
-            echo "  --full           All 3 AIs (default)"
+            echo "  --full           All 4 AIs (default)"
             echo ""
             echo "Examples:"
             echo "  $0 my-app --claude-only    # Start with Claude only"
-            echo "  $0 my-app --full           # Full 3-AI setup"
+            echo "  $0 my-app --full           # Full 4-AI setup"
             exit 0
             ;;
         -*)
@@ -96,6 +96,12 @@ if [ -n "$PROJECT_NAME" ]; then
 fi
 # shellcheck disable=SC2034
 PROJECT_DIR=$(pwd)
+
+# Initialize git repo if not already one (required for quality gates)
+if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+    git init -q
+    echo -e "  ${GREEN}✓${NC} git init"
+fi
 
 # Idempotency: detect existing installation
 EXISTING_INSTALL=false
@@ -183,6 +189,10 @@ if [ $MISSING_AI -eq 1 ]; then
             fi
         done
         echo -e "${GREEN}✓ Installation complete${NC}"
+    else
+        echo -e "${RED}Required AI tools are missing. Setup cannot continue.${NC}"
+        echo -e "Re-run with ${CYAN}--claude-only${NC} to use Claude only mode."
+        exit 1
     fi
 fi
 
@@ -374,7 +384,7 @@ fi
 cat > .claude/skills/project.md << 'EOF'
 ---
 name: project
-description: 3AI協調の完全ワークフロー
+description: 4AI協調の完全ワークフロー
 ---
 
 # /project スキル

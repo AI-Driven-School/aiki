@@ -55,7 +55,9 @@ teardown() {
 @test "project-workflow.sh: lock blocks concurrent access" {
     cd "$TEST_WORKSPACE"
     local lock_file="$TEST_WORKSPACE/.project-state-lock-test.lock"
-    # Create a fake lock (recent timestamp)
+    local lock_dir="${lock_file}.d"
+    # Create a fake lock (recent timestamp) + lock directory (mkdir-based lock)
+    mkdir -p "$lock_dir"
     echo "otheruser@host" > "$lock_file"
     date +%s >> "$lock_file"
 
@@ -63,6 +65,7 @@ teardown() {
     [ "$status" -eq 1 ]
     [[ "$output" == *"locked"* ]] || [[ "$output" == *"lock"* ]]
 
+    rm -rf "$lock_dir"
     rm -f "$lock_file"
 }
 

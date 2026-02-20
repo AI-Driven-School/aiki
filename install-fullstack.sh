@@ -100,6 +100,7 @@ PROJECT_DIR=$(pwd)
 # Initialize git repo if not already one (required for quality gates)
 if ! git rev-parse --is-inside-work-tree &>/dev/null; then
     git init -q
+    NEEDS_INITIAL_COMMIT=true
     echo -e "  ${GREEN}✓${NC} git init"
 fi
 
@@ -841,4 +842,11 @@ if [ -f "$SCRIPT_SOURCE_DIR/scripts/lib/version-check.sh" ]; then
         check_all_versions "$SCRIPT_SOURCE_DIR/.ai-versions.json"
         echo ""
     fi
+fi
+
+# ===== Initial commit (quality gates require at least one commit) =====
+if [ "${NEEDS_INITIAL_COMMIT:-false}" = "true" ]; then
+    git add -A
+    git commit -q -m "Initial setup by aiki v${VERSION} (${ADOPTION_MODE})"
+    echo -e "  ${GREEN}✓${NC} Initial commit created"
 fi

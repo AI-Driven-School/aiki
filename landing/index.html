@@ -810,6 +810,79 @@
     .prereq-card .cost.free { color: var(--codex); }
     .prereq-card .cost.api { color: var(--grok); }
 
+    /* ── Support Section ───────────────────────────────── */
+    .support-section {
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .support-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+    }
+
+    .support-section .support-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+    }
+
+    .support-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-sponsor {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .btn-sponsor.github {
+      background: rgba(255,255,255,0.08);
+      color: var(--text-primary);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .btn-sponsor.github:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.25);
+      transform: translateY(-2px);
+    }
+
+    .btn-sponsor.bmc {
+      background: #FFDD00;
+      color: #000;
+      border: 1px solid #FFDD00;
+    }
+    .btn-sponsor.bmc:hover {
+      background: #ffe640;
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(255,221,0,0.3);
+    }
+
+    .btn-sponsor.star {
+      background: transparent;
+      color: var(--claude);
+      border: 1px solid rgba(212,165,116,0.3);
+    }
+    .btn-sponsor.star:hover {
+      border-color: var(--claude);
+      box-shadow: var(--glow-claude);
+      transform: translateY(-2px);
+    }
+
     /* ── Footer ────────────────────────────────────────── */
     footer {
       padding: 4rem 2rem;
@@ -1267,6 +1340,23 @@
     </div>
 
     <p class="install-alt">or <code>npx aiki init my-app</code></p>
+  </section>
+
+  <!-- ── Support ─────────────────────────────────────────── -->
+  <section class="support-section fade-up">
+    <h2>Support the Project</h2>
+    <p class="support-desc">aikiはオープンソースで無料です。開発の継続を支援してください。</p>
+    <div class="support-buttons">
+      <a href="https://github.com/sponsors/AI-Driven-School" target="_blank" class="btn-sponsor github">
+        ❤ GitHub Sponsors
+      </a>
+      <a href="https://buymeacoffee.com/" target="_blank" class="btn-sponsor bmc">
+        ☕ Buy Me a Coffee
+      </a>
+      <a href="https://github.com/AI-Driven-School/aiki" target="_blank" class="btn-sponsor star">
+        ★ Star on GitHub
+      </a>
+    </div>
   </section>
 
   <!-- ── Footer ──────────────────────────────────────────── -->

@@ -44,7 +44,7 @@ npm run build
   "mcpServers": {
     "ai-orchestrator": {
       "command": "node",
-      "args": ["/path/to/claude-codex-collab/.claude/mcp-servers/ai-orchestrator/dist/index.js"]
+      "args": ["/path/to/aiki/.claude/mcp-servers/ai-orchestrator/dist/index.js"]
     }
   }
 }

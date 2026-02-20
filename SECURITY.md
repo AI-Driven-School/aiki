@@ -11,7 +11,7 @@
 If you discover a security vulnerability, please report it responsibly:
 
 1. **Do NOT** open a public GitHub issue
-2. Email: Create a [private security advisory](https://github.com/AI-Driven-School/claude-codex-collab/security/advisories/new)
+2. Email: Create a [private security advisory](https://github.com/AI-Driven-School/aiki/security/advisories/new)
 3. Include:
    - Description of the vulnerability
    - Steps to reproduce

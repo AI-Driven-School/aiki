@@ -1,9 +1,9 @@
 #!/bin/bash
 # ============================================
-# claude-codex-collab Update Script
+# aiki Update Script
 # ============================================
 # Usage:
-#   curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/update.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/aiki/main/update.sh | bash
 # ============================================
 
 set -e
@@ -15,12 +15,12 @@ CYAN='\033[0;36m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-REPO_URL="https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main"
+REPO_URL="https://raw.githubusercontent.com/AI-Driven-School/aiki/main"
 LATEST_VERSION="6.3.0"
 
 echo -e "${CYAN}"
 echo "┌─────────────────────────────────────────────────────────┐"
-echo "│   claude-codex-collab Update                            │"
+echo "│   aiki Update                            │"
 echo "│   Latest: v${LATEST_VERSION}                                        │"
 echo "└─────────────────────────────────────────────────────────┘"
 echo -e "${NC}"
@@ -38,7 +38,7 @@ echo ""
 # Check if CLAUDE.md exists
 if [ ! -f "CLAUDE.md" ]; then
     echo -e "${RED}Error: CLAUDE.md not found${NC}"
-    echo "Please run this in a directory where claude-codex-collab is installed"
+    echo "Please run this in a directory where aiki is installed"
     exit 1
 fi
 
@@ -130,5 +130,5 @@ echo ""
 echo -e "${CYAN}Backup:${NC}"
 echo -e "  ${BLUE}${BACKUP_DIR}/${NC}"
 echo ""
-echo -e "Details: ${BLUE}https://github.com/AI-Driven-School/claude-codex-collab/releases${NC}"
+echo -e "Details: ${BLUE}https://github.com/AI-Driven-School/aiki/releases${NC}"
 echo ""

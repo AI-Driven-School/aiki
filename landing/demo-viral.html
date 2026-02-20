@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4-AI Collaboration Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --text: #e6edf3;
+      --muted: #7d8590;
+      --claude: #d4a574;
+      --codex: #4ade80;
+      --gemini: #60a5fa;
+      --cost-red: #f87171;
+      --cost-green: #4ade80;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    /* ===== Phase: Title Card ===== */
+    .title-card {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.6s ease-out;
+    }
+
+    .title-card.visible { opacity: 1; }
+
+    .title-card h1 {
+      font-family: 'Inter', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.3;
+      margin-bottom: 2rem;
+    }
+
+    .title-card h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--claude), var(--codex), var(--gemini));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .ai-badges {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .ai-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .ai-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+    }
+
+    .ai-badge.claude .ai-dot { background: var(--claude); }
+    .ai-badge.claude { color: var(--claude); }
+    .ai-badge.codex .ai-dot { background: var(--codex); }
+    .ai-badge.codex { color: var(--codex); }
+    .ai-badge.gemini .ai-dot { background: var(--gemini); }
+    .ai-badge.gemini { color: var(--gemini); }
+
+    .ai-badges .separator {
+      color: var(--muted);
+      font-size: 1.5rem;
+    }
+
+    /* ===== Phase: Terminal ===== */
+    .terminal-phase {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 3rem;
+      opacity: 0;
+      transition: opacity 0.5s ease-out;
+    }
+
+    .terminal-phase.visible { opacity: 1; }
+
+    .terminal {
+      width: 100%;
+      max-width: 900px;
+      background: #161b22;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: #21262d;
+    }
+
+    .terminal-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .terminal-dot.red { background: #ff5f56; }
+    .terminal-dot.yellow { background: #ffbd2e; }
+    .terminal-dot.green { background: #27c93f; }
+
+    .terminal-title {
+      flex: 1;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .terminal-body {
+      padding: 1.25rem 1.5rem;
+      font-size: 0.88rem;
+      line-height: 1.9;
+      min-height: 420px;
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    .line {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+
+    .line.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 0.25s ease-out;
+    }
+
+    .prompt { color: var(--codex); }
+    .command { color: var(--text); }
+    .phase-label { color: var(--muted); }
+    .ai-claude { color: var(--claude); font-weight: 700; }
+    .ai-codex { color: var(--codex); font-weight: 700; }
+    .file { color: var(--gemini); }
+    .success { color: var(--codex); }
+    .arrow { color: var(--muted); }
+    .url { color: var(--gemini); text-decoration: underline; }
+    .cost-badge {
+      display: inline-block;
+      background: var(--codex);
+      color: var(--bg);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+    }
+    .progress-bar {
+      color: var(--codex);
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 17px;
+      background: var(--codex);
+      animation: blink 1s infinite;
+      vertical-align: text-bottom;
+    }
+
+    /* ===== Phase: Cost Comparison ===== */
+    .cost-phase {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2.5rem;
+      padding: 3rem;
+      opacity: 0;
+      transition: opacity 0.5s ease-out;
+    }
+
+    .cost-phase.visible { opacity: 1; }
+
+    .cost-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .cost-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .cost-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .cost-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      min-width: 160px;
+      text-align: right;
+    }
+
+    .cost-bar-track {
+      flex: 1;
+      height: 40px;
+      background: #21262d;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .cost-bar-fill {
+      height: 100%;
+      border-radius: 8px;
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0;
+    }
+
+    .cost-bar-fill.single { background: var(--cost-red); }
+    .cost-bar-fill.collab { background: var(--cost-green); }
+
+    .cost-amount {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      min-width: 80px;
+    }
+
+    .cost-amount.single { color: var(--cost-red); }
+    .cost-amount.collab { color: var(--cost-green); }
+
+    .savings-badge {
+      font-family: 'Inter', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--cost-green);
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .savings-badge.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* ===== Phase: End Card ===== */
+    .end-card {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.6s ease-out;
+    }
+
+    .end-card.visible { opacity: 1; }
+
+    .end-stats {
+      display: flex;
+      gap: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .end-stat {
+      text-align: center;
+    }
+
+    .end-stat-value {
+      font-family: 'Inter', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--codex);
+    }
+
+    .end-stat-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    .end-compat {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .end-compat span { color: var(--text); font-weight: 600; }
+
+    .end-url {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      background: #21262d;
+      border-radius: 8px;
+      color: var(--codex);
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .end-cta {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* ===== Animations ===== */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* ===== Controls (hidden during recording) ===== */
+    .controls {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 1rem;
+      z-index: 100;
+    }
+
+    .controls button {
+      padding: 0.6rem 1.2rem;
+      background: #21262d;
+      border: 1px solid var(--muted);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .controls button:hover {
+      border-color: var(--codex);
+      color: var(--codex);
+    }
+
+    .controls.hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Phase 1: Title Card -->
+    <div class="title-card" id="phase-title">
+      <h1>What if <em>3 AIs</em><br>built your features?</h1>
+      <div class="ai-badges">
+        <div class="ai-badge claude"><div class="ai-dot"></div>Claude</div>
+        <span class="separator">&bull;</span>
+        <div class="ai-badge codex"><div class="ai-dot"></div>Codex</div>
+        <span class="separator">&bull;</span>
+        <div class="ai-badge gemini"><div class="ai-dot"></div>Gemini</div>
+      </div>
+    </div>
+
+    <!-- Phase 2 & 3: Terminal (Setup + Workflow) -->
+    <div class="terminal-phase" id="phase-terminal">
+      <div class="terminal">
+        <div class="terminal-header">
+          <div class="terminal-dot red"></div>
+          <div class="terminal-dot yellow"></div>
+          <div class="terminal-dot green"></div>
+          <div class="terminal-title">claude &mdash; ~/my-app</div>
+        </div>
+        <div class="terminal-body" id="terminal-body"></div>
+      </div>
+    </div>
+
+    <!-- Phase 4: Cost Comparison -->
+    <div class="cost-phase" id="phase-cost">
+      <div class="cost-title">Cost Comparison</div>
+      <div class="cost-bars">
+        <div class="cost-row">
+          <div class="cost-label">Single AI</div>
+          <div class="cost-bar-track">
+            <div class="cost-bar-fill single" id="bar-single"></div>
+          </div>
+          <div class="cost-amount single" id="amount-single">$1.00</div>
+        </div>
+        <div class="cost-row">
+          <div class="cost-label">4-AI Collab</div>
+          <div class="cost-bar-track">
+            <div class="cost-bar-fill collab" id="bar-collab"></div>
+          </div>
+          <div class="cost-amount collab" id="amount-collab">$0.25</div>
+        </div>
+      </div>
+      <div class="savings-badge" id="savings-badge">75% Cost Savings</div>
+    </div>
+
+    <!-- Phase 5: End Card -->
+    <div class="end-card" id="phase-end">
+      <div class="end-stats">
+        <div class="end-stat">
+          <div class="end-stat-value">2x</div>
+          <div class="end-stat-label">Speed</div>
+        </div>
+        <div class="end-stat">
+          <div class="end-stat-value">75%</div>
+          <div class="end-stat-label">Cost Reduction</div>
+        </div>
+        <div class="end-stat">
+          <div class="end-stat-value">13</div>
+          <div class="end-stat-label">Skills</div>
+        </div>
+      </div>
+      <div class="end-compat">
+        Works with <span>Claude Code</span>, <span>Codex</span>, <span>OpenCode</span>, <span>Cursor</span>
+      </div>
+      <div class="end-url">github.com/AI-Driven-School/aiki</div>
+      <div class="end-cta">&#9733; Star on GitHub</div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls" id="controls">
+    <button onclick="startDemo()">&#9654; Start</button>
+    <button onclick="location.reload()">&#8634; Reset</button>
+    <button onclick="enterRecordMode()">&#127916; Record Mode</button>
+  </div>
+
+  <script>
+    // ===== State =====
+    let isRunning = false;
+
+    // ===== Phase Management =====
+    function hideAll() {
+      ['phase-title', 'phase-terminal', 'phase-cost', 'phase-end'].forEach(id => {
+        document.getElementById(id).classList.remove('visible');
+      });
+    }
+
+    function showPhase(id) {
+      document.getElementById(id).classList.add('visible');
+    }
+
+    // ===== Typewriter =====
+    function typeText(container, text, speed) {
+      return new Promise(resolve => {
+        const line = document.createElement('div');
+        line.className = 'line visible';
+        line.innerHTML = '<span class="prompt">&#10095;</span> <span class="command" id="typing-target"></span><span class="cursor"></span>';
+        container.appendChild(line);
+
+        const target = line.querySelector('.command');
+        let i = 0;
+
+        function type() {
+          if (i < text.length) {
+            target.textContent += text[i];
+            i++;
+            setTimeout(type, speed);
+          } else {
+            setTimeout(() => {
+              line.querySelector('.cursor').remove();
+              resolve();
+            }, 150);
+          }
+        }
+        type();
+      });
+    }
+
+    // ===== Add terminal line =====
+    function addLine(container, html, delay) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const line = document.createElement('div');
+          line.className = 'line';
+          line.innerHTML = html || '&nbsp;';
+          container.appendChild(line);
+          // Trigger animation
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              line.classList.add('visible');
+            });
+          });
+          resolve();
+        }, delay);
+      });
+    }
+
+    // ===== Sleep utility =====
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // ===== Main Demo Sequence =====
+    async function startDemo() {
+      if (isRunning) return;
+      isRunning = true;
+
+      const body = document.getElementById('terminal-body');
+      body.innerHTML = '';
+
+      // ========== PHASE 1: Title Card (0-5s) ==========
+      hideAll();
+      showPhase('phase-title');
+      await sleep(4500);
+
+      // ========== PHASE 2: Setup Terminal (5-10s) ==========
+      hideAll();
+      showPhase('phase-terminal');
+      await sleep(400);
+
+      await typeText(body, 'npx aiki init my-app', 40);
+      await sleep(300);
+
+      await addLine(body, '<span class="progress-bar">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</span> <span class="phase-label">Installing...</span>', 200);
+      await sleep(800);
+      await addLine(body, '<span class="success">&#10003;</span> Ready in 30 seconds', 200);
+      await sleep(600);
+
+      await addLine(body, '&nbsp;', 100);
+
+      // ========== PHASE 3: Workflow Demo (10-35s) ==========
+      await typeText(body, '/project user authentication', 45);
+      await sleep(400);
+
+      await addLine(body, '&nbsp;', 100);
+
+      // Phase 1/6 - Requirements
+      await addLine(body, '<span class="phase-label">[1/6]</span> Requirements      <span class="ai-claude">(Claude)</span>', 200);
+      await sleep(400);
+      await addLine(body, '      <span class="arrow">&rarr;</span> <span class="file">docs/requirements/auth.md</span>        <span class="success">&#10003;</span>', 300);
+      await sleep(500);
+
+      // Phase 2/6 - API Design
+      await addLine(body, '<span class="phase-label">[2/6]</span> API Design        <span class="ai-claude">(Claude)</span>', 200);
+      await sleep(400);
+      await addLine(body, '      <span class="arrow">&rarr;</span> <span class="file">docs/api/auth.yaml</span>              <span class="success">&#10003;</span>', 300);
+      await sleep(500);
+
+      // Phase 3/6 - Implementation
+      await addLine(body, '<span class="phase-label">[3/6]</span> Implementation    <span class="ai-codex">(Codex)</span><span class="cost-badge">$0</span>', 200);
+      await sleep(300);
+      await addLine(body, '      <span class="arrow">&rarr;</span> <span class="file">src/app/login/page.tsx</span>', 250);
+      await addLine(body, '      <span class="arrow">&rarr;</span> <span class="file">src/lib/api/auth.ts</span>', 250);
+      await addLine(body, '      <span class="arrow">&rarr;</span> <span class="file">src/components/LoginForm.tsx</span>   <span class="success">&#10003;</span> 3 files', 250);
+      await sleep(600);
+
+      // Phase 4/6 - Testing
+      await addLine(body, '<span class="phase-label">[4/6]</span> Testing           <span class="ai-codex">(Codex)</span><span class="cost-badge">$0</span>', 200);
+      await sleep(300);
+      await addLine(body, '      <span class="arrow">&rarr;</span> <span class="file">tests/auth.spec.ts</span>             <span class="success">&#10003;</span>', 300);
+      await sleep(500);
+
+      // Phase 5/6 - Review
+      await addLine(body, '<span class="phase-label">[5/6]</span> Review            <span class="ai-claude">(Claude)</span>', 200);
+      await sleep(400);
+      await addLine(body, '      <span class="success">&#10003;</span> All acceptance criteria passed', 300);
+      await sleep(500);
+
+      // Phase 6/6 - Deploy
+      await addLine(body, '<span class="phase-label">[6/6]</span> Deploy', 200);
+      await sleep(400);
+      await addLine(body, '      <span class="success">&#10003;</span> <span class="url">https://my-app.vercel.app</span>', 300);
+      await sleep(800);
+
+      // ========== PHASE 4: Cost Comparison (35-40s) ==========
+      hideAll();
+      showPhase('phase-cost');
+      await sleep(600);
+
+      // Animate bars
+      document.getElementById('bar-single').style.width = '100%';
+      document.getElementById('bar-collab').style.width = '25%';
+
+      await sleep(2000);
+
+      // Show savings badge
+      document.getElementById('savings-badge').classList.add('visible');
+      await sleep(2200);
+
+      // ========== PHASE 5: End Card (40-45s) ==========
+      hideAll();
+      showPhase('phase-end');
+      await sleep(5000);
+
+      isRunning = false;
+    }
+
+    // ===== Record Mode =====
+    function enterRecordMode() {
+      document.getElementById('controls').classList.add('hidden');
+      // Auto-start after a short delay
+      setTimeout(startDemo, 500);
+    }
+
+    // ===== URL parameter auto-start for Puppeteer =====
+    if (new URLSearchParams(window.location.search).has('autostart')) {
+      document.getElementById('controls').classList.add('hidden');
+      window.addEventListener('load', () => {
+        setTimeout(startDemo, 300);
+      });
+    }
+
+    // ===== Keyboard shortcuts =====
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && !isRunning) {
+        e.preventDefault();
+        startDemo();
+      }
+    });
+  </script>
+</body>
+</html>

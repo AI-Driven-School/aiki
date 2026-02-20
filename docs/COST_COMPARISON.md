@@ -1,18 +1,18 @@
-# Cost Comparison: 3-AI Collaboration vs Single AI
+# Cost Comparison: 4-AI Collaboration vs Single AI
 
 ## TL;DR
 
 | Approach | Monthly Cost | Speed | Documentation |
 |----------|:-----------:|:-----:|:------------:|
 | Claude only | ~$100-200 | 1x | Manual |
-| **3-AI Collab** | **~$25-50** | **2x** | **Auto-generated** |
+| **4-AI Collab** | **~$25-50** | **2x** | **Auto-generated** |
 
 ---
 
 ## How It Works
 
 ```
-Single AI (Claude only)          3-AI Collaboration
+Single AI (Claude only)          4-AI Collaboration
 ─────────────────────            ─────────────────────
 Design    → Claude ($)           Design    → Claude ($)
 Implement → Claude ($$)          Implement → Codex ($0) ★
@@ -43,7 +43,7 @@ Total: $$$$$                     Total: $$
 
 ### Example: User Authentication Feature
 
-| Phase | Single AI (Claude) | 3-AI Collaboration |
+| Phase | Single AI (Claude) | 4-AI Collaboration |
 |-------|:-----------------:|:------------------:|
 | Requirements | ~$0.03 | ~$0.03 (Claude) |
 | API Design | ~$0.05 | ~$0.05 (Claude) |
@@ -56,7 +56,7 @@ Total: $$$$$                     Total: $$
 
 ### Example: Dashboard with Charts
 
-| Phase | Single AI (Claude) | 3-AI Collaboration |
+| Phase | Single AI (Claude) | 4-AI Collaboration |
 |-------|:-----------------:|:------------------:|
 | Requirements | ~$0.04 | ~$0.04 (Claude) |
 | UI Spec | ~$0.06 | ~$0.06 (Claude) |
@@ -68,7 +68,7 @@ Total: $$$$$                     Total: $$
 
 ### Example: Full-Stack CRUD API
 
-| Phase | Single AI (Claude) | 3-AI Collaboration |
+| Phase | Single AI (Claude) | 4-AI Collaboration |
 |-------|:-----------------:|:------------------:|
 | Requirements | ~$0.05 | ~$0.05 (Claude) |
 | API Design | ~$0.08 | ~$0.08 (Claude) |
@@ -84,7 +84,7 @@ Total: $$$$$                     Total: $$
 
 ### Solo Developer (20 features/month)
 
-| Metric | Claude Only | 3-AI Collab |
+| Metric | Claude Only | 4-AI Collab |
 |--------|:----------:|:----------:|
 | Claude API cost | ~$20-40 | ~$4-8 |
 | ChatGPT Pro | $0 | $200 (shared) |
@@ -95,7 +95,7 @@ Total: $$$$$                     Total: $$
 
 ### Team of 5 (100 features/month)
 
-| Metric | Claude Only | 3-AI Collab |
+| Metric | Claude Only | 4-AI Collab |
 |--------|:----------:|:----------:|
 | Claude API cost | ~$100-200 | ~$20-40 |
 | ChatGPT Pro | $0 | $200 (shared) |
@@ -134,7 +134,7 @@ Start small and scale up:
 # Start with Claude only (zero additional cost)
 bash install-fullstack.sh my-app --claude-only
 
-# Upgrade to full 3-AI when ready
+# Upgrade to full 4-AI when ready
 bash install-fullstack.sh my-app --full
 ```
 

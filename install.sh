@@ -3,7 +3,7 @@
 # Claude Code トークン95%削減（最小構成）
 # ============================================
 # 使用方法:
-#   curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/aiki/main/install.sh | bash
 # ============================================
 
 set -e

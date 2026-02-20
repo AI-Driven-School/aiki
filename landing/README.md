@@ -6,7 +6,7 @@ Binary assets (`.mp4`, `.gif`) are not tracked in git to keep the repository lig
 
 ### Option 1: GitHub Releases
 
-Download pre-built assets from the [Releases page](https://github.com/AI-Driven-School/claude-codex-collab/releases).
+Download pre-built assets from the [Releases page](https://github.com/AI-Driven-School/aiki/releases).
 
 ### Option 2: Generate locally
 

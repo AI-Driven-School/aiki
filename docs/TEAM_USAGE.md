@@ -1,6 +1,6 @@
 # Team Usage Guide
 
-This guide covers how to use claude-codex-collab effectively in a team environment.
+This guide covers how to use aiki effectively in a team environment.
 
 ## Branch Naming Convention
 

@@ -2,7 +2,7 @@
 
 ## 概要
 
-3AI適材適所テンプレートは、**Claude × Codex × Gemini** の強みを活かして開発を効率化するCLIツールです。
+4AI適材適所テンプレートは、**Claude × Codex × Gemini** の強みを活かして開発を効率化するCLIツールです。
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -19,7 +19,7 @@
 
 ---
 
-## 3AI適材適所
+## 4AI適材適所
 
 | AI | 強み | 役割 | 課金 |
 |----|------|------|------|
@@ -44,22 +44,22 @@
 ### 方法1: ワンライナー（推奨）
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/install-fullstack.sh | bash -s -- my-project
+curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/aiki/main/install-fullstack.sh | bash -s -- my-project
 ```
 
 ### 方法2: 既存プロジェクトに追加
 
 ```bash
 cd your-project
-curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/install-fullstack.sh | bash
+curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/aiki/main/install-fullstack.sh | bash
 ```
 
 ### 方法3: 手動インストール
 
 ```bash
 # リポジトリをクローン
-git clone https://github.com/AI-Driven-School/claude-codex-collab.git
-cd claude-codex-collab
+git clone https://github.com/AI-Driven-School/aiki.git
+cd aiki
 
 # 既存プロジェクトにコピー
 cp -r .claude/ /path/to/your-project/
@@ -137,7 +137,7 @@ my-project/
 ### 1. プロジェクト作成
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/install-fullstack.sh | bash -s -- todo-app
+curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/aiki/main/install-fullstack.sh | bash -s -- todo-app
 cd todo-app
 ```
 

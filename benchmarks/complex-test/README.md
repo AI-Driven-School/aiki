@@ -2,7 +2,7 @@
 
 AI駆動型メンタルヘルスSaaSアプリケーション
 
-[![CI](https://github.com/AI-Driven-School/claude-codex-collab/actions/workflows/ci.yml/badge.svg)](https://github.com/AI-Driven-School/claude-codex-collab/actions/workflows/ci.yml)
+[![CI](https://github.com/AI-Driven-School/aiki/actions/workflows/ci.yml/badge.svg)](https://github.com/AI-Driven-School/aiki/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
@@ -70,8 +70,8 @@ StressAgent Pro は、**会社の従業員のメンタルヘルス（心の健�
 
 ```bash
 # 1. ダウンロード
-git clone https://github.com/AI-Driven-School/claude-codex-collab.git
-cd claude-codex-collab/benchmarks/complex-test
+git clone https://github.com/AI-Driven-School/aiki.git
+cd aiki/benchmarks/complex-test
 
 # 2. バックエンド
 cd backend
@@ -194,5 +194,5 @@ npm test
 
 ## 💬 困ったときは
 
-- **バグ報告・質問**: [GitHub Issues](https://github.com/AI-Driven-School/claude-codex-collab/issues)
+- **バグ報告・質問**: [GitHub Issues](https://github.com/AI-Driven-School/aiki/issues)
 - **ドキュメント**: [docs/](docs/) フォルダを確認

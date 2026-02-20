@@ -1,12 +1,12 @@
 # 2x Faster Implementation, 75% Cost Reduction
 
-[![GitHub Stars](https://img.shields.io/github/stars/AI-Driven-School/claude-codex-collab?style=for-the-badge&logo=github&label=Stars)](https://github.com/AI-Driven-School/claude-codex-collab/stargazers)
-[![npm](https://img.shields.io/npm/v/claude-codex-collab?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/claude-codex-collab)
+[![GitHub Stars](https://img.shields.io/github/stars/AI-Driven-School/aiki?style=for-the-badge&logo=github&label=Stars)](https://github.com/AI-Driven-School/aiki/stargazers)
+[![npm](https://img.shields.io/npm/v/aiki?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/aiki)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/AI-Driven-School?style=for-the-badge&logo=github&label=Sponsor)](https://github.com/sponsors/AI-Driven-School)
 
 <p align="center">
-  <img src="./landing/promo.gif" alt="3AI Collaborative Development Demo" width="700">
+  <img src="./landing/promo.gif" alt="4AI Collaborative Development Demo" width="700">
 </p>
 
 <p align="center">
@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="./README_ja.md">日本語</a> · If this project helps you, please <a href="https://github.com/AI-Driven-School/claude-codex-collab/stargazers">give it a star</a>
+  <a href="./README_ja.md">日本語</a> · If this project helps you, please <a href="https://github.com/AI-Driven-School/aiki/stargazers">give it a star</a>
 </p>
 
 ---
@@ -24,10 +24,10 @@
 
 ```bash
 # Option A: npx (recommended)
-npx claude-codex-collab init my-app
+npx aiki init my-app
 
 # Option B: curl
-curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/install-fullstack.sh | bash -s -- my-app
+curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/aiki/main/install-fullstack.sh | bash -s -- my-app
 
 # Then start developing
 cd my-app && claude
@@ -51,7 +51,7 @@ cd my-app && claude
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
-│   Single AI             3-AI Collaboration                  │
+│   Single AI             4-AI Collaboration                  │
 │   ─────────             ──────────────────                  │
 │   Claude only           Claude → Design & decisions only    │
 │   = Everything billed      ↓                                │
@@ -163,11 +163,11 @@ This project ships with 13 ready-to-use [Agent Skills](https://agentskills.io) f
 
 ```bash
 # Using Vercel skills CLI
-npx skills add AI-Driven-School/claude-codex-collab
+npx skills add AI-Driven-School/aiki
 
 # Or clone and use directly
-git clone https://github.com/AI-Driven-School/claude-codex-collab.git
-cd claude-codex-collab && claude
+git clone https://github.com/AI-Driven-School/aiki.git
+cd aiki && claude
 ```
 
 ### Available Skills
@@ -307,7 +307,7 @@ bash scripts/delegate.sh ollama review src/ --model deepseek-coder
 | [Getting Started](./docs/GETTING_STARTED.md) | Installation & setup |
 | [Hands-on Tutorial](./docs/HANDS_ON_TUTORIAL.md) | Build a TODO app step by step |
 | [Existing Project Setup](./docs/EXISTING_PROJECT_SETUP.md) | Add to existing projects |
-| [Cost Comparison](./docs/COST_COMPARISON.md) | Detailed cost analysis: 3-AI vs single AI |
+| [Cost Comparison](./docs/COST_COMPARISON.md) | Detailed cost analysis: 4-AI vs single AI |
 | [OpenCode Compatibility](./docs/OPENCODE_COMPATIBILITY.md) | Using with OpenCode CLI |
 | [Command Reference](./docs/COMMANDS.md) | Complete command reference |
 | [Benchmarks](./benchmarks/BENCHMARK_RESULTS.md) | Detailed benchmark data |
@@ -318,18 +318,18 @@ bash scripts/delegate.sh ollama review src/ --model deepseek-coder
 
 Phase 1 is completely free. The easiest way to support this project:
 
-1. [Give it a star on GitHub](https://github.com/AI-Driven-School/claude-codex-collab/stargazers) - helps others discover this project
-2. [Share on X/Twitter](https://twitter.com/intent/tweet?text=3-AI%20collaborative%20development%20with%20Claude%20%2B%20Codex%20%2B%20Gemini.%2075%25%20cost%20reduction%20%F0%9F%9A%80&url=https%3A%2F%2Fgithub.com%2FAI-Driven-School%2Fclaude-codex-collab) - spread the word
+1. [Give it a star on GitHub](https://github.com/AI-Driven-School/aiki/stargazers) - helps others discover this project
+2. [Share on X/Twitter](https://twitter.com/intent/tweet?text=4-AI%20collaborative%20development%20with%20Claude%20%2B%20Codex%20%2B%20Gemini.%2075%25%20cost%20reduction%20%F0%9F%9A%80&url=https%3A%2F%2Fgithub.com%2FAI-Driven-School%2Faiki) - spread the word
 3. [Sponsor development](https://github.com/sponsors/AI-Driven-School) - support ongoing work
 
-[![GitHub Stars](https://img.shields.io/github/stars/AI-Driven-School/claude-codex-collab?style=for-the-badge&logo=github&label=Star)](https://github.com/AI-Driven-School/claude-codex-collab/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/AI-Driven-School/aiki?style=for-the-badge&logo=github&label=Star)](https://github.com/AI-Driven-School/aiki/stargazers)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/AI-Driven-School?style=for-the-badge&logo=github&label=Sponsor)](https://github.com/sponsors/AI-Driven-School)
 
 ---
 
 <p align="center">
   MIT License<br>
-  <a href="https://github.com/AI-Driven-School/claude-codex-collab">GitHub</a> ·
-  <a href="https://github.com/AI-Driven-School/claude-codex-collab/issues">Issues</a> ·
+  <a href="https://github.com/AI-Driven-School/aiki">GitHub</a> ·
+  <a href="https://github.com/AI-Driven-School/aiki/issues">Issues</a> ·
   <a href="https://github.com/sponsors/AI-Driven-School">Sponsor</a>
 </p>

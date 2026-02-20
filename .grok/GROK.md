@@ -4,7 +4,7 @@
 
 ## Project Overview
 
-**claude-codex-collab**: Claude + Codex + Gemini + Grok 4-AI collaborative development workflow
+**aiki**: Claude + Codex + Gemini + Grok 4-AI collaborative development workflow
 
 You (Grok) are the **real-time information & trend specialist**.
 

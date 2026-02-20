@@ -104,8 +104,8 @@ cd ~/Desktop
 ### 2.2 プロジェクトをダウンロード
 
 ```bash
-git clone https://github.com/AI-Driven-School/claude-codex-collab.git
-cd claude-codex-collab/benchmarks/complex-test
+git clone https://github.com/AI-Driven-School/aiki.git
+cd aiki/benchmarks/complex-test
 ```
 
 > **git がないと言われたら：**
@@ -228,7 +228,7 @@ cp .env.example .env.local
 ### ターミナル1: バックエンドを起動
 
 ```bash
-cd ~/Desktop/claude-codex-collab/benchmarks/complex-test/backend
+cd ~/Desktop/aiki/benchmarks/complex-test/backend
 source venv/bin/activate  # Mac
 # venv\Scripts\activate  # Windows
 uvicorn app.main:app --reload --port 8000
@@ -244,7 +244,7 @@ INFO:     Uvicorn running on http://127.0.0.1:8000
 新しいターミナルウィンドウを開いて：
 
 ```bash
-cd ~/Desktop/claude-codex-collab/benchmarks/complex-test/frontend
+cd ~/Desktop/aiki/benchmarks/complex-test/frontend
 npm run dev
 ```
 
@@ -348,5 +348,5 @@ lsof -ti:3000 | xargs kill
 
 ## 困ったときは
 
-- **GitHub Issues**: https://github.com/AI-Driven-School/claude-codex-collab/issues
+- **GitHub Issues**: https://github.com/AI-Driven-School/aiki/issues
 - 上記で解決しない場合は Issue を作成してください

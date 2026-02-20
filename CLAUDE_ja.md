@@ -4,11 +4,12 @@
 
 ## Project Overview
 
-**claude-codex-collab**: Claude + Codex + Gemini の3AI協調開発ワークフローテンプレート
+**aiki**: Claude + Codex + Gemini + Grok の4AI協調開発ワークフローテンプレート
 
 - Claude: 設計・レビュー担当
 - Codex: 実装・テスト担当（ChatGPT Pro、$0）
 - Gemini: 大規模分析担当（無料）
+- Grok: リアルタイム情報・トレンド調査（xAI API）
 
 ## Key Directories
 

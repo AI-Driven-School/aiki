@@ -1,6 +1,6 @@
 # ハンズオンチュートリアル - TODOアプリを作る
 
-このチュートリアルでは、3AI適材適所テンプレートを使って**TODOアプリ**を0から本番デプロイまで完成させます。
+このチュートリアルでは、4AI適材適所テンプレートを使って**TODOアプリ**を0から本番デプロイまで完成させます。
 
 > **既存プロジェクトに導入したい場合**: [既存プロジェクトへの導入ハンズオン](./EXISTING_PROJECT_SETUP.md) を参照してください。
 
@@ -22,7 +22,7 @@
 
 ```bash
 # テンプレートをインストール
-curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/install-fullstack.sh | bash -s -- todo-app
+curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/aiki/main/install-fullstack.sh | bash -s -- todo-app
 
 # ディレクトリに移動
 cd todo-app
@@ -35,7 +35,7 @@ claude
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│   3AI適材適所テンプレート v6.0                               │
+│   4AI適材適所テンプレート v6.0                               │
 │   Claude（設計）→ Codex（実装）→ Claude（レビュー）         │
 └─────────────────────────────────────────────────────────────┘
 ```

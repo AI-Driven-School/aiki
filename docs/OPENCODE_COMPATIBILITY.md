@@ -24,8 +24,8 @@ Since this project ships both `CLAUDE.md` and `.codex/AGENTS.md`, OpenCode users
 
 ```bash
 # Clone and open with OpenCode
-git clone https://github.com/AI-Driven-School/claude-codex-collab.git
-cd claude-codex-collab
+git clone https://github.com/AI-Driven-School/aiki.git
+cd aiki
 opencode
 ```
 

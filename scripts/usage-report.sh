@@ -47,7 +47,7 @@ touch "$USAGE_FILE"
 show_header() {
     echo -e "${CYAN}"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo "  AI Usage Report - claude-codex-collab"
+    echo "  AI Usage Report - aiki"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo -e "${NC}"
 }
@@ -263,7 +263,7 @@ show_simulation() {
     echo ""
     echo -e "  ${GRAY}Claude only:${NC}       \$${claude_only}/mo"
     echo ""
-    echo -e "  ${BOLD}claude-codex-collab:${NC}"
+    echo -e "  ${BOLD}aiki:${NC}"
     echo -e "    Claude (design): \$${with_collab}"
     echo -e "    Codex (impl):    ${GREEN}\$0.00${NC}"
     echo -e "    Gemini (analysis):${GREEN}\$0.00${NC}"
@@ -307,7 +307,7 @@ manual_log() {
 
 # Show help
 show_help() {
-    echo "AI Usage Report - claude-codex-collab"
+    echo "AI Usage Report - aiki"
     echo ""
     echo "Usage:"
     echo "  ./scripts/usage-report.sh              Show today's usage"

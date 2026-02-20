@@ -570,7 +570,7 @@ const CTAScene: React.FC = () => {
             boxShadow: `0 0 40px ${COLORS.codex}60`,
           }}
         >
-          github.com/AI-Driven-School/claude-codex-collab
+          github.com/AI-Driven-School/aiki
         </div>
 
         <div

@@ -54,7 +54,7 @@ landing/
 ```markdown
 ## デモ
 
-![3AI協調開発デモ](./landing/demo.gif)
+![4AI協調開発デモ](./landing/demo.gif)
 ```
 
 ## Tips
@@ -72,6 +72,106 @@ npm install puppeteer puppeteer-screen-recorder
 # 録画スクリプト実行
 node landing/record-demo.js
 ```
+
+---
+
+## Viral Demo - リアルターミナル録画（推奨）
+
+本物のターミナルで動くシミュレーションを asciinema で録画する方式。
+Reddit / X で最も信頼されるフォーマット。
+
+### 必要なツール
+
+```bash
+brew install asciinema agg ffmpeg
+```
+
+| ツール | 用途 |
+|--------|------|
+| asciinema | ターミナル録画 (.cast) |
+| agg | .cast → GIF 変換 |
+| ffmpeg | GIF → MP4 変換 |
+
+### ワンコマンド録画
+
+```bash
+# 全自動: 録画 → GIF → MP4
+bash landing/record-real.sh
+```
+
+### 手動ステップ
+
+```bash
+# 1. プレビュー（録画せずに確認）
+bash landing/simulate-demo.sh
+
+# 2. asciinema で録画
+asciinema rec --cols 80 --rows 24 \
+  --command "bash landing/simulate-demo.sh" \
+  landing/viral-demo.cast
+
+# 3. GIF に変換
+agg --font-size 16 --fps-cap 15 \
+  landing/viral-demo.cast landing/viral-demo.gif
+
+# 4. MP4 に変換
+ffmpeg -y -i landing/viral-demo.gif \
+  -pix_fmt yuv420p -c:v libx264 -crf 20 \
+  landing/viral-demo.mp4
+```
+
+### 出力ファイル
+
+| ファイル | 用途 | 目標サイズ |
+|---------|------|-----------|
+| `landing/viral-demo.cast` | asciinema 再生用 | - |
+| `landing/viral-demo.gif` | README / GitHub | < 10MB |
+| `landing/viral-demo.mp4` | X/Twitter, Reddit | < 5MB |
+
+### デモ構成（約35秒）
+
+1. `npx aiki init my-app` - セットアップ
+2. `/project user authentication` - 6フェーズ実行
+   - Requirements (Claude) → API Design (Claude) → Implementation (Codex, $0)
+   - Testing (Codex, $0) → Review (Claude) → Deploy
+3. 完了サマリー（時間・コスト・ファイル数）
+4. コスト比較バー（Single AI $0.85 vs 4-AI $0.21）
+
+### SNS 投稿のコツ
+
+- **Reddit**: テキスト投稿 + GIF埋め込み。リンクだけの投稿はダウンボートされやすい
+- **X/Twitter**: MP4 をネイティブ投稿（リンクではなくメディアとして添付）
+- **タイトル例**: "Built auth in 3 min using Claude + Codex. Here's what happened."
+- **投稿時間**: 火〜木 9-11am PST が最適
+
+---
+
+## Viral Demo - HTML アニメーション版（代替）
+
+ブラウザベースの HTML アニメーションデモ（英語）。
+README 用 GIF として使える。Puppeteer + ffmpeg で録画。
+
+### 使い方
+
+```bash
+# ブラウザでプレビュー
+open landing/demo-viral.html
+
+# Space で開始、Record Mode でコントロール非表示 + 自動開始
+```
+
+### 自動録画
+
+```bash
+npm install puppeteer
+node landing/record-viral.js
+```
+
+| 設定 | 値 |
+|------|-----|
+| 解像度 | 1280x720 (HD 16:9) |
+| 長さ | 約45秒 |
+| フレームレート | 30fps（録画）/ 15fps（GIF） |
 
 ---
 

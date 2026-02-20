@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "description": "AI CLI version compatibility matrix for claude-codex-collab",
+  "description": "AI CLI version compatibility matrix for aiki",
   "tools": {
     "claude": {
       "display_name": "Claude Code",

@@ -1,9 +1,13 @@
 {
-  "name": "claude-codex-collab",
+  "name": "aiki",
   "version": "1.0.0",
-  "description": "4-AI collaborative development workflow: Claude (design) + Codex (implementation) + Gemini (analysis) + Grok (real-time trends)",
+  "description": "4-AI collaborative development pipeline: Claude (design) + Codex (implementation) + Gemini (analysis) + Grok (real-time trends)",
   "bin": {
-    "claude-codex-collab": "./bin/cli.sh"
+    "aiki": "./bin/cli.sh"
+  },
+  "scripts": {
+    "demo": "bash scripts/demo-mode.sh 'ECサイトのカート機能'",
+    "record": "bash landing/record-demo.sh"
   },
   "files": [
     "bin/",
@@ -23,6 +27,7 @@
     "LICENSE"
   ],
   "keywords": [
+    "aiki",
     "claude",
     "codex",
     "gemini",
@@ -33,18 +38,19 @@
     "claude-code",
     "workflow",
     "multi-agent",
-    "collaboration"
+    "collaboration",
+    "pipeline"
   ],
   "author": "AI-Driven-School",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AI-Driven-School/claude-codex-collab.git"
+    "url": "git+https://github.com/AI-Driven-School/aiki.git"
   },
   "bugs": {
-    "url": "https://github.com/AI-Driven-School/claude-codex-collab/issues"
+    "url": "https://github.com/AI-Driven-School/aiki/issues"
   },
-  "homepage": "https://github.com/AI-Driven-School/claude-codex-collab#readme",
+  "homepage": "https://github.com/AI-Driven-School/aiki#readme",
   "engines": {
     "node": ">=18"
   }

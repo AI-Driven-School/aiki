@@ -1,6 +1,6 @@
 # ベンチマーク
 
-Claude Code単体 vs 3AI連携のパフォーマンス比較
+Claude Code単体 vs 4AI連携のパフォーマンス比較
 
 ## テストタスク
 

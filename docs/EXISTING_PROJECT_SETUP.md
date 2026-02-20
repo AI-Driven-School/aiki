@@ -1,6 +1,6 @@
 # 既存プロジェクトへの導入ハンズオン
 
-既にコードがあるプロジェクトに claude-codex-collab を導入する手順です。
+既にコードがあるプロジェクトに aiki を導入する手順です。
 
 ---
 
@@ -83,20 +83,20 @@ cp AGENTS.md AGENTS.md.backup 2>/dev/null || true
 **フルスタック版（推奨）:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/install-fullstack.sh | bash
+curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/aiki/main/install-fullstack.sh | bash
 ```
 
 **最小構成版（軽量）:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/aiki/main/install.sh | bash
 ```
 
 ### 2-2. インストール完了メッセージ
 
 ```
 ┌───────────────────────────────────────────┐
-│  3AI適材適所テンプレート セットアップ完了   │
+│  4AI適材適所テンプレート セットアップ完了   │
 │  Claude × Codex × Gemini                  │
 └───────────────────────────────────────────┘
 
@@ -179,7 +179,7 @@ echo ".claude-backup-*/" >> .gitignore
 
 # コミット
 git add CLAUDE.md AGENTS.md scripts/ .claude/ .gitignore
-git commit -m "feat: claude-codex-collab を導入"
+git commit -m "feat: aiki を導入"
 ```
 
 ---
@@ -225,7 +225,7 @@ Claude が `Task(Explore)` でコード探索を開始すれば成功。
 ### CLAUDE.md のみ追加
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/templates/default/CLAUDE.md > CLAUDE.md
+curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/aiki/main/templates/default/CLAUDE.md > CLAUDE.md
 ```
 
 ### 特定のスキルだけ追加
@@ -234,10 +234,10 @@ curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-colla
 mkdir -p .claude/skills
 
 # 実装スキルのみ
-curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/.claude/skills/implement.md > .claude/skills/implement.md
+curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/aiki/main/.claude/skills/implement.md > .claude/skills/implement.md
 
 # レビュースキルのみ
-curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/.claude/skills/review.md > .claude/skills/review.md
+curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/aiki/main/.claude/skills/review.md > .claude/skills/review.md
 ```
 
 ### サブエージェントルールだけ追加
@@ -268,7 +268,7 @@ curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-colla
 既に導入済みのプロジェクトを最新版に更新:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/update.sh | bash
+curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/aiki/main/update.sh | bash
 ```
 
 **注意:** `## プロジェクト固有` セクションは自動的に保持されます。
@@ -301,7 +301,7 @@ claude
 
 ```bash
 # テンプレートをダウンロード（別名で保存）
-curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/claude-codex-collab/main/templates/default/CLAUDE.md > CLAUDE.template.md
+curl -fsSL https://raw.githubusercontent.com/AI-Driven-School/aiki/main/templates/default/CLAUDE.md > CLAUDE.template.md
 
 # 手動でマージ
 # 1. CLAUDE.template.md から必要な部分をコピー

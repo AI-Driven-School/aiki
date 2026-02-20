@@ -4,7 +4,7 @@
 
 ## プロジェクト概要
 
-**claude-codex-collab**: Claude + Codex + Gemini の3AI協調開発ワークフロー
+**aiki**: Claude + Codex + Gemini + Grok の4AI協調開発ワークフロー
 
 あなた（Codex）は**実装・テスト担当**です。
 

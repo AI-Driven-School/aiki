@@ -1,6 +1,6 @@
 # Social Media Posts (Draft)
 
-Ready-to-use posts for promoting claude-codex-collab.
+Ready-to-use posts for promoting aiki.
 
 ---
 
@@ -8,7 +8,7 @@ Ready-to-use posts for promoting claude-codex-collab.
 
 ### Post 1: Launch Announcement
 ```
-I built a 3-AI workflow that cuts AI coding costs by 75%.
+I built a 4-AI workflow that cuts AI coding costs by 75%.
 
 Claude designs, Codex implements ($0), Gemini researches (free).
 
@@ -16,7 +16,7 @@ Solo devs get full design docs automatically.
 
 13 ready-to-use Agent Skills included.
 
-GitHub: https://github.com/AI-Driven-School/claude-codex-collab
+GitHub: https://github.com/AI-Driven-School/aiki
 
 #ClaudeCode #CodingAgent #OpenSource
 ```
@@ -25,14 +25,14 @@ GitHub: https://github.com/AI-Driven-School/claude-codex-collab
 ```
 Stop paying Claude to write boilerplate.
 
-Our 3-AI system:
+Our 4-AI system:
 → Claude: design & review only ($0.13/feature)
 → Codex: implementation & tests ($0 via ChatGPT Pro)
 → Gemini: research & analysis (free)
 
 75% cost reduction, 2x speed.
 
-https://github.com/AI-Driven-School/claude-codex-collab
+https://github.com/AI-Driven-School/aiki
 ```
 
 ### Post 3: Agent Skills Focus
@@ -47,7 +47,7 @@ https://github.com/AI-Driven-School/claude-codex-collab
 
 All open standard (agentskills.io).
 
-https://github.com/AI-Driven-School/claude-codex-collab
+https://github.com/AI-Driven-School/aiki
 ```
 
 ### Post 4: Technical Thread Starter
@@ -70,7 +70,7 @@ Result: A solo dev workflow with team-grade documentation.
 
 ### r/ClaudeAI
 
-**Title:** I built an open-source 3-AI workflow: Claude designs, Codex implements, Gemini researches
+**Title:** I built an open-source 4-AI workflow: Claude designs, Codex implements, Gemini researches
 
 **Body:**
 ```
@@ -93,7 +93,7 @@ It ships with 13 Agent Skills that work with Claude Code, Codex CLI, OpenCode, a
 
 Supports local models via Ollama too, so you can go fully offline.
 
-GitHub: https://github.com/AI-Driven-School/claude-codex-collab
+GitHub: https://github.com/AI-Driven-School/aiki
 
 Happy to answer questions about the architecture or benchmarks.
 ```
@@ -119,22 +119,22 @@ Instead of paying Claude for everything, the expensive work (implementation, tes
 **Features:**
 - 13 ready-to-use Agent Skills (/project, /implement, /test, etc.)
 - Auto-generated design documentation
-- One-command setup: `npx claude-codex-collab init my-app`
+- One-command setup: `npx aiki init my-app`
 - Works with Cursor, OpenCode, and other agents too
 - Local model support via Ollama
 
 Benchmarks show Codex is 10-20% faster than Claude for new file creation, while Claude is 40% faster for existing code modifications. By routing each task to the best AI, you get both speed and quality.
 
-GitHub: https://github.com/AI-Driven-School/claude-codex-collab
+GitHub: https://github.com/AI-Driven-School/aiki
 ```
 
 ### r/LocalLLaMA
 
-**Title:** 3-AI collaboration template now supports Ollama for fully offline development
+**Title:** 4-AI collaboration template now supports Ollama for fully offline development
 
 **Body:**
 ```
-claude-codex-collab is an open-source workflow that coordinates multiple AI coding assistants. We just added Ollama support so you can run the entire pipeline locally.
+aiki is an open-source workflow that coordinates multiple AI coding assistants. We just added Ollama support so you can run the entire pipeline locally.
 
 ```bash
 # Route implementation tasks to local models
@@ -148,19 +148,19 @@ You can mix and match: use Claude for design decisions, but route implementation
 
 The project ships with 13 Agent Skills that work with Claude Code, Codex CLI, OpenCode, and Cursor. All follow the open Agent Skills standard.
 
-GitHub: https://github.com/AI-Driven-School/claude-codex-collab
+GitHub: https://github.com/AI-Driven-School/aiki
 ```
 
 ---
 
 ## Awesome Agent Skills Submission
 
-**PR Title:** `Add skill: AI-Driven-School/claude-codex-collab`
+**PR Title:** `Add skill: AI-Driven-School/aiki`
 
 **Entry to add (in Community Skills > Development and Testing):**
 
 ```markdown
-- **[AI-Driven-School/claude-codex-collab](https://github.com/AI-Driven-School/claude-codex-collab)** - 3-AI collaborative development: Claude designs, Codex implements, Gemini researches
+- **[AI-Driven-School/aiki](https://github.com/AI-Driven-School/aiki)** - 4-AI collaborative development: Claude designs, Codex implements, Gemini researches
 ```
 
 **Target repository:** [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills)

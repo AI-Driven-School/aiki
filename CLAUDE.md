@@ -4,7 +4,7 @@
 
 ## Project Overview
 
-**claude-codex-collab**: 4-AI collaborative development workflow template using Claude + Codex + Gemini + Grok
+**aiki**: 4-AI collaborative development workflow template using Claude + Codex + Gemini + Grok
 
 - Claude: Design & review
 - Codex: Implementation & testing (ChatGPT Pro, $0)

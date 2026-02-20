@@ -1,10 +1,10 @@
-# Contributing to claude-codex-collab
+# Contributing to aiki
 
 Thank you for your interest in contributing! This guide will help you get started.
 
 ## Good First Issues
 
-New to the project? Look for issues labeled [`good first issue`](https://github.com/AI-Driven-School/claude-codex-collab/labels/good%20first%20issue). These are curated tasks that are well-scoped and include clear acceptance criteria.
+New to the project? Look for issues labeled [`good first issue`](https://github.com/AI-Driven-School/aiki/labels/good%20first%20issue). These are curated tasks that are well-scoped and include clear acceptance criteria.
 
 Popular areas for first contributions:
 - **i18n**: Translate skill files or documentation to English
@@ -15,7 +15,7 @@ Popular areas for first contributions:
 
 ### Reporting Issues
 
-- Use [GitHub Issues](https://github.com/AI-Driven-School/claude-codex-collab/issues)
+- Use [GitHub Issues](https://github.com/AI-Driven-School/aiki/issues)
 - Choose the appropriate template (Bug Report or Feature Request)
 - Include steps to reproduce for bugs
 - Include your environment (OS, Node.js version, Claude Code version)
@@ -52,8 +52,8 @@ docs: update README with skill installation guide
 ## Development Setup
 
 ```bash
-git clone https://github.com/AI-Driven-School/claude-codex-collab.git
-cd claude-codex-collab
+git clone https://github.com/AI-Driven-School/aiki.git
+cd aiki
 
 # Set up Git LFS (required for binary assets)
 git lfs install
@@ -136,4 +136,4 @@ New skills should follow the [Agent Skills specification](https://agentskills.io
 
 ## Questions?
 
-Open a [Discussion](https://github.com/AI-Driven-School/claude-codex-collab/discussions) or [Issue](https://github.com/AI-Driven-School/claude-codex-collab/issues).
+Open a [Discussion](https://github.com/AI-Driven-School/aiki/discussions) or [Issue](https://github.com/AI-Driven-School/aiki/issues).

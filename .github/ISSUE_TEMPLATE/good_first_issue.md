@@ -31,4 +31,4 @@ assignees: ''
 
 ## Mentorship
 
-If you need help, feel free to comment on this issue or open a [Discussion](https://github.com/AI-Driven-School/claude-codex-collab/discussions).
+If you need help, feel free to comment on this issue or open a [Discussion](https://github.com/AI-Driven-School/aiki/discussions).

@@ -5,7 +5,7 @@
     "claude": {
       "display_name": "Claude Code",
       "min_version": "1.0.0",
-      "max_tested": "2.0.0",
+      "max_tested": "2.1.49",
       "install_command": "npm install -g @anthropic-ai/claude-code",
       "version_command": "claude --version",
       "required": true,
@@ -14,7 +14,7 @@
     "codex": {
       "display_name": "Codex CLI",
       "min_version": "0.1.0",
-      "max_tested": "1.0.0",
+      "max_tested": "0.93.0",
       "install_command": "npm install -g @openai/codex",
       "version_command": "codex --version",
       "required": false,
@@ -23,7 +23,7 @@
     "gemini": {
       "display_name": "Gemini CLI",
       "min_version": "0.1.0",
-      "max_tested": "1.0.0",
+      "max_tested": "0.26.0",
       "install_command": "npm install -g @google/gemini-cli",
       "version_command": "gemini --version",
       "required": false,

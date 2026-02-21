@@ -258,9 +258,9 @@ bash install-fullstack.sh my-app --full
 
 | Tool | Min Version | Max Tested | Required |
 |------|:-----------:|:----------:|:--------:|
-| Claude Code | 1.0.0 | 2.0.0 | Yes |
-| Codex CLI | 0.1.0 | 1.0.0 | No |
-| Gemini CLI | 0.1.0 | 1.0.0 | No |
+| Claude Code | 1.0.0 | 2.1.49 | Yes |
+| Codex CLI | 0.1.0 | 0.93.0 | No |
+| Gemini CLI | 0.1.0 | 0.26.0 | No |
 | Ollama | 0.1.0 | — | No |
 
 Version compatibility is automatically checked during installation and delegation. See `.ai-versions.json` for details.

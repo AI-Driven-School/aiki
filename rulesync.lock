@@ -1,0 +1,15 @@
+{
+  "lockfileVersion": 1,
+  "sources": {
+    "dyoshikawa/rulesync": {
+      "requestedRef": "main",
+      "resolvedRef": "e2a228a97b9676bbd4b4edacdb2b497dcf1278b6",
+      "resolvedAt": "2026-03-12T02:33:42.331Z",
+      "skills": {
+        "rulesync": {
+          "integrity": "sha256-97749b064a500c2d486ce9f14b61de9073f1718fb3785011e8efa2ae59833baf"
+        }
+      }
+    }
+  }
+}

@@ -41,6 +41,10 @@ Thumbs.db
 .claude/.edit_counter
 .claude/.artifact-cache/
 .claude/checkpoints/
+.claude/.routing_context
+.claude/.session_edit_count
+.claude/.session_new_files
+.claude/.session_edit_log
 
 # Task outputs
 .delegate-tasks/
@@ -63,3 +67,11 @@ benchmarks/complex-test/node_modules/
 # Marketing materials (local only)
 marketing/
 !marketing/README.md
+
+# Rulesync
+.rulesync/skills/.curated/          # Fetched skill sources (regenerable)
+.rulesync/rules/*.local.md          # Local rule overrides
+rulesync.local.jsonc                # Local config overrides
+.claude/skills/rulesync/            # Generated rulesync skill (regenerable)
+.codex/skills/                      # Generated skills (regenerable)
+.gemini/skills/                     # Generated skills (regenerable)

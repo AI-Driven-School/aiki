@@ -8,7 +8,8 @@
     "geminicli"
   ],
   "features": [
-    "rules"
+    "rules",
+    "skills"
   ],
   "baseDirs": [
     "."
@@ -19,5 +20,12 @@
   "global": false,
   "simulateCommands": false,
   "simulateSubagents": false,
-  "simulateSkills": false
+  "simulateSkills": false,
+  // Declarative skill sources - run `rulesync install` to fetch
+  "sources": [
+    {
+      "source": "dyoshikawa/rulesync",
+      "skills": ["*"]
+    }
+  ]
 }

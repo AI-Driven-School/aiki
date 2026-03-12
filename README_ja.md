@@ -94,6 +94,7 @@ cd my-app && claude
 
 ```
 my-app/
+├── .rulesync/rules/    # 全AIルールの単一ソース
 ├── docs/
 │   ├── requirements/   # 要件定義（Claude）
 │   ├── specs/          # 画面設計（Claude）
@@ -155,9 +156,41 @@ my-app/
 
 ---
 
+## 統一ルール管理（rulesync）
+
+**NEW:** AIルールを一箇所で管理。[rulesync](https://github.com/dyoshikawa/rulesync)が各AIの設定ファイルを自動生成します。
+
+```bash
+# ルールを一箇所で編集
+vim .rulesync/rules/project-overview.md
+
+# 全AIに一括生成
+rulesync generate
+
+# 出力:
+#   → CLAUDE.md                  (Claude Code)
+#   → AGENTS.md                  (Codex CLI)
+#   → GEMINI.md                  (Gemini CLI)
+#   → .claude/rules/*.md         (Claude委譲ルール)
+#   → .codex/memories/*.md       (Codex共有コンテキスト)
+#   → .gemini/memories/*.md      (Gemini共有コンテキスト)
+```
+
+| ソース | 生成先 | 説明 |
+|--------|--------|------|
+| `project-overview.md` | 全3AI | 共通プロジェクトコンテキスト |
+| `claude-workflow.md` | Claudeのみ | 強制ルール、コマンド |
+| `codex-agent.md` | Codexのみ | 実装ガイドライン |
+| `gemini-agent.md` | Geminiのみ | リサーチガイドライン |
+| `*-delegation.md` | Claudeのみ | 各AIへの委譲判断ルール |
+
+> Grokは `.grok/GROK.md` で手動管理（rulesyncターゲット未対応）
+
+---
+
 ## 自動オーケストレーション（MCPサーバー）
 
-**NEW:** Claudeに自然に話しかけるだけで、タスクが自動的に適切なAIに委譲されます。
+Claudeに自然に話しかけるだけで、タスクが自動的に適切なAIに委譲されます。
 
 ```
 あなた: 「ユーザー認証を実装して」

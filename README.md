@@ -94,6 +94,7 @@ cd my-app && claude
 
 ```
 my-app/
+├── .rulesync/rules/    # Single source of truth for all AI rules
 ├── docs/
 │   ├── requirements/   # Requirements (Claude)
 │   ├── specs/          # UI specs (Claude)
@@ -192,9 +193,41 @@ All skills follow the [Agent Skills open standard](https://agentskills.io/specif
 
 ---
 
+## Unified Rule Management (rulesync)
+
+**NEW:** Manage all AI rules in one place. [rulesync](https://github.com/dyoshikawa/rulesync) generates config files for each AI from a single source.
+
+```bash
+# Edit rules once
+vim .rulesync/rules/project-overview.md
+
+# Generate for all AIs
+rulesync generate
+
+# Output:
+#   → CLAUDE.md                  (Claude Code)
+#   → AGENTS.md                  (Codex CLI)
+#   → GEMINI.md                  (Gemini CLI)
+#   → .claude/rules/*.md         (Claude delegation rules)
+#   → .codex/memories/*.md       (Codex shared context)
+#   → .gemini/memories/*.md      (Gemini shared context)
+```
+
+| Source | Generated For | Description |
+|--------|--------------|-------------|
+| `project-overview.md` | All 3 AIs | Shared project context |
+| `claude-workflow.md` | Claude only | Enforcement rules, commands |
+| `codex-agent.md` | Codex only | Implementation guidelines |
+| `gemini-agent.md` | Gemini only | Research guidelines |
+| `*-delegation.md` | Claude only | When to delegate to each AI |
+
+> Grok is managed manually via `.grok/GROK.md` (no rulesync target yet)
+
+---
+
 ## Auto-Orchestration (MCP Server)
 
-**NEW:** Talk naturally to Claude, and tasks are automatically delegated to the right AI.
+Talk naturally to Claude, and tasks are automatically delegated to the right AI.
 
 ```
 You: "Implement user authentication"

@@ -148,6 +148,21 @@ ROI: ~2min debate avoided shipping a wrong legal interpretation in client materi
 
 > [Read the full case study](./docs/examples/multi-agent-debate-case-study.md)
 
+### Stage 1 Benchmark (2026-05-08): 4-agent debate caught 6/6 false claims
+
+Tested with Solver/Proposer/Critic/Checker pattern using 4 different model families:
+
+| Approach | Catch Rate |
+|---|:-:|
+| Single AI review | 44–54% |
+| Greptile (commercial best) | 82% |
+| MARCH/CORE research target | 85–90% |
+| **This stack (n=6, all false claims)** | **100%** (6/6) |
+
+Caveats: n=6 is proof-of-concept only. Selection bias present. See [full report](./benchmarks/stage1-debate-catch-rate.md) for honest limitations and Stage 2 plan.
+
+> Codex `-m gpt-5.5` (88.7% SWE-Bench) brought new primary sources Gemini missed — vendor-independent rebuttals are real, not theoretical.
+
 ---
 
 ## Commands

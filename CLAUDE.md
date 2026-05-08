@@ -93,6 +93,14 @@ Latest important decisions (see `docs/decisions/` for details):
 
 ## Work History
 
+### 2026-05-08
+- Added Multi-Agent Debate case study (Solver / Proposer / Checker pattern)
+  - `docs/examples/multi-agent-debate-case-study.md` — 1ジョブで法律解釈の事実誤認を検出した実例
+  - README に動線追加（"Real-world Case" subsection under Case Study）
+  - 検証手法: Solver(Claude) → Proposer(Gemini) → Checker(Claude+WebSearch)
+  - 参考研究: MARCH (2026), Microsoft CORE — false positive -25.8%
+  - 将来の `aiki debate <claim-file>` サブコマンド化候補として記録
+
 ### 2026-03-13
 - Integrated rulesync for unified AI rules management
   - `.rulesync/rules/` - Single source of truth for all AI rules

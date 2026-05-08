@@ -136,6 +136,18 @@ A real SaaS built with this template:
 
 > [Source code](./benchmarks/complex-test/)
 
+### Real-world Case: Multi-Agent Debate caught a critical legal misinterpretation
+
+A 2026-05 case study where Solver/Proposer/Checker debate found a **致命的な事実誤認** in 1 job (~2 minutes):
+
+- **Solver (Claude)** claimed a SaaS subscription violated Japan's 特商法 (Specified Commercial Transactions Act)
+- **Proposer (Gemini)** rebutted: 特商法「特定継続的役務」is a **政令で7業種限定列挙**, SaaS is not included
+- **Checker (Claude+WebSearch)** confirmed via [消費者庁 official guide](https://www.no-trouble.caa.go.jp/what/continuousservices/)
+
+ROI: ~2min debate avoided shipping a wrong legal interpretation in client materials.
+
+> [Read the full case study](./docs/examples/multi-agent-debate-case-study.md)
+
 ---
 
 ## Commands

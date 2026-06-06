@@ -348,7 +348,18 @@ WebSearch で外部前提（市場規模・規制・競合動向）を一次情�
 
 Proposer は True 全15件に「部分的に誤り」を出す("always rebut"バイアス)→ v1.2 は True 全滅(0/15)。v1.3 の裏取りで全件 *難癖/巻き添え/imprecise* として却下し True 15件生存。**最大の懸念だった「微妙Falseで却下ルールが偽を見逃す recall 退行」は発生せず**(巧妙な偽20件でも Critic が有効反論を出し検証通過→20/20 FLAG)。
 
-> ⚠️ **n=53、まだ実運用精度の証明ではない**。(1)**recall 退行の主リスクは残存**: 本ベンチの微妙Falseは「検証すれば明確に偽」だった。*両reviewerが揃って実証できない偽*(誰も裏取りできない巧妙な嘘)は未検証 — recall100%は「v1.3がvalid反論を捨てない」証拠であって「あらゆる微妙Falseを捕捉する」証明ではない。(2)Gemini クォータ枯渇で17件の Proposer を Claude フォールバックに置換、grader も Claude family=ベンダー独立性が一部低下。(3)Grey 12件は grader が絶対的全称(「常に/全て」)を偽overclaimとして11/12をFLAG=ground truth係争的のため clean metrics から除外。(4)コードPR/SWE比較・人間採点・真の第4ベンダー(grok)は未実施。詳細と再現: [`benchmarks/stage3-v13-debate-n53.md`](https://github.com/AI-Driven-School/aiki/blob/main/benchmarks/stage3-v13-debate-n53.md) / PoC: [`stage3-v13-precision-poc.md`](https://github.com/AI-Driven-School/aiki/blob/main/benchmarks/stage3-v13-precision-poc.md)。
+**Stage3+ (recall 退行ストレステスト, hard-false 18件):**
+
+「両/全reviewerが揃って見逃す巧妙な偽」で v1.3 の却下ルールが recall を落とすかを敵対的に検証(版依存/誤数値/直感に反する罠)。
+
+| パネル | v1.2 recall | v1.3 recall | 退行 |
+|---|:-:|:-:|---|
+| 強reviewer単独 (Codex gpt-5.5, n=17 False) | 17/17 = 100% | 17/17 = 100% | **0件** |
+| 弱reviewer単独 (Haiku, web無, n=17) | 11/17 = 64.7% | 10/17 = 58.8% | **1件(HF4)** |
+
+**結論: v1.3 の recall 退行は実在するが「誤論証による偶然の捕捉(lucky catch)」を捨てる範囲に限定**。退行したHF4は弱reviewerが*事実誤認の反論*でたまたまFLAGしたケースで、v1.3はそれを却下=信用すべきでない捕捉を捨てただけ。**正しく論証された捕捉は一度も失わない(10/10維持)**。強fact-checkerを1体入れれば退行ゼロ。なお blind grader は生成器の誤ラベル(HF13)を自力検出・訂正=独立検証が機能。
+
+> ⚠️ **まだ実運用精度の証明ではない**。(1)**recall 退行は条件付きで実在**: *主張が偽 かつ 生き残る反論が全て誤論証* のとき v1.3<v1.2(弱panel単独で実証)。強reviewer込みなら消える。(2)真の第4ベンダー **grok は xAI クレジット枯渇で未投入**(要課金補充)→4社独立は未達、grader等は Claude family。(3)Gemini クォータ枯渇で2社攻撃が取れず一部 Codex/Claude 単独。(4)Grey 12件は ground truth 係争的で clean metrics から除外。(5)コードPR/SWE・人間採点は未実施。詳細と再現: [n=53](https://github.com/AI-Driven-School/aiki/blob/main/benchmarks/stage3-v13-debate-n53.md) / [PoC](https://github.com/AI-Driven-School/aiki/blob/main/benchmarks/stage3-v13-precision-poc.md) / [recall退行](https://github.com/AI-Driven-School/aiki/blob/main/benchmarks/stage3plus-v13-recall-stress.md)。
 
 ## 実例
 

@@ -1,0 +1,25 @@
+name: aiki-ops
+on:
+  schedule:
+    - cron: "0 0 * * *" # 毎日 09:00 JST 相当（UTC 00:00）
+  workflow_dispatch: {}
+
+jobs:
+  ops:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - name: run ops cycle
+        env:
+          AIKI_BUDGET_USD: "1.0"
+          AIKI_REQUIRE_APPROVAL: "false"
+          # 実APIキーは GitHub Secrets で注入（例）:
+          # SOME_API_KEY: ${{ secrets.SOME_API_KEY }}
+        run: npm run ops

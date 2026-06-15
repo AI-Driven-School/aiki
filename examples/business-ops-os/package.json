@@ -1,0 +1,19 @@
+{
+  "name": "aiki-business-ops",
+  "version": "0.1.0",
+  "description": "aiki — AI-driven business-operations OS: role agents on a schedule, with cost caps, approval gates and audit logs. Built for Claude Code / MCP / GitHub Actions.",
+  "type": "module",
+  "scripts": {
+    "ops": "tsx src/run.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "license": "MIT",
+  "keywords": ["ai-driven-development", "agents", "orchestration", "claude-code", "mcp", "business-automation"],
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0",
+    "@types/node": "^22.0.0"
+  }
+}
